@@ -28,7 +28,7 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [ ] Build an automatic mode (PvC)
 - [ ] Each state of the board is known
 - [ ] Test it on Labs machine
-- [ ] (optional) Make it fancy, otherwise CLI is fine
+- [X] (optional) Make it fancy, otherwise CLI is fine <font color=red><b>THOMAS BACKS</b></font>
 - [ ] After 30 moves both loses.
 
 ### Deliverable 2
