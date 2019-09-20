@@ -2,5 +2,7 @@
 Repo for Project 1 of COMP 472 - Artificial Intelligence
 
 ## Sources
-This YouTube video helped us: https://youtu.be/6edibwHBDFk    
-It is explained how to do a 8-Puzzled BFS using C# and we adapt it to Python (version 3) for our project.
+This pdf file helped us how to do it: https://inventwithpython.com/makinggame.pdf    
+The images source for our token is from there: http://invpy.com/fourinarowimages.zip    
+Also, we use pygame for our GUI: https://pygame.org
+
