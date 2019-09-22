@@ -23,16 +23,19 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 ## To-Do
 ### Deliverable 1
 - [ ] Start a counter to track total move when the game start (max 30 moves)
-- [ ] 5 second to make a decision (AI speed)
 - [ ] Build a manual mode (PvP)
-- [ ] Build an automatic mode (PvC)
 - [ ] Each state of the board is known
 - [ ] Test it on Labs machine
 - [X] (optional) Make it fancy, otherwise CLI is fine <font color=red><b>THOMAS BACKS</b></font>
 - [ ] After 30 moves both loses.
+- [ ] Functionality of the rules of the game.
+- [ ] Code cleanup and programming quality
 
 ### Deliverable 2
-
+- [ ] 5 second to make a decision (AI speed)
+- [ ] Build an automatic mode (PvC)
+- [ ] Heuristics chosen
+- [ ] Code cleanup and programming quality
 ### Deliverable 3
 - [ ] Report 
 - [ ] more or less 1 page of __Introduction__ and __Technical details__
