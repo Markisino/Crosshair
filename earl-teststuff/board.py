@@ -38,11 +38,12 @@ class Board:
 			print("Piece already in tile, please try again.")
 			return valid_turn
 		
-		self.used_tiles.append(position) #to make checking easier
 		row = self.LETTERS.index(position[0])
 		column = config.BOARDHEIGHT - int(position[1])
 		self.board[column][row] = entry
 		
+		self.used_tiles.append((position,entry)) #to make checking easier
+
 		valid_turn = True
 		return valid_turn
 
@@ -85,7 +86,7 @@ class Board:
 
 	def checkWinner(self):
 		for tile in self.used_tiles:
-			result = self.checkTile(tile)
+			result = self.checkTile(tile[0])
 			#print(tile + ": " + str(self.winner_found))
 			if(self.winner_found):
 				winner = ""

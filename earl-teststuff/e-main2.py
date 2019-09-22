@@ -15,3 +15,4 @@ position = "G4"
 
 b.displayBoard(board)
 b.checkWinner()
+print(b.used_tiles)
