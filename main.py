@@ -107,7 +107,8 @@ def drawBoard(board, extraToken=None):
 def getNewBoard():
     board = []
     for x in range(config.BOARDWIDTH):
-        board.append([config.EMPTY] * config.BOARDHEIGHT)
+        board.append([config.EMPTY] * config.BOARDHEIGHT)   
+    print(board)
     return board
         
 
