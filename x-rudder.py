@@ -30,6 +30,7 @@ def message():
     print("Type 'Q' or 'q' to exit the game")
     print("More input option will follow...")
 
+# Function to switch turn between player
 def turn(pt):
     if pt:
         return False
