@@ -32,8 +32,10 @@ TEXTCOLOR = WHITE
 # ==================================================
 # BELOW ARE CONFIG FOR PLAYERS
 # ==================================================
-RED = 'red'
-BLACK = 'black'
+# RED = 'red'
+# BLACK = 'black'
+CROSS = 6
+CIRCLE = 9
 EMPTY = None
 HUMAN = 'human'
 COMPUTER = 'computer'
