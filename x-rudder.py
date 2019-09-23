@@ -23,6 +23,7 @@ def run(board_game, player_turn):
             
             player_turn = turn(player_turn)
 
+# function to prompt the welcome message
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
