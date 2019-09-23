@@ -26,7 +26,7 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [X] Build a manual mode (PvP) <font color=red><b>ALL</b></font>
 - [X] Each state of the board is known <font color=red><b>EARL STEVEN AROMIN</b></font>
 - [ ] Test it on Labs machine
-- [X] (optional) Make it fancy, otherwise CLI is fine <font color=red><b>THOMAS BACKS</b></font>
+- [X] Make a CLI board class <font color=red><b>EARL STEVEN AROMIN</b></font>
 - [X] Players input <font color=red><b>THOMAS BACKS</b></font>
 - [X] Adding an option to quit the game <font color=red><b>THOMAS BACKS</b></font>
 - [ ] After 30 moves both loses. 
