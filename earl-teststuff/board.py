@@ -2,6 +2,7 @@ import numpy as np
 import config
 
 class Board:
+
 	def __init__(self):	
 		self.LETTERS = ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z')
 		self.used_tiles = []
@@ -10,6 +11,7 @@ class Board:
 		self.board = np.zeros(shape=(rows,columns))
 		self.board = self.board.astype(int)
 		self.winner_found = False
+		self.turnCounter = 30
 
 	def displayBoard(self,board):
 		for y in range(config.BOARDHEIGHT):
@@ -30,6 +32,7 @@ class Board:
 		for x in range(config.BOARDWIDTH):
 			bottom_text += " " + self.LETTERS[x] + "  "
 		print(bottom_text)
+		print("Turns left: " + str(self.turnCounter))
 
 	#Position should be <LETTERNUMBER> e.g 'H2'
 	def setTile(self,entry,position):
@@ -45,6 +48,9 @@ class Board:
 		self.used_tiles.append((position,entry)) #to make checking easier
 
 		valid_turn = True
+
+		self.turnCounter -= 1
+
 		return valid_turn
 
 	def checkTile(self,position):
@@ -96,3 +102,6 @@ class Board:
 					winner = 'O'
 				print("Winner: " + winner)
 				return winner
+
+			if (self.turnCounter == 0):
+				print("Draw")
