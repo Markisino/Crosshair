@@ -8,7 +8,9 @@ def run(board_game, player_turn):
     message()
     while True:
         board_game.displayBoard(board_final)
-        print("the tuples: ", board_game.used_tiles)
+        print("the current used tiles in the game")
+        board_game.printUsedTiles()
+        print("\n===============================================================\n")
         # print('Place your token!')
         decision = input("type 'T' if you want to place a token, type 'Q' to quit!").upper()
         if decision == 'Q':
@@ -17,9 +19,9 @@ def run(board_game, player_turn):
         elif decision == 'T':
             token = input("Place your tokens: ").upper()
             if player_turn:
-                board_game.setTile(CROSS, token)
-            else:
                 board_game.setTile(CIRCLE, token)
+            else:
+                board_game.setTile(CROSS, token)
             
             player_turn = turn(player_turn)
 
