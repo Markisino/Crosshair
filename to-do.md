@@ -22,12 +22,14 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 
 ## To-Do
 ### Deliverable 1
-- [ ] Start a counter to track total move when the game start (max 30 moves)
-- [ ] Build a manual mode (PvP)
-- [ ] Each state of the board is known
+- [X] Start a counter to track total move when the game start (max 30 moves) <font color=red><b>MARCO TROPIANO</b></font>
+- [X] Build a manual mode (PvP) <font color=red><b>ALL</b></font>
+- [X] Each state of the board is known <font color=red><b>EARL STEVEN AROMIN</b></font>
 - [ ] Test it on Labs machine
 - [X] (optional) Make it fancy, otherwise CLI is fine <font color=red><b>THOMAS BACKS</b></font>
-- [ ] After 30 moves both loses.
+- [X] Players input <font color=red><b>THOMAS BACKS</b></font>
+- [X] Adding an option to quit the game <font color=red><b>THOMAS BACKS</b></font>
+- [ ] After 30 moves both loses. 
 - [ ] Functionality of the rules of the game.
 - [ ] Code cleanup and programming quality
 
