@@ -29,9 +29,9 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [X] Make a CLI board class <font color=red><b>EARL STEVEN AROMIN</b></font>
 - [X] Players input <font color=red><b>THOMAS BACKS</b></font>
 - [X] Adding an option to quit the game <font color=red><b>THOMAS BACKS</b></font>
-- [ ] After 30 moves both loses. 
-- [ ] Functionality of the rules of the game.
-- [ ] Code cleanup and programming quality
+- [X] After 30 moves both loses. <font color=red>MARCO TROPIANO</b></font>
+- [X] Added winning condition <font color=red>MARCO TROPIANO</b></font> 
+- [ ] Code cleanup and programming quality <font color=red>THOMAS BACKS</b></font>
 
 ### Deliverable 2
 - [ ] 5 second to make a decision (AI speed)
