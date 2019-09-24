@@ -1,13 +1,13 @@
-import numpy as np 
+import numpy as np
 import config
 
 class Board:
 
-	def __init__(self):	
+	def __init__(self):
 		self.LETTERS = ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z')
 		self.used_tiles = []
 		rows = config.BOARDHEIGHT
-		columns = config.BOARDWIDTH 
+		columns = config.BOARDWIDTH
 		self.board = np.zeros(shape=(rows,columns))
 		self.board = self.board.astype(int)
 		self.winner_found = False
@@ -36,15 +36,15 @@ class Board:
 
 	#Position should be <LETTERNUMBER> e.g 'H2'
 	def setTile(self,entry,position):
-		valid_turn = False 
+		valid_turn = False
 		if (position, 6) in self.used_tiles or (position, 9) in self.used_tiles:
 			print("Piece already in tile, please try again.")
 			return valid_turn
-		
+
 		row = self.LETTERS.index(position[0])
 		column = config.BOARDHEIGHT - int(position[1])
 		self.board[column][row] = entry
-		
+
 		self.used_tiles.append((position,entry)) #to make checking easier
 
 		valid_turn = True
@@ -52,6 +52,13 @@ class Board:
 		self.turnCounter -= 1
 
 		return valid_turn
+
+	def moveTile(self, posA, posB):
+
+		#TODO MOVE TILE CODE HERE
+
+		self.turnCounter -= 1
+		return
 
 	def checkTile(self,position):
 		row = self.LETTERS.index(position[0].upper())
@@ -70,19 +77,19 @@ class Board:
 		#EMPTY CELL
 		if symbol==0:
 			return False
-		
+
 	    #Check if X is drawn
-		if (self.board[column ][row + 2] == symbol #right      
-		and self.board[column +2][row] == symbol   #below  
+		if (self.board[column ][row + 2] == symbol #right
+		and self.board[column +2][row] == symbol   #below
 		and self.board[column + 2][row +2] == symbol  #bottom right
 		and self.board[column + 1][row + 1] == symbol):    #middle
-			
+
 			x_drawn = True
-		
+
 	    #Check for strikethrough
 		midleft = self.board[column + 1][row]
 		midright = self.board[column + 1][row + 2]
-		
+
 		if((midleft != 0 and midleft != symbol)
 		and (midright !=0 and midright != symbol)):
 			crossed = True
@@ -91,6 +98,11 @@ class Board:
 		return symbol
 
 	def checkWinner(self):
+
+		if (self.turnCounter == 0):
+			print("Draw")
+			return
+
 		for tile in self.used_tiles:
 			result = self.checkTile(tile[0])
 			#print(tile + ": " + str(self.winner_found))
@@ -102,9 +114,6 @@ class Board:
 					winner = 'O'
 				print("Winner: " + winner)
 				return winner
-
-			if (self.turnCounter == 0):
-				print("Draw")
 
 	def printUsedTiles(self):
 		for tile in self.used_tiles:

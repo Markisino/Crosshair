@@ -6,11 +6,16 @@ player_turn = True
 def run(board_game, player_turn):
     # This is the game loop
     message()
-    while True:
+    while not board_game.winner_found:
         board_game.displayBoard(board_final)
         print("the current used tiles in the game")
         board_game.printUsedTiles()
         print("\n===============================================================\n")
+
+        board_game.checkWinner()
+        if board_game.winner_found or board_game.turnCounter == 0:
+            break
+
         # print('Place your token!')
         decision = input("type 'T' if you want to place a token, type 'Q' to quit!").upper()
         if decision == 'Q':
