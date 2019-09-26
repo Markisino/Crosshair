@@ -37,7 +37,7 @@ class Board:
 	#Position should be <LETTERNUMBER> e.g 'H2'
 	def setTile(self,entry,position):
 		valid_turn = False 
-		if(position in self.used_tiles):
+		if(((position,6) in self.used_tiles) or ((position,6) in self.used_tiles)):
 			print("Piece already in tile, please try again.")
 			return valid_turn
 		
@@ -52,7 +52,19 @@ class Board:
 		self.turnCounter -= 1
 
 		return valid_turn
+	def moveTile(self,entry,previous_position,new_position):
+		valid_move = False
+		if((previous_position,entry) in self.used_tiles):
+			self.used_tiles.remove((previous_position,entry))
+			row = self.LETTERS.index(previous_position[0])
+			column = config.BOARDHEIGHT - int(previous_position[1])
+			self.board[column][row] = 0
+		else:
+			print("Either entry is wrong or original position")
+			return valid_move
+		return self.setTile(entry,new_position)
 
+	
 	def checkTile(self,position):
 		row = self.LETTERS.index(position[0].upper())
 		column = config.BOARDHEIGHT - int(position[1])
