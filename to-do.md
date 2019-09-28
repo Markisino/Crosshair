@@ -22,16 +22,17 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 
 ## To-Do
 ### Deliverable 1
-- [X] Start a counter to track total move when the game start (max 30 moves) <font color=red><b>MARCO TROPIANO</b></font>
-- [X] Build a manual mode (PvP) <font color=red><b>ALL</b></font>
-- [X] Each state of the board is known <font color=red><b>EARL STEVEN AROMIN</b></font>
+- [X] Start a counter to track total move when the game start (max 30 moves) <font color=blue><b>MARCO</b></font>
+- [X] Build a manual mode (PvP) <font color=gren><b>ALL</b></font>
+- [X] Each state of the board is known <font color=yellow><b>EARL</b></font>
 - [ ] Test it on Labs machine
-- [X] Make a CLI board class <font color=red><b>EARL STEVEN AROMIN</b></font>
-- [X] Players input <font color=red><b>THOMAS BACKS</b></font>
-- [X] Adding an option to quit the game <font color=red><b>THOMAS BACKS</b></font>
-- [X] After 30 moves both loses. <font color=red>MARCO TROPIANO</b></font>
-- [X] Added winning condition <font color=red>MARCO TROPIANO</b></font> 
-- [ ] Code cleanup and programming quality <font color=red>THOMAS BACKS</b></font>
+- [X] Make a CLI board class <font color=yellow><b>EARL</b></font>
+- [X] Players input <font color=red><b>THOMAS</b></font>
+- [X] Add a Move Token option <font color=yellow><b>EARL</b></font>
+- [X] Adding an option to quit the game <font color=red><b>THOMAS</b></font>
+- [X] After 30 moves both loses. <font color=blue><b>MARCO</b></font>
+- [X] Added winning condition <font color=blue><b>MARCO</b></font> 
+- [ ] Code cleanup and programming quality <font color=red><b>THOMAS</b></font>
 
 ### Deliverable 2
 - [ ] 5 second to make a decision (AI speed)
