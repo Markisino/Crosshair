@@ -1,7 +1,7 @@
 import numpy as np
 import config
 
-
+#DELIVERABLE 2 STUFF
 class Board:
 
     def __init__(self):
@@ -14,6 +14,16 @@ class Board:
         self.winner_found = False
         self.turnCounter = 30
 
+    def setBoardToState(self, tiles, turncount):
+        
+        rows = config.BOARDHEIGHT
+        columns = config.BOARDWIDTH
+        self.board = np.zeros(shape=(rows, columns))
+        self.board = self.board.astype(int)
+        for tile in tiles:
+            self.setTile(tile[1],tile[0])
+        self.turnCounter = turncount
+            
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y) + " |"
@@ -39,7 +49,7 @@ class Board:
     def setTile(self, entry, position):
         valid_turn = False
         if (position, 6) in self.used_tiles or (position, 9) in self.used_tiles:
-            print("Piece already in tile, please try again.")
+            print("Piece already in tile " + position +", please try again.")
             return valid_turn
 
         row = self.LETTERS.index(position[0])
@@ -62,10 +72,29 @@ class Board:
             column = config.BOARDHEIGHT - int(previous_position[1])
             self.board[column][row] = 0
         else:
-            print("Either entry is wrong or original position")
+            print("Either entry is wrong or original position: " + new_position)
             return valid_move
         return self.setTile(entry, new_position)
 
+        #no printing for AI
+    def getNeighbours(self,position):
+        row = self.LETTERS.index(position[0].upper())
+        column = config.BOARDHEIGHT - int(position[1])
+        open_cell_list = []
+        for y in range(-1, 2):
+            relative_column = column + y
+            if(relative_column >= config.BOARDHEIGHT or
+                    relative_column < 0):
+                continue
+            for x in range(-1, 2):
+                relative_row = row + x
+                if(relative_row >= config.BOARDWIDTH or
+                        relative_row < 0):
+                    continue
+                if self.board[relative_column][relative_row] == 0:
+            
+                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+        return open_cell_list
     # Will return a list of possible positions.
     # And show it visually too.
     def showNeighbours(self, position):
