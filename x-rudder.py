@@ -7,7 +7,7 @@ def run(board_game, player_turn):
     # This is the game loop
     message()
     while not board_game.winner_found:
-        board_game.displayBoard(board_final)
+        board_game.displayBoard()
         print("the current used tiles in the game")
         board_game.printUsedTiles()
         print("\n===============================================================\n")

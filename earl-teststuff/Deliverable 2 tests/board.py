@@ -1,7 +1,7 @@
 import numpy as np
 import config
 
-
+#DELIVERABLE 2 STUFF
 class Board:
 
     def __init__(self):
@@ -14,6 +14,16 @@ class Board:
         self.winner_found = False
         self.turnCounter = 30
 
+    def setBoardToState(self, tiles, turncount):
+        
+        rows = config.BOARDHEIGHT
+        columns = config.BOARDWIDTH
+        self.board = np.zeros(shape=(rows, columns))
+        self.board = self.board.astype(int)
+        for tile in tiles:
+            self.setTile(tile[1],tile[0])
+        self.turnCounter = turncount
+            
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y) + " |"

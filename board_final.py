@@ -14,7 +14,7 @@ class Board:
 		self.winner_found = False
 		self.turnCounter = 30
 
-	def displayBoard(self, board):
+	def displayBoard(self):
 		for y in range(config.BOARDHEIGHT):
 			row = str(config.BOARDHEIGHT - y) + " |"
 			for x in range(config.BOARDWIDTH):
