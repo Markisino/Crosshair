@@ -13,7 +13,7 @@ def run(board_game, player_turn):
         print("\n===============================================================\n")
 
         board_game.checkWinner()
-        if board_game.winner_found or board_game.turnCounter == 0:
+        if board_game.winner_found:
             break
 
         # print('Place your token!')
@@ -24,14 +24,14 @@ def run(board_game, player_turn):
             break
         elif actions[0] == 'H':
             help()
-        elif actions[0] == 'T' and actions[1] is not None:
+        elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
             if player_turn:
                 board_game.setTile(CIRCLE, actions[1])
             else:
                 board_game.setTile(CROSS, actions[1])
             
             player_turn = turn(player_turn)
-        elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None:
+        elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
             if player_turn:
                 board_game.moveTile(CIRCLE, actions[1], actions[2])
             else:
