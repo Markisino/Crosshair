@@ -1,7 +1,7 @@
-import board_final
+import board
 from config import CROSS, CIRCLE
 
-board_game = board_final.Board()
+board_game = board.Board()
 player_turn = True
 def run(board_game, player_turn):
     # This is the game loop
