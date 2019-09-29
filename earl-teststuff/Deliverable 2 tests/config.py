@@ -9,7 +9,7 @@ go there for the sake of simplicity and clarity.
 # BELOW ARE CONFIG FOR OUR GAME SCREEN
 # ==================================================
 BOARDWIDTH = 12 # how many spaces wide the board is
-BOARDHEIGHT = 6 # how many spaces tall the board is
+BOARDHEIGHT = 10 # how many spaces tall the board is
 
 DIFFICULTY = 2 # how many moves to look ahead.
 SPACESIZE = 50 # size of the tokens and individual board spaces in pixels.
