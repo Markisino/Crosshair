@@ -12,7 +12,9 @@ class Board:
 		self.board = np.zeros(shape=(rows, columns))
 		self.board = self.board.astype(int)
 		self.winner_found = False
-		self.turnCounter = 30
+		self.addCounter = config.TURNCOUNTER
+		self.moveCounter = config.TURNCOUNTER
+
 
 	def displayBoard(self):
 		for y in range(config.BOARDHEIGHT):
@@ -33,7 +35,8 @@ class Board:
 		for x in range(config.BOARDWIDTH):
 			bottom_text += " " + self.LETTERS[x] + "  "
 		print(bottom_text)
-		print("Turns left: " + str(self.turnCounter))
+		print("Add Tokens action left: " + str(self.addCounter))
+		print("Move Tokens action left: " + str(self.moveCounter))
 
 	# Position should be <LETTERNUMBER> e.g 'H2'
 	def setTile(self, entry, position):
@@ -50,7 +53,7 @@ class Board:
 
 		valid_turn = True
 
-		self.turnCounter -= 1
+		self.addCounter -= 1
 
 		return valid_turn
 
@@ -64,6 +67,8 @@ class Board:
 		else:
 			print("Either entry is wrong or original position")
 			return valid_move
+		
+		self.moveCounter -= 1
 		return self.setTile(entry, new_position)
 
 	# Will return a list of possible positions.
@@ -144,7 +149,7 @@ class Board:
 
 	def checkWinner(self):
 
-		if (self.turnCounter == 0):
+		if (self.addCounter == 0 and self.moveCounter == 0):
 			print("Draw")
 			return
 
