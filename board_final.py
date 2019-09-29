@@ -54,55 +54,55 @@ class Board:
 
 		return valid_turn
 
-    def moveTile(self, entry, previous_position, new_position):
-        valid_move = False
-        if((previous_position, entry) in self.used_tiles):
-            self.used_tiles.remove((previous_position, entry))
-            row = self.LETTERS.index(previous_position[0])
-            column = config.BOARDHEIGHT - int(previous_position[1])
-            self.board[column][row] = 0
-        else:
-            print("Either entry is wrong or original position")
-            return valid_move
-        return self.setTile(entry, new_position)
+	def moveTile(self, entry, previous_position, new_position):
+		valid_move = False
+		if((previous_position, entry) in self.used_tiles):
+			self.used_tiles.remove((previous_position, entry))
+			row = self.LETTERS.index(previous_position[0])
+			column = config.BOARDHEIGHT - int(previous_position[1])
+			self.board[column][row] = 0
+		else:
+			print("Either entry is wrong or original position")
+			return valid_move
+		return self.setTile(entry, new_position)
 
-    # Will return a list of possible positions.
-    # And show it visually too.
-    def showNeighbours(self, position):
-        row = self.LETTERS.index(position[0].upper())
-        column = config.BOARDHEIGHT - int(position[1])
+	# Will return a list of possible positions.
+	# And show it visually too.
+	def showNeighbours(self, position):
+		row = self.LETTERS.index(position[0].upper())
+		column = config.BOARDHEIGHT - int(position[1])
 
-        open_cell_list = []
+		open_cell_list = []
 
-        for y in range(-1, 2):
-            relative_column = column + y
-            if(relative_column >= config.BOARDHEIGHT or
-                    relative_column < 0):
-                continue
-            row_text = str(config.BOARDHEIGHT - (relative_column)) + " |"
-            for x in range(-1, 2):
-                relative_row = row + x
-                if(relative_row >= config.BOARDWIDTH or
-                        relative_row < 0):
-                    continue
-                if y == 0 and x == 0:
-                    cell = " ? |"
-                elif self.board[relative_column][relative_row] == 6:
-                    cell = " X |"
-                elif self.board[relative_column][relative_row] == 9:
-                    cell = " O |"
-                else:
-                    cell = " - |"
-                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
-                row_text += cell
+		for y in range(-1, 2):
+			relative_column = column + y
+			if(relative_column >= config.BOARDHEIGHT or
+					relative_column < 0):
+				continue
+			row_text = str(config.BOARDHEIGHT - (relative_column)) + " |"
+			for x in range(-1, 2):
+				relative_row = row + x
+				if(relative_row >= config.BOARDWIDTH or
+						relative_row < 0):
+					continue
+				if y == 0 and x == 0:
+					cell = " ? |"
+				elif self.board[relative_column][relative_row] == 6:
+					cell = " X |"
+				elif self.board[relative_column][relative_row] == 9:
+					cell = " O |"
+				else:
+					cell = " - |"
+					open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+				row_text += cell
 
-            print(row_text)
-        bottom_text = "   "
-        for x in range(-1, 2):
-            bottom_text += " " + self.LETTERS[row + x] + "  "
-        print(bottom_text)
-        open_cell_list.sort()
-        return open_cell_list
+			print(row_text)
+		bottom_text = "   "
+		for x in range(-1, 2):
+			bottom_text += " " + self.LETTERS[row + x] + "  "
+		print(bottom_text)
+		open_cell_list.sort()
+		return open_cell_list
 
 
 	def checkTile(self,position):
@@ -123,7 +123,7 @@ class Board:
 		if symbol==0:
 			return False
 
-	    # Check if X is drawn
+		# Check if X is drawn
 		if (self.board[column ][row + 2] == symbol #right
 		and self.board[column +2][row] == symbol   #below
 		and self.board[column + 2][row +2] == symbol  #bottom right
@@ -131,7 +131,7 @@ class Board:
 
 			x_drawn = True
 
-	    # Check for strikethrough
+		# Check for strikethrough
 		midleft = self.board[column + 1][row]
 		midright = self.board[column + 1][row + 2]
 

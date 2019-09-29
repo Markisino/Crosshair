@@ -17,26 +17,33 @@ def run(board_game, player_turn):
             break
 
         # print('Place your token!')
-        decision = input("type 'T' if you want to place a token, type 'Q' to quit!").upper()
-        if decision == 'Q':
+        user_input = input("Enter your choosen action: ").upper()
+        actions = user_input.split()
+        if actions[0] == 'Q':
             print('exiting')
             break
-        elif decision == 'T':
-            token = input("Place your tokens: ").upper()
+        elif actions[0] == 'H':
+            help()
+        elif actions[0] == 'T' and actions[1] is not None:
             if player_turn:
-                board_game.setTile(CIRCLE, token)
+                board_game.setTile(CIRCLE, actions[1])
             else:
-                board_game.setTile(CROSS, token)
+                board_game.setTile(CROSS, actions[1])
             
             player_turn = turn(player_turn)
+        elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None:
+            if player_turn:
+                board_game.moveTile(CIRCLE, actions[1], actions[2])
+            else:
+                board_game.moveTile(CROSS, actions[1], actions[2])
+
 
 # function to prompt the welcome message
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
-    print("Type 'T' or 't' to add a new token")
-    print("Type 'Q' or 'q' to exit the game")
-    print("More input option will follow...")
+    help()
+
 
 # Function to switch turn between player
 def turn(pt):
@@ -45,6 +52,11 @@ def turn(pt):
     else:
         return True
 
+def help():
+    print("Type 'T' or 't' followed by position to add a new token, ex: T A1")
+    print("Type 'M' or 'm' followed by current position to new position move a token, ex: M A1 A2 ")
+    print("Type 'H' or 'h' to display this help message")
+    print("Type 'Q' or 'q' to exit the game")
 
 if __name__ == '__main__':
     run(board_game, player_turn)
