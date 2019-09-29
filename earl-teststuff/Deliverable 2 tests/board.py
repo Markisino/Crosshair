@@ -64,6 +64,22 @@ class Board:
 
         return valid_turn
 
+    def aiSetTile(self,entry,x,y):
+        letter = self.LETTERS[y]
+        num = str(config.BOARDHEIGHT -x)
+        pos = letter+num
+        if(self.board[x][y] != 0):
+            return False
+        self.board[x][y] = entry
+        self.used_tiles.append((pos,entry))
+        self.turnCounter -= 1
+        return True #to remove
+
+    def aiRemoveTile(self,x,y):
+        self.board[x][y] = 0
+        self.used_tiles.pop() 
+
+        self.turnCounter += 1   
     def moveTile(self, entry, previous_position, new_position):
         valid_move = False
         if((previous_position, entry) in self.used_tiles):
