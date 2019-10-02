@@ -18,7 +18,7 @@ class Board:
 
 	def displayBoard(self):
 		for y in range(config.BOARDHEIGHT):
-			row = str(config.BOARDHEIGHT - y) + " |"
+			row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
 			for x in range(config.BOARDWIDTH):
 				# TEMPORARY, REPLACE 6 WITH 'X' FOR TESTING
 				cell = ""
@@ -33,7 +33,7 @@ class Board:
 			print(row)
 		bottom_text = "   "
 		for x in range(config.BOARDWIDTH):
-			bottom_text += " " + self.LETTERS[x] + "  "
+			bottom_text += "  " + self.LETTERS[x] + " "
 		print(bottom_text)
 		print("Add Tokens action left: " + str(self.addCounter))
 		print("Move Tokens action left: " + str(self.moveCounter))
