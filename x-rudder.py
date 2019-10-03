@@ -25,19 +25,21 @@ def run(board_game, player_turn):
         print("Current turn: {}".format(player1.symbolString()) if player_turn else "Current turn: {}".format(player2.symbolString()))
         user_input = input("Enter your choosen action: ").upper()
         actions = user_input.split()
-        actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
         if actions[0] == 'Q':
             print('exiting')
             break
         elif actions[0] == 'H':
             help()
         elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
+            actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             if player_turn:
                 board_game.setTile(player1.symbol, actions[1])
             else:
                 board_game.setTile(player2.symbol, actions[1])
             player_turn = turn(player_turn)
         elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
+            actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
+            actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
             if player_turn:
                 board_game.moveTile(player1.symbol, actions[1], actions[2])
             else:
