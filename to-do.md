@@ -33,6 +33,7 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [X] After 30 moves both loses. <font color=blue><b>MARCO</b></font>
 - [X] Added winning condition <font color=blue><b>MARCO</b></font> 
 - [ ] Code cleanup and programming quality <font color=red><b>THOMAS</b></font>
+- [ ] D2board to reflect new set and move. Adapt changes to AI turn selection <font color=yellow><b>EARL</b></font>
 
 ### Deliverable 2
 - [ ] 5 second to make a decision (AI speed)
