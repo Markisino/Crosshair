@@ -48,7 +48,7 @@ class Board:
 		row = self.LETTERS.index(position[0])
 		column = config.BOARDHEIGHT - int(position[1:])
 		self.board[column][row] = entry
-
+		print(position)
 		self.used_tiles.append((position, entry))  # to make checking easier
 
 		valid_turn = True

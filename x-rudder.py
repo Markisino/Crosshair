@@ -25,6 +25,7 @@ def run(board_game, player_turn):
         print("Current turn: {}".format(player1.symbolString()) if player_turn else "Current turn: {}".format(player2.symbolString()))
         user_input = input("Enter your choosen action: ").upper()
         actions = user_input.split()
+        actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
         if actions[0] == 'Q':
             print('exiting')
             break
