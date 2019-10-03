@@ -1,12 +1,19 @@
 import board
+import player
 from config import CROSS, CIRCLE
 
 board_game = board.Board()
+player1 = player.Player()
+player2 = player.Player()
 player_turn = True
+player1.symbol = CROSS
+player2.symbol = CIRCLE
+
 def run(board_game, player_turn):
     # This is the game loop
     message()
     while not board_game.winner_found:
+        print("\n\n")
         board_game.displayBoard()
         print("the current used tiles in the game")
         board_game.printUsedTiles()
@@ -15,8 +22,7 @@ def run(board_game, player_turn):
         board_game.checkWinner()
         if board_game.winner_found:
             break
-
-        # print('Place your token!')
+        print("Current turn: {}".format(player1.symbolString()) if player_turn else "Current turn: {}".format(player2.symbolString()))
         user_input = input("Enter your choosen action: ").upper()
         actions = user_input.split()
         if actions[0] == 'Q':
@@ -26,16 +32,15 @@ def run(board_game, player_turn):
             help()
         elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
             if player_turn:
-                board_game.setTile(CIRCLE, actions[1])
+                board_game.setTile(player1.symbol, actions[1])
             else:
-                board_game.setTile(CROSS, actions[1])
-            
+                board_game.setTile(player2.symbol, actions[1])
             player_turn = turn(player_turn)
         elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
             if player_turn:
-                board_game.moveTile(CIRCLE, actions[1], actions[2])
+                board_game.moveTile(player1.symbol, actions[1], actions[2])
             else:
-                board_game.moveTile(CROSS, actions[1], actions[2])
+                board_game.moveTile(player2.symbol, actions[1], actions[2])
 
 
 # function to prompt the welcome message

@@ -46,7 +46,7 @@ class Board:
 			return valid_turn
 
 		row = self.LETTERS.index(position[0])
-		column = config.BOARDHEIGHT - int(position[1])
+		column = config.BOARDHEIGHT - int(position[1:])
 		self.board[column][row] = entry
 
 		self.used_tiles.append((position, entry))  # to make checking easier
@@ -62,7 +62,7 @@ class Board:
 		if((previous_position, entry) in self.used_tiles):
 			self.used_tiles.remove((previous_position, entry))
 			row = self.LETTERS.index(previous_position[0])
-			column = config.BOARDHEIGHT - int(previous_position[1])
+			column = config.BOARDHEIGHT - int(previous_position[1:])
 			self.board[column][row] = 0
 		else:
 			print("Either entry is wrong or original position")
