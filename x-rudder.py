@@ -1,42 +1,70 @@
-import board_final
+import board
+import player
 from config import CROSS, CIRCLE
 
-board_game = board_final.Board()
-player_turn = True
-def run(board_game, player_turn):
+board_game = board.Board()
+player1 = player.Player()
+player2 = player.Player()
+player1_turn = True
+player1.symbol = CROSS
+player2.symbol = CIRCLE
+
+# This is the game logic.
+def run(board_game, player1_turn):
     # This is the game loop
     message()
     while not board_game.winner_found:
+        print("\n===============================================================")
         board_game.displayBoard()
+        print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
         print("the current used tiles in the game")
         board_game.printUsedTiles()
-        print("\n===============================================================\n")
+        print("===============================================================\n")
 
         board_game.checkWinner()
-        if board_game.winner_found or board_game.turnCounter == 0:
+        if board_game.winner_found:
             break
+        print("Current turn: {}".format(player1.symbolString()) if player1_turn else "Current turn: {}".format(player2.symbolString()))
+        user_input = input("Enter your choosen action: ").upper()
+        actions = user_input.split()
 
-        # print('Place your token!')
-        decision = input("type 'T' if you want to place a token, type 'Q' to quit!").upper()
-        if decision == 'Q':
+        if actions[0] == 'Q':
             print('exiting')
             break
-        elif decision == 'T':
-            token = input("Place your tokens: ").upper()
-            if player_turn:
-                board_game.setTile(CIRCLE, token)
+        elif actions[0] == 'H':
+            help()
+
+        elif len(actions) == 2 and boundChecker(actions[1]):
+            print("User position input: {} is out of bound!".format(actions[1]))
+
+        elif len(actions) == 3 and boundChecker(actions[1]) and boundChecker(actions[2]):
+            print("User position input: {} is out of bound!".format(actions[2]))
+
+        elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
+
+            actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
+            if player1_turn:
+                board_game.setTile(player1.symbol, actions[1])
+                player1.tokenPlaced()
             else:
-                board_game.setTile(CROSS, token)
-            
-            player_turn = turn(player_turn)
+                board_game.setTile(player2.symbol, actions[1])
+                player2.tokenPlaced()
+            player1_turn = turn(player1_turn)
+        elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
+            actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
+            actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
+            if player1_turn:
+                board_game.moveTile(player1.symbol, actions[1], actions[2])
+            else:
+                board_game.moveTile(player2.symbol, actions[1], actions[2])
+
 
 # function to prompt the welcome message
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
-    print("Type 'T' or 't' to add a new token")
-    print("Type 'Q' or 'q' to exit the game")
-    print("More input option will follow...")
+    help()
+
 
 # Function to switch turn between player
 def turn(pt):
@@ -45,6 +73,35 @@ def turn(pt):
     else:
         return True
 
+# Function to display the help for player
+def help():
+    print("Type 'T' or 't' followed by position to add a new token, ex: T A1")
+    print("Type 'M' or 'm' followed by current position to new position move a token, ex: M A1 A2 ")
+    print("Type 'H' or 'h' to display this help message")
+    print("Type 'Q' or 'q' to exit the game")
+
+#Checks if inputs are in bound
+def boundChecker(x):
+
+    if x[0] > 'M':
+        print("Letter '" + x[0] + "' out of bound!")
+        return True
+
+    if int(x[1]) < 1:
+        print("Number '" + x[1] + "' out of bound!")
+        return True
+
+    if len(x) == 3 and int(x[1] + x[2]) != 10:
+        print("Number '" + x[1] + x[2] + "' out of bound!")
+        return True
+
+    if len(x) > 3:
+        print("Number out of bound!")
+        return True
+
+    return False
 
 if __name__ == '__main__':
-    run(board_game, player_turn)
+    run(board_game, player1_turn)
+
+

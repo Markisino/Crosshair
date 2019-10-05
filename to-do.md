@@ -39,6 +39,7 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [ ] Build an automatic mode (PvC)
 - [ ] Heuristics chosen
 - [ ] Code cleanup and programming quality
+- [ ] board to reflect new set and move. Adapt changes to AI turn selection <font color=yellow><b>EARL</b></font>
 ### Deliverable 3
 - [ ] Report 
 - [ ] more or less 1 page of __Introduction__ and __Technical details__
