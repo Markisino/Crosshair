@@ -35,11 +35,10 @@ class Board:
 		for x in range(config.BOARDWIDTH):
 			bottom_text += "  " + self.LETTERS[x] + " "
 		print(bottom_text)
-		print("Add Tokens action left: " + str(self.addCounter))
 		print("Move Tokens action left: " + str(self.moveCounter))
 
 	# Position should be <LETTERNUMBER> e.g 'H2'
-	def setTile(self, entry, position):
+	def setTile(self, entry, position, movement=False):
 		valid_turn = False
 		if (position, 6) in self.used_tiles or (position, 9) in self.used_tiles:
 			print("Piece already in tile, please try again.")
@@ -52,8 +51,10 @@ class Board:
 		self.used_tiles.append((position, entry))  # to make checking easier
 
 		valid_turn = True
-
-		self.addCounter -= 1
+		if movement is False:
+    			self.addCounter -= 1
+		else:
+    			self.moveCounter -= 1
 
 		return valid_turn
 
@@ -68,8 +69,8 @@ class Board:
 			print("Either entry is wrong or original position")
 			return valid_move
 		
-		self.moveCounter -= 1
-		return self.setTile(entry, new_position)
+		# self.moveCounter -= 1
+		return self.setTile(entry, new_position, True)
 
 	# Will return a list of possible positions.
 	# And show it visually too.
