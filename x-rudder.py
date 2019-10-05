@@ -25,12 +25,21 @@ def run(board_game, player_turn):
         print("Current turn: {}".format(player1.symbolString()) if player_turn else "Current turn: {}".format(player2.symbolString()))
         user_input = input("Enter your choosen action: ").upper()
         actions = user_input.split()
+
         if actions[0] == 'Q':
             print('exiting')
             break
         elif actions[0] == 'H':
             help()
+
+        elif len(actions) == 2 and boundChecker(actions[1]):
+            print("Input out of bound! 1")
+
+        elif len(actions) == 3 and boundChecker(actions[1]) and boundChecker(actions[2]):
+            print("Input out of bound! 2")
+
         elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
+
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             if player_turn:
                 board_game.setTile(player1.symbol, actions[1])
@@ -66,5 +75,28 @@ def help():
     print("Type 'H' or 'h' to display this help message")
     print("Type 'Q' or 'q' to exit the game")
 
+#Checks if inputs are in bound
+def boundChecker(x):
+
+    if x[0] > 'M':
+        print("Letter '" + x[0] + "' out of bound!")
+        return True
+
+    if int(x[1]) < 1:
+        print("Number '" + x[1] + "' out of bound!")
+        return True
+
+    if len(x) == 3 and int(x[1] + x[2]) != 10:
+        print("Number '" + x[1] + x[2] + "' out of bound!")
+        return True
+
+    if len(x) > 3:
+        print("Number out of bound!")
+        return True
+
+    return False
+
 if __name__ == '__main__':
     run(board_game, player_turn)
+
+
