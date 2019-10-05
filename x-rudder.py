@@ -9,16 +9,17 @@ player1_turn = True
 player1.symbol = CROSS
 player2.symbol = CIRCLE
 
+# This is the game logic.
 def run(board_game, player1_turn):
     # This is the game loop
     message()
     while not board_game.winner_found:
-        print("\n\n")
+        print("\n===============================================================")
         board_game.displayBoard()
         print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
         print("the current used tiles in the game")
         board_game.printUsedTiles()
-        print("\n===============================================================\n")
+        print("===============================================================\n")
 
         board_game.checkWinner()
         if board_game.winner_found:
@@ -34,10 +35,10 @@ def run(board_game, player1_turn):
             help()
 
         elif len(actions) == 2 and boundChecker(actions[1]):
-            print("Input out of bound! 1")
+            print("User position input: {} is out of bound!".format(actions[1]))
 
         elif len(actions) == 3 and boundChecker(actions[1]) and boundChecker(actions[2]):
-            print("Input out of bound! 2")
+            print("User position input: {} is out of bound!".format(actions[2]))
 
         elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
 
@@ -72,6 +73,7 @@ def turn(pt):
     else:
         return True
 
+# Function to display the help for player
 def help():
     print("Type 'T' or 't' followed by position to add a new token, ex: T A1")
     print("Type 'M' or 'm' followed by current position to new position move a token, ex: M A1 A2 ")

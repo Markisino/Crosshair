@@ -1,4 +1,5 @@
 from config import CROSS, PLAYERTOKENS
+
 class Player:
     
     def __init__(self):
