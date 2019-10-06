@@ -35,11 +35,17 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [ ] Code cleanup and programming quality <font color=red><b>THOMAS</b></font>
 
 ### Deliverable 2
-- [ ] 5 second to make a decision (AI speed)
+- [ ] 5 second to make a decision (AI speed)<font color=yellow><b>EARL</b></font>
 - [ ] Build an automatic mode (PvC)
 - [ ] Heuristics chosen
+- [ ] Notes on different heuristics and why we chose what we did
 - [ ] Code cleanup and programming quality
-- [ ] board to reflect new set and move. Adapt changes to AI turn selection <font color=yellow><b>EARL</b></font>
+- [X] board to reflect new set and move. Adapt changes to AI turn selection <font color=yellow><b>EARL</b></font> Note: Subject to change depending on how the board is. Up to date as of October 5
+- [X] Search space generation (tree) <font color=yellow><b>EARL</b></font>
+- [ ] Search space generation (alternating between players) <font color=yellow><b>EARL</b></font>
+- [ ] Minimax algorithm implementation (do we want alpha beta pruning?)
+
+
 ### Deliverable 3
 - [ ] Report 
 - [ ] more or less 1 page of __Introduction__ and __Technical details__
