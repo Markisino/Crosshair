@@ -76,7 +76,7 @@ class Board:
 	# And show it visually too.
 	def showNeighbours(self, position):
 		row = self.LETTERS.index(position[0].upper())
-		column = config.BOARDHEIGHT - int(position[1])
+		column = config.BOARDHEIGHT - int(position[1:])
 
 		open_cell_list = []
 
@@ -113,7 +113,7 @@ class Board:
 
 	def checkTile(self,position):
 		row = self.LETTERS.index(position[0].upper())
-		column = config.BOARDHEIGHT - int(position[1])
+		column = config.BOARDHEIGHT - int(position[1:])
 		symbol = self.board[column][row]
 		# print("Symbol: " + str(symbol))
 		x_drawn = False

@@ -2,7 +2,6 @@ import numpy as np
 import config
 
 #DELIVERABLE 2 STUFF
-
 class Board:
 
     def __init__(self):
@@ -13,18 +12,7 @@ class Board:
         self.board = np.zeros(shape=(rows, columns))
         self.board = self.board.astype(int)
         self.winner_found = False
-        self.addCounter = config.TURNCOUNTER
-        self.moveCounter = config.TURNCOUNTER
-    def setBoardToState(self, tiles, movecount,addcount):
-
-        rows = config.BOARDHEIGHT
-        columns = config.BOARDWIDTH
-        self.board = np.zeros(shape=(rows, columns))
-        self.board = self.board.astype(int)
-        for tile in tiles:
-            self.setTile(tile[1],tile[0])
-        self.moveCounter = movecount
-        self.addCounter = addcount
+        self.turnCounter = 30
 
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
@@ -46,7 +34,15 @@ class Board:
             bottom_text += "  " + self.LETTERS[x] + " "
         print(bottom_text)
         print("Move Tokens action left: " + str(self.moveCounter))
+    def setBoardToState(self, tiles, turncount):
 
+        rows = config.BOARDHEIGHT
+        columns = config.BOARDWIDTH
+        self.board = np.zeros(shape=(rows, columns))
+        self.board = self.board.astype(int)
+        for tile in tiles:
+            self.setTile(tile[1],tile[0])
+        self.turnCounter = turncount
     # Position should be <LETTERNUMBER> e.g 'H2'
     def setTile(self, entry, position, movement=False):
         valid_turn = False
@@ -57,7 +53,7 @@ class Board:
         row = self.LETTERS.index(position[0])
         column = config.BOARDHEIGHT - int(position[1:])
         self.board[column][row] = entry
-        #print(position)
+        print(position)
         self.used_tiles.append((position, entry))  # to make checking easier
 
         valid_turn = True
@@ -67,7 +63,7 @@ class Board:
                 self.moveCounter -= 1
 
         return valid_turn
-    
+
     def aiSetTile(self,entry,x,y):
         letter = self.LETTERS[y]
         num = str(config.BOARDHEIGHT -x)
@@ -76,8 +72,9 @@ class Board:
             return False
         self.board[x][y] = entry
         self.used_tiles.append((pos,entry))
-        self.addCounter -= 1
+        self.turnCounter -= 1
         return True #to remove
+
     def moveTile(self, entry, previous_position, new_position):
         valid_move = False
         if((previous_position, entry) in self.used_tiles):
@@ -91,12 +88,35 @@ class Board:
         
         # self.moveCounter -= 1
         return self.setTile(entry, new_position, True)
-    
+
+
+
     def aiRemoveTile(self,x,y):
         self.board[x][y] = 0
         self.used_tiles.pop() 
 
-        self.addCounter += 1 
+        self.turnCounter += 1   
+
+
+        #no printing for AI
+    def getNeighbours(self,position):
+        row = self.LETTERS.index(position[0].upper())
+        column = config.BOARDHEIGHT - int(position[1:])
+        open_cell_list = []
+        for y in range(-1, 2):
+            relative_column = column + y
+            if(relative_column >= config.BOARDHEIGHT or
+                    relative_column < 0):
+                continue
+            for x in range(-1, 2):
+                relative_row = row + x
+                if(relative_row >= config.BOARDWIDTH or
+                        relative_row < 0):
+                    continue
+                if self.board[relative_column][relative_row] == 0:
+            
+                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+        return open_cell_list
     # Will return a list of possible positions.
     # And show it visually too.
     def showNeighbours(self, position):
@@ -134,25 +154,7 @@ class Board:
         print(bottom_text)
         open_cell_list.sort()
         return open_cell_list
-        #no printing for AI
-    def getNeighbours(self,position):
-        row = self.LETTERS.index(position[0].upper())
-        column = config.BOARDHEIGHT - int(position[1:])
-        open_cell_list = []
-        for y in range(-1, 2):
-            relative_column = column + y
-            if(relative_column >= config.BOARDHEIGHT or
-                    relative_column < 0):
-                continue
-            for x in range(-1, 2):
-                relative_row = row + x
-                if(relative_row >= config.BOARDWIDTH or
-                        relative_row < 0):
-                    continue
-                if self.board[relative_column][relative_row] == 0:
-            
-                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
-        return open_cell_list
+
 
     def checkTile(self,position):
         row = self.LETTERS.index(position[0].upper())
@@ -193,7 +195,7 @@ class Board:
 
     def checkWinner(self):
 
-        if (self.addCounter == 0 and self.moveCounter == 0):
+        if (self.turnCounter == 0):
             print("Draw")
             return
 
