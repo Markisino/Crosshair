@@ -42,14 +42,27 @@ def run(board_game, player1_turn):
 
         elif actions[0] == 'T' and actions[1] is not None and board_game.addCounter > 0:
 
+            valid = False
+
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             if player1_turn:
-                board_game.setTile(player1.symbol, actions[1])
-                player1.tokenPlaced()
+                valid = board_game.setTile(player1.symbol, actions[1])
+                if valid:
+                    player1.tokenPlaced()
+                    player1_turn = turn(player1_turn)
+
+                else:
+                    print("\nTile already occupied!")
+
             else:
-                board_game.setTile(player2.symbol, actions[1])
-                player2.tokenPlaced()
-            player1_turn = turn(player1_turn)
+                valid = board_game.setTile(player2.symbol, actions[1])
+                if valid:
+                    player2.tokenPlaced()
+                    player1_turn = turn(player1_turn)
+
+                else:
+                    print("\nTile already occupied!")
+
         elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
