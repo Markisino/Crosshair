@@ -67,9 +67,16 @@ def run(board_game, player1_turn):
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
             if player1_turn:
-                board_game.moveTile(player1.symbol, actions[1], actions[2])
+                valid = board_game.moveTile(player1.symbol, actions[1], actions[2])
+
+                if valid:
+                    player1_turn = turn(player1_turn)
+
             else:
-                board_game.moveTile(player2.symbol, actions[1], actions[2])
+                valid = board_game.moveTile(player2.symbol, actions[1], actions[2])
+
+                if valid:
+                    player1_turn = turn(player1_turn)
 
 
 # function to prompt the welcome message
