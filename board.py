@@ -177,6 +177,6 @@ class Board:
     def printUsedTiles(self):
         for tile in self.used_tiles:
             if tile[1] == 6:
-                print("(X, {})".format(tile[1]), end=" ")
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
             elif tile[1] == 9:
-                print("(O, {})".format(tile[1]), end=" ")
+                print("({}, {})".format(tile[0], tile[1]), end=" ")

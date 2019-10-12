@@ -19,7 +19,7 @@ def run(board_game, player1_turn):
         print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
         print("the current used tiles in the game")
         board_game.printUsedTiles()
-        print("===============================================================\n")
+        print("\n===============================================================\n")
 
         board_game.checkWinner()
         if board_game.winner_found:
@@ -63,7 +63,7 @@ def run(board_game, player1_turn):
                 else:
                     print("\nTile already occupied!")
 
-        elif actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
+        elif len(actions) > 2 and actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
             if player1_turn:
@@ -77,6 +77,8 @@ def run(board_game, player1_turn):
 
                 if valid:
                     player1_turn = turn(player1_turn)
+        else:
+            print("Please enter a valid input, refer to help for more information.\nType 'h' or 'H' for more help on input\n")
 
 
 # function to prompt the welcome message
