@@ -42,8 +42,9 @@ Turn-based game. Objective is to make a cross with 5 tokens. The opponent can bl
 - [ ] Code cleanup and programming quality
 - [X] board to reflect new set and move. Adapt changes to AI turn selection <font color=yellow><b>EARL</b></font> Note: Subject to change depending on how the board is. Up to date as of October 5
 - [X] Search space generation (tree) <font color=yellow><b>EARL</b></font>
-- [ ] Search space generation (alternating between players) <font color=yellow><b>EARL</b></font>
+- [X] Search space generation (alternating between players) <font color=yellow><b>EARL</b></font>
 - [ ] Minimax algorithm implementation (do we want alpha beta pruning?)
+- [ ] Choosing immediate child node from tree. (Maybe printing what AI is doing as well)
 
 
 ### Deliverable 3

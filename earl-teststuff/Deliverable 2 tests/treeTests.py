@@ -21,6 +21,7 @@ def setMoveNodes(starting_node, token, movecount,addcount, steps):
             child_used.append("M")
             child = Node(child_used, parent=starting_node)
            # nodecount+=1
+            #print("Moving: " + str(token))
 
 
 def setPlaceNodes(starting_node, token, movecount,addcount, steps):
@@ -36,6 +37,7 @@ def setPlaceNodes(starting_node, token, movecount,addcount, steps):
     		child = Node(child_used, parent=starting_node)
     		base_board.aiRemoveTile(ix, iy)
     		#nodecount+=1
+    		#print("Placing: " + str(token))
 
 
 def generateSearchSpace(starting_node,token,movecount,addcount,steps):
@@ -43,15 +45,21 @@ def generateSearchSpace(starting_node,token,movecount,addcount,steps):
         return
     setPlaceNodes(starting_node, token, movecount,addcount, steps)
     setMoveNodes(starting_node, token, movecount,addcount, steps)
+    
+    #To achieve turn change on search space generation
+    if token == 6:
+    	next_token = 9
+    elif token == 9:
+    	next_token = 6
 
     for node in LevelOrderIter(starting_node,maxlevel=steps):
     	if node!= starting_node:
     		##TODO: Properly track move and addcount
     		mode = node.name.pop()
     		if (mode == "A"):
-    			generateSearchSpace(node, token, movecount,addcount -1 , steps-1)
+    			generateSearchSpace(node, next_token, movecount,addcount -1 , steps-1)
     		elif(mode== "M"):
-    			generateSearchSpace(node, token, movecount -1,addcount , steps-1)
+    			generateSearchSpace(node, next_token, movecount -1,addcount , steps-1)
 
 
 
