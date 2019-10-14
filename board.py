@@ -168,9 +168,9 @@ class Board:
             if self.winner_found:
                 winner = ""
                 if result == 6:
-                    winner = 'X'
+                    winner = 'CROSS'
                 elif result == 9:
-                    winner = 'O'
+                    winner = 'CIRCLE'
                 print("Winner: " + winner)
                 return winner
 
