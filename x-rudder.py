@@ -9,13 +9,18 @@ player1_turn = True
 player1.symbol = CROSS
 player2.symbol = CIRCLE
 
+
 # This is the game logic.
 def run(board_game, player1_turn):
+    help_enable = True
     # This is the game loop
     message()
     while not board_game.winner_found:
         print("\n===============================================================")
         board_game.displayBoard()
+        if help_enable is True:
+            help()
+            help_enable = False
         print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
         print("the current used tiles in the game")
         board_game.printUsedTiles()
@@ -32,7 +37,8 @@ def run(board_game, player1_turn):
             print('exiting')
             break
         elif actions[0] == 'H':
-            help()
+            # help()
+            help_enable = True
 
         elif len(actions) == 2 and boundChecker(actions[1]):
             print("User position input: {} is out of bound!".format(actions[1]))
@@ -93,7 +99,7 @@ def run(board_game, player1_turn):
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
-    help()
+    # help()
 
 
 # Function to switch turn between player
