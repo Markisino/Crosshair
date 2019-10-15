@@ -66,17 +66,25 @@ def run(board_game, player1_turn):
         elif len(actions) > 2 and actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
-            if player1_turn:
-                valid = board_game.moveTile(player1.symbol, actions[1], actions[2])
 
-                if valid:
-                    player1_turn = turn(player1_turn)
+            neighbours = board_game.showNeighbours(actions[1])
+
+            if neighbourChecker(actions[2], neighbours):
+
+                if player1_turn:
+                    valid = board_game.moveTile(player1.symbol, actions[1], actions[2])
+
+                    if valid:
+                        player1_turn = turn(player1_turn)
+
+                else:
+                    valid = board_game.moveTile(player2.symbol, actions[1], actions[2])
+
+                    if valid:
+                        player1_turn = turn(player1_turn)
 
             else:
-                valid = board_game.moveTile(player2.symbol, actions[1], actions[2])
-
-                if valid:
-                    player1_turn = turn(player1_turn)
+                print("Can not move token from " + actions[1] + " to " + actions[2] + "!")
         else:
             print("Please enter a valid input, refer to help for more information.\nType 'h' or 'H' for more help on input\n")
 
@@ -120,6 +128,15 @@ def boundChecker(x):
     if len(x) > 3:
         print("Number out of bound!")
         return True
+
+    return False
+
+def neighbourChecker(dest, neighbourList):
+
+    for x in neighbourList:
+
+        if dest == x:
+            return True
 
     return False
 
