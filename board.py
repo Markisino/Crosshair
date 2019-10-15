@@ -60,12 +60,15 @@ class Board:
 
         return valid_turn
 
-    def moveTile(self, entry, previous_position, new_position):
+    def moveTile(self, entry, previous_position, new_position, is_human):
         valid_move = False
         if (previous_position, entry) in self.used_tiles:
-            valid_move = self.setTile(entry, new_position, True)
+            open_cells = self.showNeighbours(previous_position)
+
+            valid_move, neigbour_text = ((new_position in open_cells[0]),(open_cells[1]))
 
             if valid_move:
+                self.setTile(entry, new_position, True)
                 self.used_tiles.remove((previous_position, entry))
                 row = self.LETTERS.index(previous_position[0])
                 column = config.BOARDHEIGHT - int(previous_position[1:])
@@ -73,6 +76,8 @@ class Board:
                 return True
 
             else:
+                print(neigbour_text)
+                print("Available spots : " + str(open_cells[0]))
                 return False
 
         else:
@@ -88,7 +93,7 @@ class Board:
         column = config.BOARDHEIGHT - int(position[1:])
 
         open_cell_list = []
-
+        final_text = ""
         for y in range(-1, 2):
             relative_column = column + y
             if (relative_column >= config.BOARDHEIGHT or
@@ -111,13 +116,19 @@ class Board:
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
                 row_text += cell
 
-            print(row_text)
+            
+            final_text += row_text + "\n"
         bottom_text = "   "
         for x in range(-1, 2):
-            bottom_text += " " + self.LETTERS[row + x] + "  "
-        print(bottom_text)
+            relative_row = row+x
+            if (relative_row >= config.BOARDWIDTH or
+                        relative_row < 0):
+                continue         
+            bottom_text += " " + self.LETTERS[relative_row] + "  "
+      
+        final_text += bottom_text
         open_cell_list.sort()
-        return open_cell_list
+        return (open_cell_list,final_text)
 
     def checkTile(self, position):
         row = self.LETTERS.index(position[0].upper())

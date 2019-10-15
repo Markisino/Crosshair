@@ -16,7 +16,7 @@ def setMoveNodes(starting_node, token, movecount,addcount, steps):
         for neighbour in base_board.getNeighbours(used[0]):
             temp_board = board.Board()
             temp_board.setBoardToState(starting_node.name, movecount,addcount)
-            temp_board.moveTile(token, used[0], neighbour)
+            temp_board.moveTile(token, used[0], neighbour, False)
             child_used = temp_board.used_tiles.copy()
             child_used.append("M")
             child = Node(child_used, parent=starting_node)
