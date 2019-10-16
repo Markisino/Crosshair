@@ -93,13 +93,13 @@ class Board:
         column = config.BOARDHEIGHT - int(position[1:])
 
         open_cell_list = []
-        final_text = ""
+        print('Available surrounding position of {} (?) are shown below:'.format(position))
         for y in range(-1, 2):
             relative_column = column + y
             if (relative_column >= config.BOARDHEIGHT or
                     relative_column < 0):
                 continue
-            row_text = str(config.BOARDHEIGHT - (relative_column)) + " |"
+            row_text = str(config.BOARDHEIGHT - (relative_column)).ljust(2) + " |"
             for x in range(-1, 2):
                 relative_row = row + x
                 if (relative_row >= config.BOARDWIDTH or
@@ -120,13 +120,8 @@ class Board:
             final_text += row_text + "\n"
         bottom_text = "   "
         for x in range(-1, 2):
-            relative_row = row+x
-            if (relative_row >= config.BOARDWIDTH or
-                        relative_row < 0):
-                continue         
-            bottom_text += " " + self.LETTERS[relative_row] + "  "
-      
-        final_text += bottom_text
+            bottom_text += "  " + self.LETTERS[row + x] + " "
+        print(bottom_text)
         open_cell_list.sort()
         return (open_cell_list,final_text)
 

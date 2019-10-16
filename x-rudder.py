@@ -9,13 +9,18 @@ player1_turn = True
 player1.symbol = CROSS
 player2.symbol = CIRCLE
 
+
 # This is the game logic.
 def run(board_game, player1_turn):
+    help_enable = True
     # This is the game loop
     message()
     while not board_game.winner_found:
         print("\n===============================================================")
         board_game.displayBoard()
+        if help_enable is True:
+            help()
+            help_enable = False
         print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
         print("the current used tiles in the game")
         board_game.printUsedTiles()
@@ -32,7 +37,8 @@ def run(board_game, player1_turn):
             print('exiting')
             break
         elif actions[0] == 'H':
-            help()
+            # help()
+            help_enable = True
 
         elif len(actions) == 2 and boundChecker(actions[1]):
             print("User position input: {} is out of bound!".format(actions[1]))
@@ -66,17 +72,26 @@ def run(board_game, player1_turn):
         elif len(actions) > 2 and actions[0] == 'M' and actions[1] is not None and actions[2] is not None and board_game.addCounter > 0:
             actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
             actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
-            if player1_turn:
-                valid = board_game.moveTile(player1.symbol, actions[1], actions[2], True)
 
-                if valid:
-                    player1_turn = turn(player1_turn)
+            neighbours = board_game.showNeighbours(actions[1])
 
             else:
                 valid = board_game.moveTile(player2.symbol, actions[1], actions[2], True)
 
-                if valid:
-                    player1_turn = turn(player1_turn)
+                if player1_turn:
+                    valid = board_game.moveTile(player1.symbol, actions[1], actions[2])
+
+                    if valid:
+                        player1_turn = turn(player1_turn)
+
+                else:
+                    valid = board_game.moveTile(player2.symbol, actions[1], actions[2])
+
+                    if valid:
+                        player1_turn = turn(player1_turn)
+
+            else:
+                print("Can not move token from " + actions[1] + " to " + actions[2] + "!")
         else:
             print("Please enter a valid input, refer to help for more information.\nType 'h' or 'H' for more help on input\n")
 
@@ -85,7 +100,7 @@ def run(board_game, player1_turn):
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
-    help()
+    # help()
 
 
 # Function to switch turn between player
@@ -120,6 +135,15 @@ def boundChecker(x):
     if len(x) > 3:
         print("Number out of bound!")
         return True
+
+    return False
+
+def neighbourChecker(dest, neighbourList):
+
+    for x in neighbourList:
+
+        if dest == x:
+            return True
 
     return False
 
