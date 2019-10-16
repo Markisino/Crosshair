@@ -75,8 +75,7 @@ def run(board_game, player1_turn):
 
             neighbours = board_game.showNeighbours(actions[1])
 
-            else:
-                valid = board_game.moveTile(player2.symbol, actions[1], actions[2], True)
+            if neighbourChecker(actions[2], neighbours):
 
                 if player1_turn:
                     valid = board_game.moveTile(player1.symbol, actions[1], actions[2])
