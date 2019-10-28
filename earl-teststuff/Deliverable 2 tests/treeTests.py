@@ -86,7 +86,7 @@ init = Node(b.used_tiles)
 generateSearchSpace(init, 6, b.moveCounter,b.addCounter, 2)
 
 
-#for pre, fill, node in RenderTree(init):
-#    print("%s%s" % (pre, node.name))
+for pre, fill, node in RenderTree(init):
+    print("%s%s" % (pre, node.name))
 
 
