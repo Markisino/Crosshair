@@ -1,11 +1,22 @@
 import numpy as np
 import config
+from anytree import NodeMixin, RenderTree
 
 #DELIVERABLE 2 STUFF
 
-class Board:
+class Board(NodeMixin): #Add node feature
 
-    def __init__(self):
+    #def __init__(self,name,length,width, parent=None, children=None):
+    def __init__(self,name="", parent=None, children=None):
+
+        super(Board, self).__init__()
+        self.name = name
+        #self.length = length
+        #self.width = width
+        self.parent = parent
+        if children:
+            self.children = children
+
         self.LETTERS = (
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V',
@@ -192,7 +203,7 @@ class Board:
                 print("({}, {})".format(tile[0], tile[1]), end=" ")
 
     def setBoardToState(self, tiles, movecount,addcount):
-
+        print(tiles)
         rows = config.BOARDHEIGHT
         columns = config.BOARDWIDTH
         self.board = np.zeros(shape=(rows, columns))

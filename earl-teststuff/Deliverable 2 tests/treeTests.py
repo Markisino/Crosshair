@@ -1,42 +1,43 @@
-from anytree import Node, RenderTree,LevelOrderIter
-import board
+from anytree import  RenderTree,LevelOrderIter
+from board import Board
 import copy
 import numpy as np
 
-#nodecount = 1
+nodecount = 1
 def setMoveNodes(starting_node, token, movecount,addcount, steps):
-    #global nodecount
+    global nodecount
 
-    base_board = board.Board()
+    base_board = Board(str(starting_node.used_tiles))
     base_board.setBoardToState(starting_node.name, movecount,addcount)
 
     for used in starting_node.name:
         if used[1] != token:
             continue
         for neighbour in base_board.getNeighbours(used[0]):
-            temp_board = board.Board()
+            temp_board = Board()
             temp_board.setBoardToState(starting_node.name, movecount,addcount)
             temp_board.moveTile(token, used[0], neighbour, False)
             child_used = temp_board.used_tiles.copy()
+           
             child_used.append("M")
-            child = Node(child_used, parent=starting_node)
-           # nodecount+=1
+            child = Board(child_used, parent=starting_node)
+            nodecount+=1
             #print("Moving: " + str(token))
 
 
 def setPlaceNodes(starting_node, token, movecount,addcount, steps):
 
-    #global nodecount
-    base_board = board.Board()
+    global nodecount
+    base_board = Board(str(starting_node.used_tiles))
     base_board.setBoardToState(starting_node.name, movecount,addcount)
 
     for ix,iy in np.ndindex(base_board.board.shape):
     	if(base_board.aiSetTile(token, ix, iy)):
     		child_used = base_board.used_tiles.copy()
     		child_used.append("A") #to check what to decrement later
-    		child = Node(child_used, parent=starting_node)
+    		child = Board(child_used, parent=starting_node)
     		base_board.aiRemoveTile(ix, iy)
-    		#nodecount+=1
+    		nodecount+=1
     		#print("Placing: " + str(token))
 
 
@@ -65,7 +66,7 @@ def generateSearchSpace(starting_node,token,movecount,addcount,steps):
 
 
 
-b = board.Board()
+b = Board()
 b.setTile(6, "H3")
 
 b.setTile(6, "G2")
@@ -74,19 +75,19 @@ b.setTile(6, "I4")
 
 b.setTile(6, "I2")
 b.setTile(9, "I3")
-# b.setTile(9,"I3")
-# b.setTile(9, "G3")
+
 
 #b.displayBoard()
 
-init = Node(b.used_tiles)
+#init = Node(b)
+
+b.printUsedTiles()
+print(b.name)
+generateSearchSpace(b, 6, b.moveCounter,b.addCounter, 2)
 
 
+for pre, fill, node in RenderTree(b):
+    print("%s%s" % (pre, node.used_tiles))
 
-generateSearchSpace(init, 6, b.moveCounter,b.addCounter, 2)
-
-
-for pre, fill, node in RenderTree(init):
-    print("%s%s" % (pre, node.name))
-
-
+b.displayBoard()
+print(nodecount)
