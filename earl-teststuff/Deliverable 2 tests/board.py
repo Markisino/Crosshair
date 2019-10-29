@@ -1,13 +1,13 @@
 import numpy as np
 import config
 from anytree import NodeMixin, RenderTree
-
+import copy
 #DELIVERABLE 2 STUFF
 
 class Board(NodeMixin): #Add node feature
 
     #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self,name="", parent=None, children=None):
+    def __init__(self,name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT,config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
 
         super(Board, self).__init__()
         self.name = name
@@ -21,15 +21,17 @@ class Board(NodeMixin): #Add node feature
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V',
             'W', 'X', 'Y', 'Z')
-        self.used_tiles = []
+        self.used_tiles = used_tiles.copy()
         rows = config.BOARDHEIGHT
         columns = config.BOARDWIDTH
-        self.board = np.zeros(shape=(rows, columns))
+        self.board = np.array(board, copy=True)
         self.board = self.board.astype(int)
-        self.winner_found = False
-        self.addCounter = config.TURNCOUNTER
-        self.moveCounter = config.TURNCOUNTER
-
+        self.winner_found = winner_found
+        self.addCounter = addCounter
+        self.moveCounter = moveCounter
+        self.lastAction = ''
+    def copyBoard(self, p = None, c = None):
+        return Board(self.name, p,  c , self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"

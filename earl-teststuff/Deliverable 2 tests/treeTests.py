@@ -7,20 +7,25 @@ nodecount = 1
 def setMoveNodes(starting_node, token, movecount,addcount, steps):
     global nodecount
 
-    base_board = Board(str(starting_node.used_tiles))
-    base_board.setBoardToState(starting_node.name, movecount,addcount)
+    #base_board = Board(str(starting_node.used_tiles))
+    #base_board.setBoardToState(starting_node.name, movecount,addcount)
 
-    for used in starting_node.name:
+    for used in starting_node.used_tiles:
+
         if used[1] != token:
             continue
-        for neighbour in base_board.getNeighbours(used[0]):
-            temp_board = Board()
-            temp_board.setBoardToState(starting_node.name, movecount,addcount)
+        for neighbour in starting_node.getNeighbours(used[0]):
+            temp_board = starting_node.copyBoard(p = starting_node)
+            temp_board.name = (temp_board.used_tiles)
+            
+            #temp_board.setBoardToState(starting_node.name, movecount,addcount)
             temp_board.moveTile(token, used[0], neighbour, False)
-            child_used = temp_board.used_tiles.copy()
+            #child_used = temp_board.used_tiles.copy()
            
-            child_used.append("M")
-            child = Board(child_used, parent=starting_node)
+            temp_board.lastAction = ("M")
+            #child = temp_board.copyBoard()
+            #child.parent = starting_node
+            #print(child.used_tiles)
             nodecount+=1
             #print("Moving: " + str(token))
 
@@ -28,16 +33,18 @@ def setMoveNodes(starting_node, token, movecount,addcount, steps):
 def setPlaceNodes(starting_node, token, movecount,addcount, steps):
 
     global nodecount
-    base_board = Board(str(starting_node.used_tiles))
-    base_board.setBoardToState(starting_node.name, movecount,addcount)
-
+    #base_board = Board(str(starting_node.used_tiles))
+    #base_board.setBoardToState(starting_node.name, movecount,addcount)
+    base_board = starting_node.copyBoard()
     for ix,iy in np.ndindex(base_board.board.shape):
     	if(base_board.aiSetTile(token, ix, iy)):
-    		child_used = base_board.used_tiles.copy()
-    		child_used.append("A") #to check what to decrement later
-    		child = Board(child_used, parent=starting_node)
-    		base_board.aiRemoveTile(ix, iy)
-    		nodecount+=1
+    		#child_used = base_board.used_tiles.copy()
+    		#child_used.append("A") #to check what to decrement later
+    		#child = Board(child_used, parent=starting_node)
+            child = base_board.copyBoard(p=starting_node)
+            child.lastAction = "A"
+            base_board.aiRemoveTile(ix, iy)
+            nodecount+=1
     		#print("Placing: " + str(token))
 
 
@@ -56,7 +63,7 @@ def generateSearchSpace(starting_node,token,movecount,addcount,steps):
     for node in LevelOrderIter(starting_node,maxlevel=steps):
     	if node!= starting_node:
     		##TODO: Properly track move and addcount
-    		mode = node.name.pop()
+    		mode = node.lastAction
     		if (mode == "A"):
     			generateSearchSpace(node, next_token, movecount,addcount -1 , steps-1)
     		elif(mode== "M"):
