@@ -1,4 +1,4 @@
-from anytree import Node, RenderTree,LevelOrderIter
+from anytree import Node, RenderTree, LevelOrderIter
 import board
 import copy
 import numpy as np

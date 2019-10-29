@@ -1,10 +1,11 @@
 import board
 import player
+import minimax
 from config import CROSS, CIRCLE
 
 board_game = board.Board()
 player1 = player.Player()
-player2 = player.Player()
+player2 = minimax.Minimax()
 player1_turn = True
 player1.symbol = CROSS
 player2.symbol = CIRCLE
@@ -74,7 +75,6 @@ def run(board_game, player1_turn):
             actions[2] = actions[2][:3]  # This will trim the actions to remove trailing characters.
 
             neighbours = board_game.showNeighbours(actions[1])
-
             if neighbourChecker(actions[2], neighbours):
 
                 if player1_turn:
