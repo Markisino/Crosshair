@@ -24,3 +24,4 @@ TURNCOUNTER = 30 # Total number of turn allowed in the game. This help to check 
 PLAYERTOKENS = 15 # Starting amount of token for each player.
 HUMAN = 'human'
 COMPUTER = 'computer'
+DEPTH = 2

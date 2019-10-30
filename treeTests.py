@@ -48,7 +48,7 @@ def setPlaceNodes(starting_node, token, movecount,addcount, steps):
     		#print("Placing: " + str(token))
 
 
-def generateSearchSpace(starting_node,token,movecount,addcount,steps):
+def generateSearchSpace(starting_node, token, movecount, addcount, steps):
     if steps == 0:
         return
     setPlaceNodes(starting_node, token, movecount,addcount, steps)

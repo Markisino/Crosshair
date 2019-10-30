@@ -1,37 +1,23 @@
 import numpy as np
 import config
-from anytree import NodeMixin, RenderTree
-import copy
-#DELIVERABLE 2 STUFF
 
-class Board(NodeMixin): #Add node feature
 
-    #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self,name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT,config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
+class Board:
 
-        super(Board, self).__init__()
-        self.name = name
-        #self.length = length
-        #self.width = width
-        self.parent = parent
-        if children:
-            self.children = children
-
+    def __init__(self):
         self.LETTERS = (
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V',
             'W', 'X', 'Y', 'Z')
-        self.used_tiles = used_tiles.copy()
+        self.used_tiles = []
         rows = config.BOARDHEIGHT
         columns = config.BOARDWIDTH
-        self.board = np.array(board, copy=True)
+        self.board = np.zeros(shape=(rows, columns))
         self.board = self.board.astype(int)
-        self.winner_found = winner_found
-        self.addCounter = addCounter
-        self.moveCounter = moveCounter
-        self.lastAction = ''
-    def copyBoard(self, p = None, c = None):
-        return Board(self.name, p,  c , self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        self.winner_found = False
+        self.addCounter = config.TURNCOUNTER
+        self.moveCounter = config.TURNCOUNTER
+
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -63,7 +49,7 @@ class Board(NodeMixin): #Add node feature
         row = self.LETTERS.index(position[0])
         column = config.BOARDHEIGHT - int(position[1:])
         self.board[column][row] = entry
-        #print(position)
+        print(position)
         self.used_tiles.append((position, entry))  # to make checking easier
 
         valid_turn = True
@@ -77,10 +63,8 @@ class Board(NodeMixin): #Add node feature
     def moveTile(self, entry, previous_position, new_position, is_human):
         valid_move = False
         if (previous_position, entry) in self.used_tiles:
-            if is_human:
-                open_cells = self.showNeighbours(previous_position)
-            else:
-                open_cells = self.getNeighbours(previous_position)
+            open_cells = self.showNeighbours(previous_position)
+
             valid_move, neigbour_text = ((new_position in open_cells[0]),(open_cells[1]))
 
             if valid_move:
@@ -92,9 +76,8 @@ class Board(NodeMixin): #Add node feature
                 return True
 
             else:
-                if is_human:
-                    print(neigbour_text)
-                    print("Available spots : " + str(open_cells[0]))
+                print(neigbour_text)
+                print("Available spots : " + str(open_cells[0]))
                 return False
 
         else:
@@ -108,7 +91,7 @@ class Board(NodeMixin): #Add node feature
     def showNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
-        final_text = ""
+
         open_cell_list = []
         print('Available surrounding position of {} (?) are shown below:'.format(position))
         for y in range(-1, 2):
@@ -200,57 +183,6 @@ class Board(NodeMixin): #Add node feature
     def printUsedTiles(self):
         for tile in self.used_tiles:
             if tile[1] == 6:
-                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
             elif tile[1] == 9:
-                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
-
-    def setBoardToState(self, tiles, movecount,addcount):
-        print(tiles)
-        rows = config.BOARDHEIGHT
-        columns = config.BOARDWIDTH
-        self.board = np.zeros(shape=(rows, columns))
-        self.board = self.board.astype(int)
-        for tile in tiles:
-            self.setTile(tile[1],tile[0])
-        self.moveCounter = movecount
-        self.addCounter = addcount
-
-    def aiSetTile(self,entry,x,y):
-        letter = self.LETTERS[y]
-        num = str(config.BOARDHEIGHT -x)
-        pos = letter+num
-        if(self.board[x][y] != 0):
-            return False
-        self.board[x][y] = entry
-        self.used_tiles.append((pos,entry))
-        self.addCounter -= 1
-        return True #to remove
-
-    
-    def aiRemoveTile(self,x,y):
-        self.board[x][y] = 0
-        self.used_tiles.pop() 
-
-        self.addCounter += 1 
-
-    def getNeighbours(self,position):
-        row = self.LETTERS.index(position[0].upper())
-        column = config.BOARDHEIGHT - int(position[1:])
-        open_cell_list = []
-        for y in range(-1, 2):
-            relative_column = column + y
-            if(relative_column >= config.BOARDHEIGHT or
-                    relative_column < 0):
-                continue
-            for x in range(-1, 2):
-                relative_row = row + x
-                if(relative_row >= config.BOARDWIDTH or
-                        relative_row < 0):
-                    continue
-                if self.board[relative_column][relative_row] == 0:
-            
-                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
-        return open_cell_list
-
-
-        
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
