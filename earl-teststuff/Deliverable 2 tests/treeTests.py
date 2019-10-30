@@ -60,7 +60,7 @@ def generateSearchSpace(starting_node,token,movecount,addcount,steps):
     elif token == 9:
     	next_token = 6
 
-    for node in LevelOrderIter(starting_node,maxlevel=steps):
+    for node in starting_node.children:
     	if node!= starting_node:
     		##TODO: Properly track move and addcount
     		mode = node.lastAction
