@@ -8,7 +8,7 @@ import copy
 class Board(NodeMixin): #Add node feature
 
     #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self, name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
+    def __init__(self ,name="", lad = "", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
 
         super(Board, self).__init__()
         self.name = name
@@ -29,10 +29,16 @@ class Board(NodeMixin): #Add node feature
         self.addCounter = addCounter
         self.moveCounter = moveCounter
         self.lastAction = ''
+        self.lastActionDescription = lad
         self.score = 0
-
+    def setLastActionDescription(self, token, pos1, pos2 = ""):
+        token = str(token)
+        if self.lastAction == "M":
+            self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
+        else:
+            self.lastActionDescription = token + " placed  piece at " + pos1
     def copyBoard(self, p = None, c = None):
-        return Board(self.name, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        return Board(self.name, self.lastActionDescription, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
     
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
@@ -250,7 +256,7 @@ class Board(NodeMixin): #Add node feature
                 if self.board[relative_column][relative_row] == 0:
             
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
-        return open_cell_list
+        return (open_cell_list,"")
 
     def totalEvaluation(self):
         # TODO: calculate the total value returns that will be used for minimax.

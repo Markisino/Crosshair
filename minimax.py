@@ -84,10 +84,11 @@ class Minimax:
         #base_board.setBoardToState(starting_node.name, movecount,addcount)
 
         for used in starting_node.used_tiles:
-
             if used[1] != token:
+                
                 continue
-            for neighbour in starting_node.getNeighbours(used[0]):
+            for neighbour in starting_node.getNeighbours(used[0])[0]:
+
                 temp_board = starting_node.copyBoard(p = starting_node)
                 temp_board.name = (temp_board.used_tiles)
                 
@@ -96,6 +97,8 @@ class Minimax:
                 #child_used = temp_board.used_tiles.copy()
             
                 temp_board.lastAction = ("M")
+                temp_board.setLastActionDescription(token, used[0], neighbour)
+                print(temp_board.lastActionDescription)
                 #child = temp_board.copyBoard()
                 #child.parent = starting_node
                 #print(child.used_tiles)
@@ -114,6 +117,7 @@ class Minimax:
                 #child = Board(child_used, parent=starting_node)
                 child = base_board.copyBoard(p=starting_node)
                 child.lastAction = "A"
+                child.setLastActionDescription(token, child.used_tiles[-1][0])
                 base_board.aiRemoveTile(ix, iy)
                 self.nodecount += 1
                 #print("Placing: " + str(token))
