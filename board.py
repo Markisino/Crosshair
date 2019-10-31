@@ -1,23 +1,39 @@
 import numpy as np
 import config
+import random
+from anytree import NodeMixin, RenderTree
+import copy
+#DELIVERABLE 2 STUFF
 
+class Board(NodeMixin): #Add node feature
 
-class Board:
+    #def __init__(self,name,length,width, parent=None, children=None):
+    def __init__(self, name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
 
-    def __init__(self):
+        super(Board, self).__init__()
+        self.name = name
+        #self.length = length
+        #self.width = width
+        self.parent = parent
+        if children:
+            self.children = children
+
         self.LETTERS = (
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V',
             'W', 'X', 'Y', 'Z')
-        self.used_tiles = []
-        rows = config.BOARDHEIGHT
-        columns = config.BOARDWIDTH
-        self.board = np.zeros(shape=(rows, columns))
+        self.used_tiles = used_tiles.copy()
+        self.board = np.array(board, copy=True)
         self.board = self.board.astype(int)
-        self.winner_found = False
-        self.addCounter = config.TURNCOUNTER
-        self.moveCounter = config.TURNCOUNTER
+        self.winner_found = winner_found
+        self.addCounter = addCounter
+        self.moveCounter = moveCounter
+        self.lastAction = ''
+        self.score = 0
 
+    def copyBoard(self, p = None, c = None):
+        return Board(self.name, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+    
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -49,7 +65,7 @@ class Board:
         row = self.LETTERS.index(position[0])
         column = config.BOARDHEIGHT - int(position[1:])
         self.board[column][row] = entry
-        print(position)
+        #print(position)
         self.used_tiles.append((position, entry))  # to make checking easier
 
         valid_turn = True
@@ -63,8 +79,10 @@ class Board:
     def moveTile(self, entry, previous_position, new_position, is_human):
         valid_move = False
         if (previous_position, entry) in self.used_tiles:
-            open_cells = self.showNeighbours(previous_position)
-
+            if is_human:
+                open_cells = self.showNeighbours(previous_position)
+            else:
+                open_cells = self.getNeighbours(previous_position)
             valid_move, neigbour_text = ((new_position in open_cells[0]),(open_cells[1]))
 
             if valid_move:
@@ -76,8 +94,9 @@ class Board:
                 return True
 
             else:
-                print(neigbour_text)
-                print("Available spots : " + str(open_cells[0]))
+                if is_human:
+                    print(neigbour_text)
+                    print("Available spots : " + str(open_cells[0]))
                 return False
 
         else:
@@ -91,6 +110,8 @@ class Board:
     def showNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
+        
+        final_text = ""
 
         open_cell_list = []
         print('Available surrounding position of {} (?) are shown below:'.format(position))
@@ -121,23 +142,20 @@ class Board:
         bottom_text = "   "
         for x in range(-1, 2):
             bottom_text += "  " + self.LETTERS[row + x] + " "
-        print(bottom_text)
         open_cell_list.sort()
-        return (open_cell_list,final_text)
+        print(final_text)
+        return (open_cell_list, final_text)
 
     def checkTile(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         symbol = self.board[column][row]
-        # print("Symbol: " + str(symbol))
         x_drawn = False
         crossed = False
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
-            # print("Nothing on right")
             return False
         if column + 2 >= config.BOARDHEIGHT:
-            # print("Nothing below")
             return False
         # EMPTY CELL
         if symbol == 0:
@@ -170,7 +188,6 @@ class Board:
 
         for tile in self.used_tiles:
             result = self.checkTile(tile[0])
-            # print(tile + ": " + str(self.winner_found))
             if self.winner_found:
                 winner = ""
                 if result == 6:
@@ -183,6 +200,61 @@ class Board:
     def printUsedTiles(self):
         for tile in self.used_tiles:
             if tile[1] == 6:
-                print("({}, {})".format(tile[0], tile[1]), end=" ")
+                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
             elif tile[1] == 9:
-                print("({}, {})".format(tile[0], tile[1]), end=" ")
+                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
+
+    def setBoardToState(self, tiles, movecount,addcount):
+        print(tiles)
+        rows = config.BOARDHEIGHT
+        columns = config.BOARDWIDTH
+        self.board = np.zeros(shape=(rows, columns))
+        self.board = self.board.astype(int)
+        for tile in tiles:
+            self.setTile(tile[1],tile[0])
+        self.moveCounter = movecount
+        self.addCounter = addcount
+
+    def aiSetTile(self,entry,x,y):
+        letter = self.LETTERS[y]
+        num = str(config.BOARDHEIGHT -x)
+        pos = letter+num
+        if(self.board[x][y] != 0):
+            return False
+        self.board[x][y] = entry
+        self.used_tiles.append((pos,entry))
+        self.addCounter -= 1
+        return True #to remove
+
+    
+    def aiRemoveTile(self,x,y):
+        self.board[x][y] = 0
+        self.used_tiles.pop() 
+
+        self.addCounter += 1 
+
+    def getNeighbours(self,position):
+        row = self.LETTERS.index(position[0].upper())
+        column = config.BOARDHEIGHT - int(position[1:])
+        open_cell_list = []
+        for y in range(-1, 2):
+            relative_column = column + y
+            if(relative_column >= config.BOARDHEIGHT or
+                    relative_column < 0):
+                continue
+            for x in range(-1, 2):
+                relative_row = row + x
+                if(relative_row >= config.BOARDWIDTH or
+                        relative_row < 0):
+                    continue
+                if self.board[relative_column][relative_row] == 0:
+            
+                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+        return open_cell_list
+
+    def totalEvaluation(self):
+        # TODO: calculate the total value returns that will be used for minimax.
+        # This should return a total value.
+        self.score = random.randrange(0, 10000)
+        return self.score
+        
