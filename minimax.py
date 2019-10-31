@@ -26,16 +26,13 @@ class Minimax:
     # Call Minimax Function from generatingSearchSpace.
     def _minimax(self, starting_node, token, movecount, addcount, depth):
         starting_node.name = token
-        temp_board = None
+        result_board = None
         if token == CIRCLE:
             better = -2000
         else:
             better = 2000
         
         if depth == 0:
-            # print(token, file=open('output.txt','a'))
-            result_board = starting_node.copyBoard()
-            result_score = starting_node.totalEvaluation()
             return starting_node.totalEvaluation(), starting_node.copyBoard()
 
         #To achieve turn change on search space generation
@@ -50,42 +47,41 @@ class Minimax:
                 if (mode == "A"):
                     score, temp_board = self._minimax(node, next_token, movecount, addcount -1, depth - 1)
                     if token == CIRCLE:
-                        if score is None:
+                        if score is None or temp_board is None:
                             score = 'CIRCLE'
                         elif score > better:
                             better = score
                             node.parent.score = score
-                            temp_board = node.copyBoard()
+                            result_board = temp_board
                     else:
-                        if score is None:
+                        if score is None or temp_board is None:
                             score = 'CROSS'
                         elif score < better:
                             # print('new lower score: ', better, file=open("output.txt", "a"))
                             better = score
                             node.parent.score = score
-                            temp_board = node.copyBoard()
+                            result_board = temp_board
                         # node.displayBoard()
                 elif(mode == "M"):
                     score, temp_board = self._minimax(node, next_token, movecount -1, addcount, depth - 1)
                     if token == CIRCLE:
-                        if score is None:
+                        if score is None or temp_board is None:
                             score = 'CIRCLE'
                         elif score > better:
                             better = score
                             node.parent.score = score
-                            temp_board = node.copyBoard()
+                            result_board = temp_board
                             # print('new better score: ', better, file=open("output.txt", "a"))
                     else:
-                        if score is None:
+                        if score is None or temp_board is None:
                             score = 'CROSS'
                         elif score < better:
                             # print('new lower score: ', better, file=open("output.txt", "a"))
                             better = score
                             node.parent.score = score
-                            temp_board = node.copyBoard()
+                            result_board = temp_board
                         # node.displayBoard()
-        
-        return better, temp_board
+        return better, result_board
         
                 
 
