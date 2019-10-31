@@ -8,7 +8,7 @@ import copy
 class Board(NodeMixin): #Add node feature
 
     #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self,name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT,config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
+    def __init__(self, name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
 
         super(Board, self).__init__()
         self.name = name
@@ -34,7 +34,7 @@ class Board(NodeMixin): #Add node feature
         self.score = 0
 
     def copyBoard(self, p = None, c = None):
-        return Board(self.name, p,  c , self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        return Board(self.name, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -258,6 +258,6 @@ class Board(NodeMixin): #Add node feature
     def totalEvaluation(self):
         # TODO: calculate the total value returns that will be used for minimax.
         # This should return a total value.
-        self.score = random.randrange(0, 100000)
+        self.score = random.randrange(0, 10000)
         return self.score
         
