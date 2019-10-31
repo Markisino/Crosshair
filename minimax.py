@@ -1,4 +1,5 @@
 import math
+import random
 import numpy as np
 
 from config import CIRCLE, CROSS, PLAYERTOKENS
@@ -6,7 +7,7 @@ from anytree import  RenderTree, LevelOrderIter
 
 class Minimax:
     def __init__(self):
-        self.score = 0
+        self.best = 0
         self.symbol = 0
         self.tokenleft = PLAYERTOKENS
         self.nodecount = 1
@@ -21,35 +22,72 @@ class Minimax:
     def tokenPlaced(self):
         self.tokenleft -= 1
         
-    def evaluate(self, board):
-        if board.checkWinner() == CIRCLE:
-            self.score += 10
-        elif board.checkWinner() == CROSS:
-            self.score -= 10
-        else:
-            self.score = 0
-        return self.score
 
     # Call Minimax Function from generatingSearchSpace.
     def _minimax(self, starting_node, token, movecount, addcount, depth):
+        starting_node.name = token
+        temp_board = None
+        if token == CIRCLE:
+            better = -2000
+        else:
+            better = 2000
+        
         if depth == 0:
-            return
-        self.setPlaceNodes(starting_node, token, movecount, addcount, depth)
-        self.setMoveNodes(starting_node, token, movecount, addcount, depth)
+            # print(token, file=open('output.txt','a'))
+            result_board = starting_node.copyBoard()
+            result_score = starting_node.totalEvaluation()
+            return starting_node.totalEvaluation(), starting_node.copyBoard()
+
         #To achieve turn change on search space generation
         if token == CROSS:
             next_token = CIRCLE
         elif token == CIRCLE:
             next_token = CROSS
-
-        for node in LevelOrderIter(starting_node, maxlevel=depth):
-            if node != starting_node:
-                ##TODO: Properly track move and addcount
+        self.setPlaceNodes(starting_node, next_token, movecount, addcount, depth)
+        self.setMoveNodes(starting_node, next_token, movecount, addcount, depth)
+        for node in starting_node.children:
                 mode = node.lastAction
                 if (mode == "A"):
-                    self._minimax(node, next_token, movecount, addcount -1, depth - 1)
+                    score, temp_board = self._minimax(node, next_token, movecount, addcount -1, depth - 1)
+                    if token == CIRCLE:
+                        if score is None:
+                            score = 'CIRCLE'
+                        elif score > better:
+                            better = score
+                            node.parent.score = score
+                            temp_board = node.copyBoard()
+                    else:
+                        if score is None:
+                            score = 'CROSS'
+                        elif score < better:
+                            # print('new lower score: ', better, file=open("output.txt", "a"))
+                            better = score
+                            node.parent.score = score
+                            temp_board = node.copyBoard()
+                        # node.displayBoard()
                 elif(mode == "M"):
-                    self._minimax(node, next_token, movecount -1, addcount, depth - 1)
+                    score, temp_board = self._minimax(node, next_token, movecount -1, addcount, depth - 1)
+                    if token == CIRCLE:
+                        if score is None:
+                            score = 'CIRCLE'
+                        elif score > better:
+                            better = score
+                            node.parent.score = score
+                            temp_board = node.copyBoard()
+                            # print('new better score: ', better, file=open("output.txt", "a"))
+                    else:
+                        if score is None:
+                            score = 'CROSS'
+                        elif score < better:
+                            # print('new lower score: ', better, file=open("output.txt", "a"))
+                            better = score
+                            node.parent.score = score
+                            temp_board = node.copyBoard()
+                        # node.displayBoard()
+        
+        return better, temp_board
+        
+                
 
     def setMoveNodes(self, starting_node, token, movecount, addcount, steps):
         #base_board = Board(str(starting_node.used_tiles))
@@ -89,7 +127,9 @@ class Minimax:
                 base_board.aiRemoveTile(ix, iy)
                 self.nodecount += 1
                 #print("Placing: " + str(token))
-                
+
+
+
     # Old Minimax function
     def minimax(self, position, depth, maximizing_player, board):
         if maximizing_player:

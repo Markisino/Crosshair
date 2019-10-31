@@ -19,13 +19,17 @@ def run_test():
 
     b.displayBoard()
 
-    ai._minimax(b, CROSS, b.moveCounter, b.addCounter, DEPTH)
+    b.score, b2 = ai._minimax(b, CIRCLE, b.moveCounter, b.addCounter, DEPTH)
     # ai.calltester(b, CROSS, b.moveCounter, b.addCounter, DEPTH)
     # for pre, fill, node in RenderTree(b):
     #     print("%s%s" % (pre, node.used_tiles))
+    # for pre, fill, node in RenderTree(b):
+    #     print("%s%s" % (pre, node.score), file=open("output.txt", "a"))
     print("Total Nodes: ", ai.nodecount)
-    for child in b.children:
-        print(child.used_tiles)
-
+    # for child in b.children:
+    #     print(child.used_tiles)
+    # for pre, fill, node in RenderTree(b):
+    #     print("%s%s" % (pre, node.board), file=open('output.txt', 'a'))
+    b2.displayBoard()
 
 run_test()

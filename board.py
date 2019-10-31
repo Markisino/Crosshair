@@ -1,5 +1,6 @@
 import numpy as np
 import config
+import random
 from anytree import NodeMixin, RenderTree
 import copy
 #DELIVERABLE 2 STUFF
@@ -30,6 +31,8 @@ class Board(NodeMixin): #Add node feature
         self.addCounter = addCounter
         self.moveCounter = moveCounter
         self.lastAction = ''
+        self.score = 0
+
     def copyBoard(self, p = None, c = None):
         return Board(self.name, p,  c , self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
     def displayBoard(self):
@@ -252,5 +255,9 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return open_cell_list
 
-
+    def totalEvaluation(self):
+        # TODO: calculate the total value returns that will be used for minimax.
+        # This should return a total value.
+        self.score = random.randrange(0, 100000)
+        return self.score
         

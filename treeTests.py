@@ -65,9 +65,9 @@ def generateSearchSpace(starting_node, token, movecount, addcount, steps):
     		##TODO: Properly track move and addcount
     		mode = node.lastAction
     		if (mode == "A"):
-    			generateSearchSpace(node, next_token, movecount,addcount -1 , steps-1)
+    			generateSearchSpace(node, next_token, movecount,addcount -1, steps-1)
     		elif(mode== "M"):
-    			generateSearchSpace(node, next_token, movecount -1,addcount , steps-1)
+    			generateSearchSpace(node, next_token, movecount -1, addcount, steps-1)
 
 
 
