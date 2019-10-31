@@ -1,9 +1,8 @@
-import math
-import random
+# This file is for the AI class with Minimax Algorithm
+
 import numpy as np
 
 from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER
-from anytree import  RenderTree, LevelOrderIter
 
 class Minimax:
     def __init__(self):
@@ -24,16 +23,14 @@ class Minimax:
 
     # This function use Minimax algorith starting with MAX at root and return a score.
     def _minimax(self, starting_node, token, movecount, addcount, depth):
-        # print(depth, file=open('output.txt', 'a'))
         starting_node.name = token
-        # result_board = None
         if token == CIRCLE:
             better = -2000
         else:
             better = 2000
         
         if depth == 0:
-            return starting_node.totalEvaluation() #, starting_node.copyBoard()
+            return starting_node.totalEvaluation()
 
         #To achieve turn change on search space generation
         if token == CROSS and depth != 2:
@@ -54,16 +51,12 @@ class Minimax:
                         elif score > better:
                             better = score
                             node.parent.score = score
-                            # result_board = temp_board
                     else:
                         if score is None:
                             score = 'CROSS'
                         elif score < better:
-                            # print('new lower score: ', better, file=open("output.txt", "a"))
                             better = score
                             node.parent.score = score
-                            # result_board = temp_board
-                        # node.displayBoard()
                 elif(mode == "M"):
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1)
                     if token == CIRCLE:
@@ -72,18 +65,13 @@ class Minimax:
                         elif score > better:
                             better = score
                             node.parent.score = score
-                            # result_board = temp_board
-                            # print('new better score: ', better, file=open("output.txt", "a"))
                     else:
                         if score is None:
                             score = 'CROSS'
                         elif score < better:
-                            # print('new lower score: ', better, file=open("output.txt", "a"))
                             better = score
                             node.parent.score = score
-                            # result_board = temp_board
-                        # node.displayBoard()
-        return better #, result_board
+        return better
         
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):

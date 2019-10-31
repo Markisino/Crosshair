@@ -215,7 +215,7 @@ class Board(NodeMixin): #Add node feature
         self.moveCounter = movecount
         self.addCounter = addcount
 
-    def aiSetTile(self,entry,x,y):
+    def aiSetTile(self, entry, x, y):
         letter = self.LETTERS[y]
         num = str(config.BOARDHEIGHT -x)
         pos = letter+num
@@ -227,13 +227,13 @@ class Board(NodeMixin): #Add node feature
         return True #to remove
 
     
-    def aiRemoveTile(self,x,y):
+    def aiRemoveTile(self, x, y):
         self.board[x][y] = 0
         self.used_tiles.pop() 
 
         self.addCounter += 1 
 
-    def getNeighbours(self,position):
+    def getNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         open_cell_list = []

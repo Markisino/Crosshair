@@ -1,3 +1,8 @@
+# THIS FILE EXISTS ONLY FOR QUICK TESTING PURPOSE
+# DO NOT USE THIS FILE IN PRODUCTION ENVIRONMENT
+# USE THE X-RUDDER.PY INSTEAD
+# ---------------------------------------------------
+
 from anytree import  RenderTree, LevelOrderIter
 
 import minimax

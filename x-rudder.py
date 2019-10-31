@@ -88,6 +88,9 @@ def run(board_game, human_turn):
                     print("Can not move token from " + actions[1] + " to " + actions[2] + "!")
             else:
                 print("Please enter a valid input, refer to help for more information.\nType 'h' or 'H' for more help on input\n")
+        
+        # We enter in this phase if it is the comuter player turn.
+        # ==========================================================        
         else:
             print("Current turn: {}".format(player2.type))
             board_game = player2.aiAction(board_game, player2.symbol, board_game.moveCounter, board_game.addCounter, DEPTH)

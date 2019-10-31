@@ -23,8 +23,6 @@ class Board(NodeMixin): #Add node feature
             'V',
             'W', 'X', 'Y', 'Z')
         self.used_tiles = used_tiles.copy()
-        rows = config.BOARDHEIGHT
-        columns = config.BOARDWIDTH
         self.board = np.array(board, copy=True)
         self.board = self.board.astype(int)
         self.winner_found = winner_found
@@ -152,15 +150,12 @@ class Board(NodeMixin): #Add node feature
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         symbol = self.board[column][row]
-        # print("Symbol: " + str(symbol))
         x_drawn = False
         crossed = False
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
-            # print("Nothing on right")
             return False
         if column + 2 >= config.BOARDHEIGHT:
-            # print("Nothing below")
             return False
         # EMPTY CELL
         if symbol == 0:
@@ -193,7 +188,6 @@ class Board(NodeMixin): #Add node feature
 
         for tile in self.used_tiles:
             result = self.checkTile(tile[0])
-            # print(tile + ": " + str(self.winner_found))
             if self.winner_found:
                 winner = ""
                 if result == 6:
