@@ -35,6 +35,7 @@ class Board(NodeMixin): #Add node feature
 
     def copyBoard(self, p = None, c = None):
         return Board(self.name, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+    
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -111,7 +112,9 @@ class Board(NodeMixin): #Add node feature
     def showNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
+        
         final_text = ""
+
         open_cell_list = []
         print('Available surrounding position of {} (?) are shown below:'.format(position))
         for y in range(-1, 2):
@@ -141,9 +144,9 @@ class Board(NodeMixin): #Add node feature
         bottom_text = "   "
         for x in range(-1, 2):
             bottom_text += "  " + self.LETTERS[row + x] + " "
-        print(bottom_text)
         open_cell_list.sort()
-        return (open_cell_list,final_text)
+        print(final_text)
+        return (open_cell_list, final_text)
 
     def checkTile(self, position):
         row = self.LETTERS.index(position[0].upper())

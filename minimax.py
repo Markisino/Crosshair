@@ -2,11 +2,12 @@ import math
 import random
 import numpy as np
 
-from config import CIRCLE, CROSS, PLAYERTOKENS
+from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER
 from anytree import  RenderTree, LevelOrderIter
 
 class Minimax:
     def __init__(self):
+        self.type = COMPUTER
         self.symbol = 0
         self.tokenleft = PLAYERTOKENS
         self.nodecount = 1
@@ -23,6 +24,7 @@ class Minimax:
 
     # This function use Minimax algorith starting with MAX at root and return a score.
     def _minimax(self, starting_node, token, movecount, addcount, depth):
+        # print(depth, file=open('output.txt', 'a'))
         starting_node.name = token
         # result_board = None
         if token == CIRCLE:
@@ -34,10 +36,12 @@ class Minimax:
             return starting_node.totalEvaluation() #, starting_node.copyBoard()
 
         #To achieve turn change on search space generation
-        if token == CROSS:
+        if token == CROSS and depth != 2:
             next_token = CIRCLE
-        elif token == CIRCLE:
+        elif token == CIRCLE and depth != 2:
             next_token = CROSS
+        else:
+            next_token = token
         self.setPlaceNodes(starting_node, next_token, movecount, addcount, depth)
         self.setMoveNodes(starting_node, next_token, movecount, addcount, depth)
         for node in starting_node.children:
@@ -125,3 +129,10 @@ class Minimax:
                 base_board.aiRemoveTile(ix, iy)
                 self.nodecount += 1
                 #print("Placing: " + str(token))
+
+    def aiAction(self, root_node, token, movecount, addcount, depth):
+        root_node.score = self._minimax(root_node, token, movecount, addcount, depth)
+        print("Total Nodes Created in Tree: ", self.nodecount)
+        root_node = self.decision(root_node)
+        self.tokenPlaced()
+        return root_node

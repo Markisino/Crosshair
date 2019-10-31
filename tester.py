@@ -20,28 +20,10 @@ def run_test(b):
 
     b.displayBoard()
 
-    b.score = ai._minimax(b, CIRCLE, b.moveCounter, b.addCounter, DEPTH)
-    b = ai.decision(b)
-    ai.tokenPlaced()
-    # ai.calltester(b, CROSS, b.moveCounter, b.addCounter, DEPTH)
-    # for pre, fill, node in RenderTree(b):
-    #     print("%s%s" % (pre, node.used_tiles))
-
-    print("Total Nodes: ", ai.nodecount)
-    # for child in b.children:
-    #     print(child.used_tiles)
-    # for pre, fill, node in RenderTree(b):
-    #     print("%s%s" % (pre, node.board), file=open('output.txt', 'a'))
-    # b2.displayBoard()
-    # for node in b.children:
-    #     if node.score == b.score:
-    #         print("MAX SCORE: ", node.score)
-    #         temp = node.copyBoard()
-    #         break
-    b.displayBoard()
+    b = ai.aiAction(b, CIRCLE, b.moveCounter, b.addCounter, DEPTH)
     for pre, fill, node in RenderTree(b):
         print("%s%s" % (pre, node.score), file=open("output.txt", "a"))
-    
+    b.displayBoard()
     print("CROSS token left: {}".format(ai.tokenleft))
 
 run_test(b)
