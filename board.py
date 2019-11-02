@@ -288,11 +288,14 @@ class Board(NodeMixin): #Add node feature
 
         multiplier = 0
         evaluation = 0
+        other_symbol = 0
+        draw_progress = 0
         if symbol == 9:
+            other_symbol = 6
             multiplier = 1
         elif symbol ==6:
             multiplier = -1.5
-
+            other_symbol = 9
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
             return 0
@@ -304,16 +307,30 @@ class Board(NodeMixin): #Add node feature
         drawn = False
         # Check if X is drawn
         if (self.board[column][row + 2] == symbol):# right
-            evaluation = evaluation+(10*multiplier)
-            if(self.board[column + 2][row] == symbol):
-                evaluation = evaluation+(10*multiplier)
-                if(self.board[column + 2][row] == symbol):
-                   evaluation = evaluation+(10*multiplier) 
-                   if(self.board[column + 2][row + 2] == symbol):
-                    evaluation = evaluation+(10*multiplier) 
-                    if(self.board[column + 1][row + 1] == symbol):
-                        evaluation = evaluation+(10*multiplier)
-                        drawn = True 
+            draw_progress = draw_progress + 1
+        if(self.board[column + 2][row] == symbol):
+            draw_progress = draw_progress + 1
+        if(self.board[column + 2][row] == symbol):
+            draw_progress = draw_progress + 1 
+        if(self.board[column + 2][row + 2] == symbol):
+            draw_progress = draw_progress + 1 
+        if(self.board[column + 1][row + 1] == symbol):
+            draw_progress = draw_progress + 1
+
+        if (self.board[column][row + 2] == other_symbol):# right
+            draw_progress = draw_progress - 2
+        if(self.board[column + 2][row] == other_symbol):
+            draw_progress = draw_progress - 2
+        if(self.board[column + 2][row] == other_symbol):
+            draw_progress = draw_progress - 2 
+        if(self.board[column + 2][row + 2] == other_symbol):
+            draw_progress = draw_progress - 2 
+        if(self.board[column + 1][row + 1] == other_symbol):
+            draw_progress = draw_progress - 2
+
+        if(draw_progress == 5):
+            drawn = True
+        evaluation = evaluation + (draw_progress *10*multiplier)  
             #    and self.board[column + 2][row] == symbol  # below
             #    and self.board[column + 2][row + 2] == symbol  # bottom right
             #    and self.board[column + 1][row + 1] == symbol):  # middle
@@ -324,12 +341,13 @@ class Board(NodeMixin): #Add node feature
         midleft = self.board[column + 1][row]
         midright = self.board[column + 1][row + 2]
 
-        if ((midleft != 0 and midleft != symbol)):
+        if ((midleft == other_symbol)):
             evaluation = evaluation + (2500 * -multiplier)
-            if(midright != 0 and midright != symbol):
+            if(midright == other_symbol):
                 evaluation = evaluation + (5000 * -multiplier)
-            elif(drawn):
-                evaluation = evaluation+(50000*multiplier) 
+                drawn = False
+        if(drawn):
+            evaluation = evaluation+(50000*multiplier) 
         #if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation
