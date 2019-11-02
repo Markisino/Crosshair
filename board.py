@@ -258,9 +258,62 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return (open_cell_list,"")
 
-    def totalEvaluation(self):
+
+    def getTakenNeighbours(self, position):
+        row = self.LETTERS.index(position[0].upper())
+        column = config.BOARDHEIGHT - int(position[1:])
+        open_cell_list = []
+        for y in range(-1, 2):
+            relative_column = column + y
+            if (relative_column >= config.BOARDHEIGHT or
+                    relative_column < 0):
+                continue
+            for x in range(-1, 2):
+                relative_row = row + x
+                if (relative_row >= config.BOARDWIDTH or
+                        relative_row < 0):
+                    continue
+                if self.board[relative_column][relative_row] != 0:
+                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+        return open_cell_list
+
+    def totalEvaluation(self, board_game):
         # TODO: calculate the total value returns that will be used for minimax.
         # This should return a total value.
-        self.score = random.randrange(0, 10000)
-        return self.score
-        
+
+        cross = 0
+        circle = 0
+
+        # print(board_game.used_tiles)
+
+        for xxx in board_game.used_tiles:
+            if xxx[1] == 6:
+                neighbours = board_game.getTakenNeighbours(xxx[0])
+                # print(neighbours)
+
+                for yyy in neighbours:
+
+                    # print(str(yyy) + " " + str((yyy, 6) in self.used_tiles))
+
+                    # print(board_game.used_tiles)
+
+                    if (yyy, 6) in board_game.used_tiles:
+                        cross += 1
+
+                    elif (yyy, 9) in board_game.used_tiles:
+                        circle += 1
+
+                cross -= 1
+
+                if cross == circle:
+                    self.score = 0
+
+                elif circle > cross:
+                    self.score = 10 ** cross - 10 ** circle - 1
+
+                else:
+                    self.score = 10 ** cross - 10 ** circle + 1
+
+
+                #print("CROSS: " + str(cross) + " CIRCLE: " + str(circle) + " SCORE: " + str(self.score))
+                return self.score

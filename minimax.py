@@ -30,7 +30,7 @@ class Minimax:
             better = 2000
         
         if depth == 0:
-            return starting_node.totalEvaluation()
+            return starting_node.totalEvaluation(starting_node)
 
         #To achieve turn change on search space generation
         if token == CROSS and depth != 2:
