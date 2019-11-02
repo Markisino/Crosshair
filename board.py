@@ -32,7 +32,11 @@ class Board(NodeMixin): #Add node feature
         self.lastActionDescription = lad
         self.score = 0
     def setLastActionDescription(self, token, pos1, pos2 = ""):
-        token = str(token)
+        if token == 6:
+            token = 'CROSS'
+        elif token == 9:
+            token = 'CIRCLE'
+        #token = str(token)
         if self.lastAction == "M":
             self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
         else:
