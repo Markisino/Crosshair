@@ -16,7 +16,7 @@ def setMoveNodes(starting_node, token, movecount,addcount, steps):
             continue
         for neighbour in starting_node.getNeighbours(used[0]):
             temp_board = starting_node.copyBoard(p = starting_node)
-            temp_board.name = (temp_board.used_tiles)
+            temp_board.name = token#(temp_board.used_tiles)
             
             #temp_board.setBoardToState(starting_node.name, movecount,addcount)
             temp_board.moveTile(token, used[0], neighbour, False)
@@ -41,7 +41,9 @@ def setPlaceNodes(starting_node, token, movecount,addcount, steps):
     		#child_used = base_board.used_tiles.copy()
     		#child_used.append("A") #to check what to decrement later
     		#child = Board(child_used, parent=starting_node)
+            
             child = base_board.copyBoard(p=starting_node)
+            child.name = token
             child.lastAction = "A"
             base_board.aiRemoveTile(ix, iy)
             nodecount+=1
@@ -51,23 +53,23 @@ def setPlaceNodes(starting_node, token, movecount,addcount, steps):
 def generateSearchSpace(starting_node,token,movecount,addcount,steps):
     if steps == 0:
         return
-    setPlaceNodes(starting_node, token, movecount,addcount, steps)
-    setMoveNodes(starting_node, token, movecount,addcount, steps)
-    
+
     #To achieve turn change on search space generation
     if token == 6:
-    	next_token = 9
+        next_token = 9
     elif token == 9:
-    	next_token = 6
+        next_token = 6
 
-    for node in LevelOrderIter(starting_node,maxlevel=steps):
-    	if node!= starting_node:
-    		##TODO: Properly track move and addcount
-    		mode = node.lastAction
-    		if (mode == "A"):
-    			generateSearchSpace(node, next_token, movecount,addcount -1 , steps-1)
-    		elif(mode== "M"):
-    			generateSearchSpace(node, next_token, movecount -1,addcount , steps-1)
+    setPlaceNodes(starting_node, next_token, movecount,addcount, steps)
+    setMoveNodes(starting_node, next_token, movecount,addcount, steps)
+    
+    
+    for node in starting_node.children:
+        mode = node.lastAction
+        if (mode == "A"):
+            generateSearchSpace(node, next_token, movecount,addcount -1 , steps-1)
+        elif(mode== "M"):
+            generateSearchSpace(node, next_token, movecount -1,addcount , steps-1)
 
 
 
@@ -88,13 +90,12 @@ b.setTile(9, "I3")
 
 #init = Node(b)
 
-b.printUsedTiles()
-print(b.name)
+b.name = 6
 generateSearchSpace(b, 6, b.moveCounter,b.addCounter, 2)
 
 
 for pre, fill, node in RenderTree(b):
-    print("%s%s" % (pre, node.used_tiles))
+    print("%s%s" % (pre, node.name))
 
 b.displayBoard()
 print(nodecount)

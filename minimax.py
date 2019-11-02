@@ -30,7 +30,7 @@ class Minimax:
             better = 2000
         
         if depth == 0:
-            return starting_node.totalEvaluation()
+            return starting_node.totalEvaluation(starting_node)
 
         #To achieve turn change on search space generation
         if token == CROSS and depth != 2:
@@ -43,7 +43,9 @@ class Minimax:
         self.setMoveNodes(starting_node, next_token, movecount, addcount, depth)
         for node in starting_node.children:
                 mode = node.lastAction
-                if (mode == "A"):
+                if (mode == "A" ):
+                    if(next_token == CIRCLE and self.tokenleft <= 0):
+                        continue
                     score = self._minimax(node, next_token, movecount, addcount -1, depth - 1)
                     if token == CIRCLE:
                         if score is None:
@@ -80,14 +82,14 @@ class Minimax:
                 return node.copyBoard()         
 
     def setMoveNodes(self, starting_node, token, movecount, addcount, steps):
-        #base_board = Board(str(starting_node.used_tiles))
-        #base_board.setBoardToState(starting_node.name, movecount,addcount)
+       
 
         for used in starting_node.used_tiles:
-
             if used[1] != token:
+                
                 continue
-            for neighbour in starting_node.getNeighbours(used[0]):
+            for neighbour in starting_node.getNeighbours(used[0])[0]:
+
                 temp_board = starting_node.copyBoard(p = starting_node)
                 temp_board.name = (temp_board.used_tiles)
                 
@@ -96,6 +98,7 @@ class Minimax:
                 #child_used = temp_board.used_tiles.copy()
             
                 temp_board.lastAction = ("M")
+                temp_board.setLastActionDescription(token, used[0], neighbour)
                 #child = temp_board.copyBoard()
                 #child.parent = starting_node
                 #print(child.used_tiles)
@@ -104,16 +107,14 @@ class Minimax:
 
 
     def setPlaceNodes(self, starting_node, token, movecount, addcount, steps):
-        #base_board = Board(str(starting_node.used_tiles))
-        #base_board.setBoardToState(starting_node.name, movecount,addcount)
+
         base_board = starting_node.copyBoard()
         for ix,iy in np.ndindex(base_board.board.shape):
             if(base_board.aiSetTile(token, ix, iy)):
-                #child_used = base_board.used_tiles.copy()
-                #child_used.append("A") #to check what to decrement later
-                #child = Board(child_used, parent=starting_node)
+
                 child = base_board.copyBoard(p=starting_node)
                 child.lastAction = "A"
+                child.setLastActionDescription(token, child.used_tiles[-1][0])
                 base_board.aiRemoveTile(ix, iy)
                 self.nodecount += 1
                 #print("Placing: " + str(token))
@@ -121,6 +122,8 @@ class Minimax:
     def aiAction(self, root_node, token, movecount, addcount, depth):
         root_node.score = self._minimax(root_node, token, movecount, addcount, depth)
         print("Total Nodes Created in Tree: ", self.nodecount)
+        print("Token Left " + str(self.tokenleft))
         root_node = self.decision(root_node)
-        self.tokenPlaced()
+        if(self.tokenleft>0):
+            self.tokenPlaced()
         return root_node

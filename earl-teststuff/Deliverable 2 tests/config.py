@@ -20,6 +20,7 @@ SPACESIZE = 50  # size of the tokens and individual board spaces in pixels.
 # ==================================================
 CROSS = 6
 CIRCLE = 9
+DEPTH = 2
 TURNCOUNTER = 30 # Total number of turn allowed in the game. This help to check win condition.
 PLAYERTOKENS = 15 # Starting amount of token for each player.
 HUMAN = 'human'
