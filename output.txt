@@ -133,4 +133,4 @@
 9 moved a tile from H8 to G7
 9 moved a tile from H8 to H7
 9 moved a tile from H8 to I7
-(A1, 6) (H8, 9) (A2, 6) (J8, 9) 
+(A1, 6) (H8, 9) (A2, 6) (J8, 9) (A1, 6) (A1, 6) (G8, 9) 
