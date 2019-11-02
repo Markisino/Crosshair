@@ -77,8 +77,8 @@ class Minimax:
         
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
+        
         for node in root_node.children:
-            print(node.lastActionDescription, file=open('output.txt', 'a'))
             if node.score == root_node.score:
                 return node.copyBoard()         
 
