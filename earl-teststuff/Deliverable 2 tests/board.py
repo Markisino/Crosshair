@@ -7,7 +7,7 @@ import copy
 class Board(NodeMixin): #Add node feature
 
     #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self,name="", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT,config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
+    def __init__(self,name="", lad = "", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT,config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
 
         super(Board, self).__init__()
         self.name = name
@@ -30,8 +30,9 @@ class Board(NodeMixin): #Add node feature
         self.addCounter = addCounter
         self.moveCounter = moveCounter
         self.lastAction = ''
+        self.lastActionDescription = lad
     def copyBoard(self, p = None, c = None):
-        return Board(self.name, p,  c , self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        return Board(self.name, self.lastActionDescription, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -53,6 +54,12 @@ class Board(NodeMixin): #Add node feature
         print(bottom_text)
         print("Move Tokens action left: " + str(self.moveCounter))
 
+    def setLastActionDescription(self, token, pos1, pos2 = ""):
+        token = str(token)
+        if self.lastAction == "M":
+            self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
+        else:
+            self.lastActionDescription = token + " placed  piece at " + pos1
     # Position should be <LETTERNUMBER> e.g 'H2'
     def setTile(self, entry, position, movement=False):
         valid_turn = False
