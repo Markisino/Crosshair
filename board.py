@@ -289,12 +289,12 @@ class Board(NodeMixin): #Add node feature
         multiplier = 0
         evaluation = 0
         other_symbol = 0
-        draw_progress = 0
+        draw_progress = 1
         if symbol == 9:
             other_symbol = 6
             multiplier = 1
         elif symbol ==6:
-            multiplier = -1.5
+            multiplier = -1
             other_symbol = 9
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
@@ -306,45 +306,46 @@ class Board(NodeMixin): #Add node feature
             return 0
         drawn = False
         # Check if X is drawn
-        if (self.board[column][row + 2] == symbol):# right
+        right = self.board[column][row + 2]
+        below = self.board[column + 2][row]
+        bottom_right = self.board[column + 2][row + 2]
+        middle = self.board[column + 1][row + 1]
+        blocked = False
+        if (right== symbol):# right
             draw_progress = draw_progress + 1
-        if(self.board[column + 2][row] == symbol):
-            draw_progress = draw_progress + 1
-        if(self.board[column + 2][row] == symbol):
-            draw_progress = draw_progress + 1 
-        if(self.board[column + 2][row + 2] == symbol):
-            draw_progress = draw_progress + 1 
-        if(self.board[column + 1][row + 1] == symbol):
-            draw_progress = draw_progress + 1
+        elif(right == other_symbol):
+            blocked = True
 
-        if (self.board[column][row + 2] == other_symbol):# right
-            draw_progress = draw_progress - 2
-        if(self.board[column + 2][row] == other_symbol):
-            draw_progress = draw_progress - 2
-        if(self.board[column + 2][row] == other_symbol):
-            draw_progress = draw_progress - 2 
-        if(self.board[column + 2][row + 2] == other_symbol):
-            draw_progress = draw_progress - 2 
-        if(self.board[column + 1][row + 1] == other_symbol):
-            draw_progress = draw_progress - 2
-
-        if(draw_progress == 5):
-            drawn = True
-        evaluation = evaluation + (draw_progress *10*multiplier)  
-            #    and self.board[column + 2][row] == symbol  # below
-            #    and self.board[column + 2][row + 2] == symbol  # bottom right
-            #    and self.board[column + 1][row + 1] == symbol):  # middle
+        if(below == symbol):
+            draw_progress = draw_progress + 1
+        elif(below == other_symbol):
+            blocked = True
+        
+        if(bottom_right == symbol):
+            draw_progress = draw_progress + 1 
+        elif(bottom_right == other_symbol):
+            blocked = True
+        
+        if( middle == symbol):
+            draw_progress = draw_progress + 1
+        elif(middle == other_symbol):
+            blocked = True
 
             
-
+        if(draw_progress == 5):
+            drawn = True
+        if(not blocked):
+            evaluation = evaluation + (draw_progress *10*multiplier)              
+        else:
+            evaluation = evaluation + (draw_progress *15*-multiplier) 
         # Check for strikethrough
         midleft = self.board[column + 1][row]
         midright = self.board[column + 1][row + 2]
 
-        if ((midleft == other_symbol)):
-            evaluation = evaluation + (2500 * -multiplier)
+        if ((midleft == other_symbol) and draw_progress >=3):
+            evaluation = evaluation + (25 * -multiplier)
             if(midright == other_symbol):
-                evaluation = evaluation + (5000 * -multiplier)
+                evaluation = evaluation + (50 * -multiplier)
                 drawn = False
         if(drawn):
             evaluation = evaluation+(50000*multiplier) 
