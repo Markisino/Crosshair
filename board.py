@@ -281,7 +281,77 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return open_cell_list
 
-    def totalEvaluation(self, board_game):
+    def evaluateTile(self, position):
+        row = self.LETTERS.index(position[0].upper())
+        column = config.BOARDHEIGHT - int(position[1:])
+        symbol = self.board[column][row]
+
+        multiplier = 0
+        evaluation = 0
+        other_symbol = 0
+        draw_progress = 0
+        if symbol == 9:
+            other_symbol = 6
+            multiplier = 1
+        elif symbol ==6:
+            multiplier = -1.5
+            other_symbol = 9
+        # OUT OF BOUNDS
+        if row + 2 >= config.BOARDWIDTH:
+            return 0
+        if column + 2 >= config.BOARDHEIGHT:
+            return 0
+        # EMPTY CELL
+        if symbol == 0:
+            return 0
+        drawn = False
+        # Check if X is drawn
+        if (self.board[column][row + 2] == symbol):# right
+            draw_progress = draw_progress + 1
+        if(self.board[column + 2][row] == symbol):
+            draw_progress = draw_progress + 1
+        if(self.board[column + 2][row] == symbol):
+            draw_progress = draw_progress + 1 
+        if(self.board[column + 2][row + 2] == symbol):
+            draw_progress = draw_progress + 1 
+        if(self.board[column + 1][row + 1] == symbol):
+            draw_progress = draw_progress + 1
+
+        if (self.board[column][row + 2] == other_symbol):# right
+            draw_progress = draw_progress - 2
+        if(self.board[column + 2][row] == other_symbol):
+            draw_progress = draw_progress - 2
+        if(self.board[column + 2][row] == other_symbol):
+            draw_progress = draw_progress - 2 
+        if(self.board[column + 2][row + 2] == other_symbol):
+            draw_progress = draw_progress - 2 
+        if(self.board[column + 1][row + 1] == other_symbol):
+            draw_progress = draw_progress - 2
+
+        if(draw_progress == 5):
+            drawn = True
+        evaluation = evaluation + (draw_progress *10*multiplier)  
+            #    and self.board[column + 2][row] == symbol  # below
+            #    and self.board[column + 2][row + 2] == symbol  # bottom right
+            #    and self.board[column + 1][row + 1] == symbol):  # middle
+
+            
+
+        # Check for strikethrough
+        midleft = self.board[column + 1][row]
+        midright = self.board[column + 1][row + 2]
+
+        if ((midleft == other_symbol)):
+            evaluation = evaluation + (2500 * -multiplier)
+            if(midright == other_symbol):
+                evaluation = evaluation + (5000 * -multiplier)
+                drawn = False
+        if(drawn):
+            evaluation = evaluation+(50000*multiplier) 
+        #if(evaluation!=0):
+        #    print(str(evaluation))
+        return evaluation
+    def totalEvaluation(self):
         # TODO: calculate the total value returns that will be used for minimax.
         # This should return a total value.
 
@@ -289,35 +359,37 @@ class Board(NodeMixin): #Add node feature
         circle = 0
 
         # print(board_game.used_tiles)
-
-        for xxx in board_game.used_tiles:
-            if xxx[1] == 6:
-                neighbours = board_game.getTakenNeighbours(xxx[0])
-                # print(neighbours)
-
-                for yyy in neighbours:
-
-                    # print(str(yyy) + " " + str((yyy, 6) in self.used_tiles))
-
-                    # print(board_game.used_tiles)
-
-                    if (yyy, 6) in board_game.used_tiles:
-                        cross += 1
-
-                    elif (yyy, 9) in board_game.used_tiles:
-                        circle += 1
-
-                cross -= 1
-
-                if cross == circle:
-                    self.score = 0
-
-                elif circle > cross:
-                    self.score = 10 ** cross - 10 ** circle - 1
-
-                else:
-                    self.score = 10 ** cross - 10 ** circle + 1
+        evalu = 0
+        for xxx in self.used_tiles:
+            evalu = evalu + self.evaluateTile(xxx[0])
+            
+      #      if xxx[1] == 6:
+      #          neighbours = self.getTakenNeighbours(xxx[0])
+      #          # print(neighbours)
+#
+      #          for yyy in neighbours:
+#
+      #              # print(str(yyy) + " " + str((yyy, 6) in self.used_tiles))
+#
+      #              # print(board_game.used_tiles)
+#
+      #              if (yyy, 6) in self.used_tiles:
+      #                  cross += 1
+#
+      #              elif (yyy, 9) in self.used_tiles:
+      #                  circle += 1
+#
+      #          cross -= 1
+#
+      #  if cross == circle:
+      #      self.score = 0
+#
+      #  elif circle > cross:
+      #      self.score = 10 ** cross - 10 ** circle - 1
+#
+      #  else:
+      #      self.score = 10 ** cross - 10 ** circle + 1
 
 
                 #print("CROSS: " + str(cross) + " CIRCLE: " + str(circle) + " SCORE: " + str(self.score))
-                return self.score
+        return evalu

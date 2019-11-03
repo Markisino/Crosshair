@@ -8,7 +8,7 @@ go there for the sake of simplicity and clarity.
 # ==================================================
 # BELOW ARE CONFIG FOR OUR GAME SCREEN
 # ==================================================
-BOARDWIDTH = 13  # how many spaces wide the board is
+BOARDWIDTH = 12  # how many spaces wide the board is
 BOARDHEIGHT = 10  # how many spaces tall the board is
 
 DIFFICULTY = 2  # how many moves to look ahead.

@@ -30,7 +30,7 @@ class Minimax:
             better = 2000
         
         if depth == 0:
-            return starting_node.totalEvaluation(starting_node)
+            return starting_node.totalEvaluation()
 
         #To achieve turn change on search space generation
         if token == CROSS and depth != 2:
@@ -123,7 +123,9 @@ class Minimax:
         root_node.score = self._minimax(root_node, token, movecount, addcount, depth)
         print("Total Nodes Created in Tree: ", self.nodecount)
         print("Token Left " + str(self.tokenleft))
+        print("Score : " + str(root_node.score))
         root_node = self.decision(root_node)
+        self.nodecount = 1
         if(self.tokenleft>0):
             self.tokenPlaced()
         return root_node

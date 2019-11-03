@@ -27,7 +27,7 @@ def run(board_game, human_turn):
         board_game.printUsedTiles()
         #print(board_game.used_tiles)
         print(board_game.lastActionDescription)
-
+       
         print("\n===============================================================\n")
 
         board_game.checkWinner()
