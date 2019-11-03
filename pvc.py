@@ -12,10 +12,10 @@ player2.symbol = CIRCLE
 
 
 # This is the game logic.
-def run(board_game, human_turn):
+def run(board_game, human_turn, strong_heuristic):
     help_enable = True
     # This is the game loop
-    message()
+    # message()
     while not board_game.winner_found:
         print("\n===============================================================")
         board_game.displayBoard()
@@ -38,7 +38,7 @@ def run(board_game, human_turn):
         # We enter in this phase if it is the human player turn.
         # ==========================================================
         if human_turn:
-            print("Current turn: {}".format(player1.type))
+            # print("Current turn: {}".format(player1.type))
             user_input = input("Enter your choosen action: ").upper()
             actions = user_input.split()
 
@@ -99,13 +99,12 @@ def run(board_game, human_turn):
         # We enter in this phase if it is the comuter player turn.
         # ==========================================================        
         else:
-            print("Current turn: {}".format(player2.type))
+            # print("Current turn: {}".format(player2.type))
 
-            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH)
+            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic)
             human_turn = True
 
 
-# function to prompt the welcome message
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
@@ -156,7 +155,5 @@ def neighbourChecker(dest, neighbourList):
 
     return False
 
-if __name__ == '__main__':
-    run(board_game, human_turn)
-
-
+def runPVC(strong_heuristic):
+    run(board_game, human_turn, strong_heuristic)
