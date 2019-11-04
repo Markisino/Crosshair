@@ -1,4 +1,4 @@
-import pvc, pvp
+import pvc, pvp, cvc
 
 # function to prompt the welcome message
 def message():
@@ -21,6 +21,8 @@ def mainmenu():
     elif user_input == '3':
         strong_heuristic = True
         pvc.runPVC(strong_heuristic)
+    elif user_input == '4':
+        cvc.run()
     elif user_input != 'q':
         mainmenu()
 
