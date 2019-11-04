@@ -380,4 +380,7 @@ class Board(NodeMixin): #Add node feature
 
         else:
            self.score = 10 ** cross - 10 ** circle + 1
+
+        self.score *= -1
+
         return self.score
