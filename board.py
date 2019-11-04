@@ -206,9 +206,9 @@ class Board(NodeMixin): #Add node feature
     def printUsedTiles(self):
         for tile in self.used_tiles:
             if tile[1] == 6:
-                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
             elif tile[1] == 9:
-                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
 
     def setBoardToState(self, tiles, movecount,addcount):
         print(tiles)
