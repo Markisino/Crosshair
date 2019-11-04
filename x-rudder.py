@@ -27,7 +27,7 @@ def run(board_game, human_turn):
         board_game.printUsedTiles()
         #print(board_game.used_tiles)
         print(board_game.lastActionDescription)
-
+       
         print("\n===============================================================\n")
 
         board_game.checkWinner()
@@ -61,6 +61,8 @@ def run(board_game, human_turn):
 
                 actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
                 if human_turn:
+                    if(player1.tokenleft<=0):
+                        continue
                     valid = board_game.setTile(player1.symbol, actions[1])
                     if valid:
                         player1.tokenPlaced()
@@ -70,6 +72,8 @@ def run(board_game, human_turn):
                         print("\nTile already occupied!")
 
                 else:
+                    if(player2.tokenleft<=0):
+                        continue
                     valid = board_game.setTile(player2.symbol, actions[1])
                     if valid:
                         player2.tokenPlaced()
@@ -96,7 +100,8 @@ def run(board_game, human_turn):
         # ==========================================================        
         else:
             print("Current turn: {}".format(player2.type))
-            board_game = player2.aiAction(board_game, player2.symbol, board_game.moveCounter, board_game.addCounter, DEPTH)
+
+            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH)
             human_turn = True
 
 
