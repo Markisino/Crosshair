@@ -3,6 +3,7 @@ import config
 import random
 from anytree import NodeMixin, RenderTree
 import copy
+import math
 #DELIVERABLE 2 STUFF
 
 class Board(NodeMixin): #Add node feature
@@ -285,7 +286,6 @@ class Board(NodeMixin): #Add node feature
         return evalu
 
     def evaluateTile(self, position):
-        #I made this since I wanted the AI to react faster
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         symbol = self.board[column][row]
@@ -298,7 +298,7 @@ class Board(NodeMixin): #Add node feature
             other_symbol = 6
             multiplier = 1
         elif symbol ==6:
-            multiplier = -1
+            multiplier = -1.5
             other_symbol = 9
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
@@ -339,9 +339,9 @@ class Board(NodeMixin): #Add node feature
         if(draw_progress == 5):
             drawn = True
         if(not blocked):
-            evaluation = evaluation + (draw_progress *10*multiplier)              
+            evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
-            evaluation = evaluation + (draw_progress *15*-multiplier) 
+            evaluation = evaluation + ((13**draw_progress )*-multiplier) 
         # Check for strikethrough
         midleft = self.board[column + 1][row]
         midright = self.board[column + 1][row + 2]
@@ -352,7 +352,7 @@ class Board(NodeMixin): #Add node feature
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
         if(drawn):
-            evaluation = evaluation+(50000*multiplier) 
+            evaluation = evaluation+(math.inf*multiplier) 
         #if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation   
