@@ -22,7 +22,7 @@ def mainmenu():
         strong_heuristic = True
         pvc.runPVC(strong_heuristic)
     elif user_input == '4':
-        cvc.run()
+        cvc.runCVC()
     elif user_input != 'q':
         mainmenu()
 

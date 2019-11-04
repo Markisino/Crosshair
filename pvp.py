@@ -19,6 +19,8 @@ def run(board_game, player1_turn):
         print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
         print("the current used tiles in the game")
         board_game.printUsedTiles()
+
+        print("\n"+board_game.lastActionDescription)
         print("\n===============================================================\n")
 
         board_game.checkWinner()

@@ -96,5 +96,5 @@ def neighbourChecker(dest, neighbourList):
 
     return False
 
-def runPVC(strong_heuristic):
+def runCVC(strong_heuristic):
     run(board_game, player1_turn)
