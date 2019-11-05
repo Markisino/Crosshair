@@ -24,10 +24,7 @@ class Minimax:
     # This function use Minimax algorith starting with MAX at root and return a score.
     def _minimax(self, starting_node, token, movecount, addcount, depth):
         starting_node.name = token
-        if token == CIRCLE:
-            better = -2000
-        else:
-            better = 2000
+        better = 0
         
         if depth == 0:
             return starting_node.totalEvaluation()
