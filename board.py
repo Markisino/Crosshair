@@ -373,7 +373,7 @@ class Board(NodeMixin):  # Add node feature
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
         if(drawn):
-            evaluation = evaluation + (100000 * multiplier)
+            evaluation = evaluation + (1000000 * multiplier)
         # if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation
