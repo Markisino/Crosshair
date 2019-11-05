@@ -1,7 +1,7 @@
 # This file is for the AI class with Minimax Algorithm
 
 import numpy as np
-
+import time
 from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER
 
 class Minimax:
@@ -117,10 +117,13 @@ class Minimax:
                 #print("Placing: " + str(token))
 
     def aiAction(self, root_node, token, movecount, addcount, depth):
+        start_time = time.time()
         root_node.score = self._minimax(root_node, token, movecount, addcount, depth)
+        end_time = round(time.time() - start_time, 2)
         print("Total Nodes Created in Tree: ", self.nodecount)
         print("Token Left " + str(self.tokenleft))
         print("Score : " + str(root_node.score))
+        print("Time taken: "+str(end_time))
         root_node = self.decision(root_node)
         self.nodecount = 1
         if(self.tokenleft>0):
