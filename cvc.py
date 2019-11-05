@@ -1,22 +1,26 @@
 import board
 import player
 import minimax
+import random
 
 from config import CROSS, CIRCLE, DEPTH
 
 board_game = board.Board()
 player1 = minimax.Minimax()
 player2 = minimax.Minimax()
-player1_turn = True
-player1.symbol = CROSS
-player2.symbol = CIRCLE
+# player1_turn = True
+player1.symbol = CIRCLE # Weak Heuristic
+player2.symbol = CROSS  # Strong Heuristic
 
 
 # This is the game logic.
-def run(board_game, player1_turn):
+def run(board_game):
     help_enable = True
+    
+    player1_turn = startingPlayer()
+    player1_turn = randomStartingPosition(board_game, player1_turn)
+    print(player1_turn)
     # This is the game loop
-    # message()
     while not board_game.winner_found:
         print("\n===============================================================")
         board_game.displayBoard()
@@ -40,16 +44,37 @@ def run(board_game, player1_turn):
         # ==========================================================
 
         if player1_turn:
-            board_game = player1.aiAction(board_game, player1.symbol, board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic = False)
+            board_game = player1.aiAction(board_game, player1.symbol, board_game.moveCounter, board_game.addCounter, DEPTH, False)
+            player1_turn = False
         else:
             # print("Current turn: {}".format(player2.type))
-            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic = True)
+            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, True)
             player1_turn = True
 
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
     # help()
+
+def startingPlayer():
+    starter = random.randint(1, 2)
+    if starter == 1:
+        return True
+    elif starter == 2:
+        return False
+
+def randomStartingPosition(board_game, player1_turn):
+    LETTERS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L')
+    row = LETTERS[random.randrange(0, len(LETTERS))]
+    col = random.randrange(1, 10)
+    pos = row + str(col)
+    print(pos)
+    if player1_turn:
+        board_game.setTile(CIRCLE, pos)
+        return False
+    else:
+        board_game.setTile(CROSS, pos)
+        return True
 
 
 # Function to switch turn between player
@@ -96,5 +121,5 @@ def neighbourChecker(dest, neighbourList):
 
     return False
 
-def runCVC(strong_heuristic):
-    run(board_game, player1_turn)
+def runCVC():
+    run(board_game)
