@@ -5,12 +5,13 @@ from anytree import NodeMixin, RenderTree
 import copy
 import math
 import random
-#DELIVERABLE 2 STUFF
+# DELIVERABLE 2 STUFF
 
-class Board(NodeMixin): #Add node feature
 
-    #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self ,name="", lad = "", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
+class Board(NodeMixin):  # Add node feature
+
+    # def __init__(self,name,length,width, parent=None, children=None):
+    def __init__(self, name="", lad="", parent=None, children=None, used_tiles=[], board=np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter=config.TURNCOUNTER):
 
         super(Board, self).__init__()
         self.name = name
@@ -33,7 +34,8 @@ class Board(NodeMixin): #Add node feature
         self.lastAction = ''
         self.lastActionDescription = lad
         self.score = 0
-    def setLastActionDescription(self, token, pos1, pos2 = ""):
+
+    def setLastActionDescription(self, token, pos1, pos2=""):
         if token == 6:
             token = 'CROSS'
         elif token == 9:
@@ -43,9 +45,10 @@ class Board(NodeMixin): #Add node feature
             self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
         else:
             self.lastActionDescription = token + " placed  piece at " + pos1
-    def copyBoard(self, p = None, c = None):
-        return Board(self.name, self.lastActionDescription, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
-    
+
+    def copyBoard(self, p=None, c=None):
+        return Board(self.name, self.lastActionDescription, p, c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -77,7 +80,7 @@ class Board(NodeMixin): #Add node feature
         row = self.LETTERS.index(position[0])
         column = config.BOARDHEIGHT - int(position[1:])
         self.board[column][row] = entry
-        #print(position)
+        # print(position)
         self.used_tiles.append((position, entry))  # to make checking easier
 
         valid_turn = True
@@ -95,7 +98,7 @@ class Board(NodeMixin): #Add node feature
                 open_cells = self.showNeighbours(previous_position)
             else:
                 open_cells = self.getNeighbours(previous_position)
-            valid_move, neigbour_text = ((new_position in open_cells[0]),(open_cells[1]))
+            valid_move, neigbour_text = ((new_position in open_cells[0]), (open_cells[1]))
 
             if valid_move:
                 self.setTile(entry, new_position, True)
@@ -122,7 +125,7 @@ class Board(NodeMixin): #Add node feature
     def showNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
-        
+
         final_text = ""
 
         open_cell_list = []
@@ -149,7 +152,6 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
                 row_text += cell
 
-            
             final_text += row_text + "\n"
         bottom_text = "   "
         for x in range(-1, 2):
@@ -216,36 +218,35 @@ class Board(NodeMixin): #Add node feature
             elif tile[1] == 9:
                 print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
 
-    def setBoardToState(self, tiles, movecount,addcount):
+    def setBoardToState(self, tiles, movecount, addcount):
         print(tiles)
         rows = config.BOARDHEIGHT
         columns = config.BOARDWIDTH
         self.board = np.zeros(shape=(rows, columns))
         self.board = self.board.astype(int)
         for tile in tiles:
-            self.setTile(tile[1],tile[0])
+            self.setTile(tile[1], tile[0])
         self.moveCounter = movecount
         self.addCounter = addcount
 
-    def aiSetTile(self,entry,x,y):
+    def aiSetTile(self, entry, x, y):
         letter = self.LETTERS[y]
-        num = str(config.BOARDHEIGHT -x)
-        pos = letter+num
+        num = str(config.BOARDHEIGHT - x)
+        pos = letter + num
         if(self.board[x][y] != 0):
             return False
         self.board[x][y] = entry
-        self.used_tiles.append((pos,entry))
+        self.used_tiles.append((pos, entry))
         self.addCounter -= 1
-        return True #to remove
+        return True  # to remove
 
-    
-    def aiRemoveTile(self,x,y):
+    def aiRemoveTile(self, x, y):
         self.board[x][y] = 0
-        self.used_tiles.pop() 
+        self.used_tiles.pop()
 
-        self.addCounter += 1 
+        self.addCounter += 1
 
-    def getNeighbours(self,position):
+    def getNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         open_cell_list = []
@@ -260,10 +261,9 @@ class Board(NodeMixin): #Add node feature
                         relative_row < 0):
                     continue
                 if self.board[relative_column][relative_row] == 0:
-            
-                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
-        return (open_cell_list,"")
 
+                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+        return (open_cell_list, "")
 
     def getTakenNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
@@ -283,7 +283,7 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return open_cell_list
 
-    def evaluateTile(self, position, alter = False):
+    def evaluateTile(self, position, alter=False):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         symbol = self.board[column][row]
@@ -295,10 +295,10 @@ class Board(NodeMixin): #Add node feature
         if symbol == 9:
             other_symbol = 6
             multiplier = 1
-        elif symbol ==6:
+        elif symbol == 6:
             multiplier = -1.5
             other_symbol = 9
-       
+
         if not alter:
              # OUT OF BOUNDS
             if row + 2 >= config.BOARDWIDTH:
@@ -312,8 +312,8 @@ class Board(NodeMixin): #Add node feature
             # Check if X is drawn
             first = self.board[column][row + 2]     # right
             second = self.board[column + 2][row]    # bottom
-            third = self.board[column + 2][row + 2] #bottom_right
-            middle = self.board[column + 1][row + 1] #middle
+            third = self.board[column + 2][row + 2]  # bottom_right
+            middle = self.board[column + 1][row + 1]  # middle
             blocked = False
 
             # Check for strikethrough
@@ -323,7 +323,7 @@ class Board(NodeMixin): #Add node feature
              # OUT OF BOUNDS
             if row - 2 < 0:
                 return 0
-            if column -2 < 0:
+            if column - 2 < 0:
                 return 0
             # EMPTY CELL
             if symbol == 0:
@@ -332,15 +332,15 @@ class Board(NodeMixin): #Add node feature
             # Check if X is drawn
             first = self.board[column][row - 2]     # left
             second = self.board[column - 2][row]    # above
-            third = self.board[column - 2][row - 2] #above left
-            middle = self.board[column - 1][row - 1] #middle
+            third = self.board[column - 2][row - 2]  # above left
+            middle = self.board[column - 1][row - 1]  # middle
             blocked = False
 
             # Check for strikethrough
             blocker0 = self.board[column - 1][row]
-            blocker1 = self.board[column - 1][row - 2]                
+            blocker1 = self.board[column - 1][row - 2]
 
-        if (first== symbol):# first
+        if (first == symbol):  # first
             draw_progress = draw_progress + 1
         elif(first == other_symbol):
             blocked = True
@@ -349,36 +349,35 @@ class Board(NodeMixin): #Add node feature
             draw_progress = draw_progress + 1
         elif(second == other_symbol):
             blocked = True
-        
+
         if(third == symbol):
-            draw_progress = draw_progress + 1 
+            draw_progress = draw_progress + 1
         elif(third == other_symbol):
             blocked = True
-        
-        if( middle == symbol):
+
+        if(middle == symbol):
             draw_progress = draw_progress + 1
         elif(middle == other_symbol):
             blocked = True
 
-            
         if(draw_progress == 5):
             drawn = True
         if(not blocked):
-            evaluation = evaluation + ((5**draw_progress)*multiplier)              
+            evaluation = evaluation + ((5**draw_progress) * multiplier)
         else:
-            evaluation = evaluation + ((13**draw_progress )*-multiplier) 
+            evaluation = evaluation + ((13**draw_progress) * -multiplier)
 
-
-        if ((blocker0 == other_symbol) and draw_progress >=3):
+        if ((blocker0 == other_symbol) and draw_progress >= 3):
             evaluation = evaluation + (25 * -multiplier)
             if(blocker1 == other_symbol):
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
         if(drawn):
-            evaluation = evaluation+(math.inf*multiplier) 
-        #if(evaluation!=0):
+            evaluation = evaluation + (100000 * multiplier)
+        # if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation
+
     def totalEvaluation(self):
         # TODO: calculate the total value returns that will be used for minimax.
         # This should return a total value.
@@ -388,10 +387,11 @@ class Board(NodeMixin): #Add node feature
 
         # print(board_game.used_tiles)
         evalu = 0
-        flip = (random.randint(0,1) == 1)
+        #flip = (random.randint(0, 1) == 1)
         for xxx in self.used_tiles:
-            evalu = evalu + self.evaluateTile(xxx[0], alter = flip)
-            
+            evalu = evalu + self.evaluateTile(xxx[0], alter=True)
+            evalu = evalu + self.evaluateTile(xxx[0], alter = False)
+
       #      if xxx[1] == 6:
       #          neighbours = self.getTakenNeighbours(xxx[0])
       #          # print(neighbours)
@@ -419,6 +419,5 @@ class Board(NodeMixin): #Add node feature
       #  else:
       #      self.score = 10 ** cross - 10 ** circle + 1
 
-
-                #print("CROSS: " + str(cross) + " CIRCLE: " + str(circle) + " SCORE: " + str(self.score))
+            #print("CROSS: " + str(cross) + " CIRCLE: " + str(circle) + " SCORE: " + str(self.score))
         return evalu
