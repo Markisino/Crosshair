@@ -362,6 +362,7 @@ class Board(NodeMixin):  # Add node feature
 
         if(draw_progress == 5):
             drawn = True
+            return 5000000 * multiplier
         if(not blocked):
             evaluation = evaluation + ((5**draw_progress) * multiplier)
         else:
@@ -372,8 +373,7 @@ class Board(NodeMixin):  # Add node feature
             if(blocker1 == other_symbol):
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
-        if(drawn):
-            evaluation = evaluation + (5000000 * multiplier)
+
         # if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation
@@ -389,8 +389,13 @@ class Board(NodeMixin):  # Add node feature
         evalu = 0
         #flip = (random.randint(0, 1) == 1)
         for xxx in self.used_tiles:
+            res = self.evaluateTile(xxx[0], alter = False)
             evalu = evalu + self.evaluateTile(xxx[0], alter=True)
-            evalu = evalu + self.evaluateTile(xxx[0], alter = False)
+            if((evalu >=5000000 ) or (evalu < -5000000)):
+                return evalu
+                evalu = evalu + self.evaluateTile(xxx[0], alter = False)
+                if((evalu >=5000000 ) or (evalu < -5000000)):
+                    return evalu
 
       #      if xxx[1] == 6:
       #          neighbours = self.getTakenNeighbours(xxx[0])
