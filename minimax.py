@@ -1,7 +1,7 @@
 # This file is for the AI class with Minimax Algorithm
 
 import numpy as np
-
+import time
 from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER
 
 class Minimax:
@@ -22,18 +22,19 @@ class Minimax:
         
 
     # This function use Minimax algorith starting with MAX at root and return a score.
-    def _minimax(self, starting_node, token, movecount, addcount, depth, strong_heuristic):
+    def _minimax(self, starting_node, token, movecount, addcount, depth, heuristic_two):
         starting_node.name = token
-        if token == CIRCLE:
-            better = -2000
-        else:
-            better = 2000
-        
+        # if token == CIRCLE:
+        #     better = -2000
+        # else:
+        #     better = 2000
+        better = 0
+
         if depth == 0:
-            if strong_heuristic:
-                return starting_node.totalEvaluationStrong()
+            if heuristic_two:
+                return starting_node.totalEvaluationStrongHeuristic()
             else:
-                return starting_node.totalEvaluationWeak()
+                return starting_node.totalEvaluationSimpleHeuristic()
 
         #To achieve turn change on search space generation
         if token == CROSS and depth != 2:
@@ -49,7 +50,7 @@ class Minimax:
                 if (mode == "A" ):
                     if(next_token == CIRCLE and self.tokenleft <= 0):
                         continue
-                    score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, strong_heuristic)
+                    score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two)
                     if token == CIRCLE:
                         if score is None:
                             score = 'CIRCLE'
@@ -63,7 +64,7 @@ class Minimax:
                             better = score
                             node.parent.score = score
                 elif(mode == "M"):
-                    score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, strong_heuristic)
+                    score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
                     if token == CIRCLE:
                         if score is None:
                             score = 'CIRCLE'
@@ -115,11 +116,15 @@ class Minimax:
                 base_board.aiRemoveTile(ix, iy)
                 self.nodecount += 1
 
-    def aiAction(self, root_node, token, movecount, addcount, depth, strong_heuristic):
-        root_node.score = self._minimax(root_node, token, movecount, addcount, depth, strong_heuristic)
+    def aiAction(self, root_node, token, movecount, addcount, depth, heuristic_two):
+        start_time = time.time()
+        root_node.score = self._minimax(root_node, token, movecount, addcount, depth, heuristic_two)
+        end_time = round(time.time() - start_time, 2)
         print("Total Nodes Created in Tree: ", self.nodecount)
         print("Token Left " + str(self.tokenleft))
         print("Score : " + str(root_node.score))
+        print("Last Action is: {}. Time to decide {}: ".format(root_node.lastActionDescription, token), end_time)
+        print("Last Action is: {}. Time to decide {}: ".format(root_node.lastActionDescription, token), end_time, file=open('data.txt', 'a'))
         root_node = self.decision(root_node)
         self.nodecount = 1
         if(self.tokenleft > 0):

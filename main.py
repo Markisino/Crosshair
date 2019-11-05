@@ -1,4 +1,4 @@
-import pvc, pvp
+import pvc, pvp, cvc
 
 # function to prompt the welcome message
 def message():
@@ -6,8 +6,9 @@ def message():
     print("Choose what kind of mode you want to play:")
     print("===============================================================")
     print("1 - Player vs Player")
-    print("2 - Player vs Computer (Weak Heuristic)")
-    print("3 - Player vs Computer (Strong Heuristic)")
+    print("2 - Player vs Computer (Easy)")
+    print("3 - Player vs Computer (Hard)")
+    print("4 - Computer vs Computer")
     print("Q - to quit")
     
 def mainmenu():
@@ -16,11 +17,13 @@ def mainmenu():
     if user_input == '1':
         pvp.runPVP()
     elif user_input == '2':
-        strong_heuristic = False
-        pvc.runPVC(strong_heuristic)
+        heuristic_two = False
+        pvc.runPVC(heuristic_two)
     elif user_input == '3':
-        strong_heuristic = True
-        pvc.runPVC(strong_heuristic)
+        heuristic_two = True
+        pvc.runPVC(heuristic_two)
+    elif user_input == '4':
+        cvc.runCVC()
     elif user_input != 'q':
         mainmenu()
 

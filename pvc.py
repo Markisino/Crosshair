@@ -1,6 +1,7 @@
 import board
 import player
 import minimax
+
 from config import CROSS, CIRCLE, DEPTH
 
 board_game = board.Board()
@@ -61,7 +62,7 @@ def run(board_game, human_turn, strong_heuristic):
 
                 actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
                 if human_turn:
-                    if(player1.tokenleft<=0):
+                    if(player1.tokenleft <= 0):
                         continue
                     valid = board_game.setTile(player1.symbol, actions[1])
                     if valid:
@@ -72,7 +73,7 @@ def run(board_game, human_turn, strong_heuristic):
                         print("\nTile already occupied!")
 
                 else:
-                    if(player2.tokenleft<=0):
+                    if(player2.tokenleft <= 0):
                         continue
                     valid = board_game.setTile(player2.symbol, actions[1])
                     if valid:
@@ -100,7 +101,6 @@ def run(board_game, human_turn, strong_heuristic):
         # ==========================================================        
         else:
             # print("Current turn: {}".format(player2.type))
-
             board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic)
             human_turn = True
 
