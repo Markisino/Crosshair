@@ -4,6 +4,7 @@ import random
 from anytree import NodeMixin, RenderTree
 import copy
 import math
+import random
 #DELIVERABLE 2 STUFF
 
 class Board(NodeMixin): #Add node feature
@@ -125,7 +126,7 @@ class Board(NodeMixin): #Add node feature
         final_text = ""
 
         open_cell_list = []
-        print('Available surrounding position of {} (?) are shown below:'.format(position))
+        print('Available surrounding position of {} (?) are shown second:'.format(position))
         for y in range(-1, 2):
             relative_column = column + y
             if (relative_column >= config.BOARDHEIGHT or
@@ -173,19 +174,19 @@ class Board(NodeMixin): #Add node feature
             return False
 
         # Check if X is drawn
-        if (self.board[column][row + 2] == symbol  # right
-                and self.board[column + 2][row] == symbol  # below
-                and self.board[column + 2][row + 2] == symbol  # bottom right
+        if (self.board[column][row + 2] == symbol  # first
+                and self.board[column + 2][row] == symbol  # second
+                and self.board[column + 2][row + 2] == symbol  # bottom first
                 and self.board[column + 1][row + 1] == symbol):  # middle
 
             x_drawn = True
 
         # Check for strikethrough
-        midleft = self.board[column + 1][row]
-        midright = self.board[column + 1][row + 2]
+        blocker0 = self.board[column + 1][row]
+        blocker1 = self.board[column + 1][row + 2]
 
-        if ((midleft != 0 and midleft != symbol)
-                and (midright != 0 and midright != symbol)):
+        if ((blocker0 != 0 and blocker0 != symbol)
+                and (blocker1 != 0 and blocker1 != symbol)):
             crossed = True
 
         self.winner_found = (x_drawn and not crossed)
@@ -282,7 +283,7 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return open_cell_list
 
-    def evaluateTile(self, position):
+    def evaluateTile(self, position, alter = False):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         symbol = self.board[column][row]
@@ -297,34 +298,61 @@ class Board(NodeMixin): #Add node feature
         elif symbol ==6:
             multiplier = -1.5
             other_symbol = 9
-        # OUT OF BOUNDS
-        if row + 2 >= config.BOARDWIDTH:
-            return 0
-        if column + 2 >= config.BOARDHEIGHT:
-            return 0
-        # EMPTY CELL
-        if symbol == 0:
-            return 0
-        drawn = False
-        # Check if X is drawn
-        right = self.board[column][row + 2]
-        below = self.board[column + 2][row]
-        bottom_right = self.board[column + 2][row + 2]
-        middle = self.board[column + 1][row + 1]
-        blocked = False
-        if (right== symbol):# right
+       
+        if not alter:
+             # OUT OF BOUNDS
+            if row + 2 >= config.BOARDWIDTH:
+                return 0
+            if column + 2 >= config.BOARDHEIGHT:
+                return 0
+            # EMPTY CELL
+            if symbol == 0:
+                return 0
+            drawn = False
+            # Check if X is drawn
+            first = self.board[column][row + 2]     # right
+            second = self.board[column + 2][row]    # bottom
+            third = self.board[column + 2][row + 2] #bottom_right
+            middle = self.board[column + 1][row + 1] #middle
+            blocked = False
+
+            # Check for strikethrough
+            blocker0 = self.board[column + 1][row]
+            blocker1 = self.board[column + 1][row + 2]
+        else:
+             # OUT OF BOUNDS
+            if row - 2 < 0:
+                return 0
+            if column -2 < 0:
+                return 0
+            # EMPTY CELL
+            if symbol == 0:
+                return 0
+            drawn = False
+            # Check if X is drawn
+            first = self.board[column][row - 2]     # left
+            second = self.board[column - 2][row]    # above
+            third = self.board[column - 2][row - 2] #above left
+            middle = self.board[column - 1][row - 1] #middle
+            blocked = False
+
+            # Check for strikethrough
+            blocker0 = self.board[column - 1][row]
+            blocker1 = self.board[column - 1][row - 2]                
+
+        if (first== symbol):# first
             draw_progress = draw_progress + 1
-        elif(right == other_symbol):
+        elif(first == other_symbol):
             blocked = True
 
-        if(below == symbol):
+        if(second == symbol):
             draw_progress = draw_progress + 1
-        elif(below == other_symbol):
+        elif(second == other_symbol):
             blocked = True
         
-        if(bottom_right == symbol):
+        if(third == symbol):
             draw_progress = draw_progress + 1 
-        elif(bottom_right == other_symbol):
+        elif(third == other_symbol):
             blocked = True
         
         if( middle == symbol):
@@ -339,13 +367,11 @@ class Board(NodeMixin): #Add node feature
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
             evaluation = evaluation + ((13**draw_progress )*-multiplier) 
-        # Check for strikethrough
-        midleft = self.board[column + 1][row]
-        midright = self.board[column + 1][row + 2]
 
-        if ((midleft == other_symbol) and draw_progress >=3):
+
+        if ((blocker0 == other_symbol) and draw_progress >=3):
             evaluation = evaluation + (25 * -multiplier)
-            if(midright == other_symbol):
+            if(blocker1 == other_symbol):
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
         if(drawn):
@@ -362,8 +388,9 @@ class Board(NodeMixin): #Add node feature
 
         # print(board_game.used_tiles)
         evalu = 0
+        flip = (random.randint(0,1) == 1)
         for xxx in self.used_tiles:
-            evalu = evalu + self.evaluateTile(xxx[0])
+            evalu = evalu + self.evaluateTile(xxx[0], alter = flip)
             
       #      if xxx[1] == 6:
       #          neighbours = self.getTakenNeighbours(xxx[0])
