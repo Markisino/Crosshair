@@ -365,7 +365,7 @@ class Board(NodeMixin):  # Add node feature
         if(not blocked):
             evaluation = evaluation + ((5**draw_progress) * multiplier)
         else:
-            evaluation = evaluation + ((13**draw_progress) * -multiplier)
+            evaluation = evaluation + ((10**draw_progress) * -multiplier)
 
         if ((blocker0 == other_symbol) and draw_progress >= 3):
             evaluation = evaluation + (25 * -multiplier)
@@ -373,7 +373,7 @@ class Board(NodeMixin):  # Add node feature
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
         if(drawn):
-            evaluation = evaluation + (1000000 * multiplier)
+            evaluation = evaluation + (5000000 * multiplier)
         # if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation
