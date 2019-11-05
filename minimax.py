@@ -32,9 +32,9 @@ class Minimax:
 
         if depth == 0:
             if heuristic_two:
-                return starting_node.totalEvaluationStrong()
+                return starting_node.totalEvaluationStrongHeuristic()
             else:
-                return starting_node.totalEvaluationWeak()
+                return starting_node.totalEvaluationSimpleHeuristic()
 
         #To achieve turn change on search space generation
         if token == CROSS and depth != 2:

@@ -278,7 +278,7 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return open_cell_list
 
-    def totalEvaluationStrong(self):
+    def totalEvaluationStrongHeuristic(self):
         evalu = 0
         for xxx in self.used_tiles:
             evalu = evalu + self.evaluateTile(xxx[0])
@@ -356,7 +356,7 @@ class Board(NodeMixin): #Add node feature
         #if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation   
-    def totalEvaluationWeak(self):
+    def totalEvaluationSimpleHeuristic(self):
 
         cross = 0
         circle = 0

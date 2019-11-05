@@ -6,8 +6,8 @@ def message():
     print("Choose what kind of mode you want to play:")
     print("===============================================================")
     print("1 - Player vs Player")
-    print("2 - Player vs Computer (Heuristic Number 1)")
-    print("3 - Player vs Computer (Heuristic Number 2)")
+    print("2 - Player vs Computer (Easy)")
+    print("3 - Player vs Computer (Hard)")
     print("4 - Computer vs Computer")
     print("Q - to quit")
     

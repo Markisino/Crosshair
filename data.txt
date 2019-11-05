@@ -102,3 +102,43 @@ Last Action is: CROSS placed  piece at E6. Time to decide 9:  2.56
 Last Action is: CIRCLE moved a tile from G6 to F6. Time to decide 6:  2.51
 Last Action is: CROSS placed  piece at L6. Time to decide 9:  2.91
 Last Action is: CIRCLE moved a tile from I4 to J3. Time to decide 6:  2.69
+Last Action is: . Time to decide 9:  0.82
+Last Action is: CIRCLE placed  piece at D5. Time to decide 6:  0.85
+Last Action is: CROSS placed  piece at E6. Time to decide 9:  1.14
+Last Action is: CIRCLE placed  piece at E5. Time to decide 6:  1.14
+Last Action is: CROSS placed  piece at G4. Time to decide 9:  1.43
+Last Action is: CIRCLE placed  piece at F5. Time to decide 6:  1.43
+Last Action is: CROSS moved a tile from E6 to F7. Time to decide 9:  1.53
+Last Action is: CIRCLE placed  piece at F4. Time to decide 6:  1.56
+Last Action is: CROSS placed  piece at G3. Time to decide 9:  1.83
+Last Action is: CIRCLE placed  piece at F3. Time to decide 6:  1.83
+Last Action is: CROSS moved a tile from E4 to D3. Time to decide 9:  1.93
+Last Action is: CIRCLE placed  piece at H4. Time to decide 6:  2.09
+Last Action is: CROSS moved a tile from F7 to G6. Time to decide 9:  2.08
+Last Action is: CIRCLE placed  piece at G5. Time to decide 6:  2.09
+Last Action is: CROSS placed  piece at H6. Time to decide 9:  2.4
+Last Action is: CIRCLE placed  piece at H5. Time to decide 6:  2.34
+Last Action is: CROSS moved a tile from G4 to H3. Time to decide 9:  2.43
+Last Action is: CIRCLE placed  piece at G7. Time to decide 6:  2.72
+Last Action is: CROSS placed  piece at I3. Time to decide 9:  2.89
+Last Action is: CIRCLE placed  piece at H2. Time to decide 6:  2.97
+Last Action is: CROSS moved a tile from I3 to J2. Time to decide 9:  3.04
+Last Action is: CIRCLE placed  piece at H7. Time to decide 6:  3.13
+Last Action is: CROSS placed  piece at J7. Time to decide 9:  3.58
+Last Action is: CIRCLE placed  piece at I7. Time to decide 6:  3.58
+Last Action is: CROSS moved a tile from H6 to I5. Time to decide 9:  3.73
+Last Action is: CIRCLE placed  piece at H6. Time to decide 6:  3.75
+Last Action is: CROSS placed  piece at J4. Time to decide 9:  4.1
+Last Action is: CIRCLE placed  piece at I4. Time to decide 6:  4.01
+Last Action is: CROSS placed  piece at K3. Time to decide 9:  4.54
+Last Action is: CIRCLE placed  piece at I3. Time to decide 6:  4.17
+Last Action is: CROSS moved a tile from G3 to F2. Time to decide 9:  1.77
+Last Action is: CIRCLE moved a tile from F4 to G3. Time to decide 6:  2.06
+Last Action is: CROSS placed  piece at E3. Time to decide 9:  1.88
+Last Action is: CIRCLE moved a tile from D5 to D4. Time to decide 6:  2.08
+Last Action is: CROSS moved a tile from K3 to L4. Time to decide 9:  1.79
+Last Action is: CIRCLE moved a tile from E5 to E4. Time to decide 6:  1.9
+Last Action is: CROSS placed  piece at I1. Time to decide 9:  1.74
+Last Action is: CIRCLE moved a tile from H2 to I2. Time to decide 6:  1.93
+Last Action is: CROSS placed  piece at L2. Time to decide 9:  1.98
+Last Action is: CIRCLE moved a tile from H7 to I6. Time to decide 6:  1.93

@@ -9,7 +9,7 @@ board_game = board.Board()
 player1 = minimax.Minimax()
 player2 = minimax.Minimax()
 # player1_turn = True
-player1.symbol = CIRCLE # Weak Heuristic
+player1.symbol = CIRCLE # Simple Heuristic
 player2.symbol = CROSS  # Strong Heuristic
 
 
