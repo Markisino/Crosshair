@@ -18,7 +18,7 @@ def run(board_game, human_turn, strong_heuristic):
     # This is the game loop
     # message()
     while not board_game.winner_found:
-        print("\n===============================================================")
+        print("===============================================================")
         board_game.displayBoard()
         if help_enable is True:
             help()
@@ -29,7 +29,7 @@ def run(board_game, human_turn, strong_heuristic):
         #print(board_game.used_tiles)
         print(board_game.lastActionDescription)
        
-        print("\n===============================================================\n")
+        print("===============================================================")
 
         board_game.checkWinner()
         if board_game.winner_found:
@@ -39,7 +39,6 @@ def run(board_game, human_turn, strong_heuristic):
         # We enter in this phase if it is the human player turn.
         # ==========================================================
         if human_turn:
-            # print("Current turn: {}".format(player1.type))
             user_input = input("Enter your choosen action: ").upper()
             actions = user_input.split()
 
@@ -100,7 +99,6 @@ def run(board_game, human_turn, strong_heuristic):
         # We enter in this phase if it is the comuter player turn.
         # ==========================================================        
         else:
-            # print("Current turn: {}".format(player2.type))
             board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic)
             human_turn = True
 

@@ -22,7 +22,7 @@ def run(board_game):
     print(player1_turn)
     # This is the game loop
     while not board_game.winner_found:
-        print("\n===============================================================")
+        print("===============================================================")
         board_game.displayBoard()
         if help_enable is True:
             help()
@@ -33,7 +33,7 @@ def run(board_game):
         #print(board_game.used_tiles)
         print(board_game.lastActionDescription)
        
-        print("\n===============================================================\n")
+        print("===============================================================")
 
         board_game.checkWinner()
         if board_game.winner_found:
@@ -47,14 +47,12 @@ def run(board_game):
             board_game = player1.aiAction(board_game, player1.symbol, board_game.moveCounter, board_game.addCounter, DEPTH, False)
             player1_turn = False
         else:
-            # print("Current turn: {}".format(player2.type))
-            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, True)
+            board_game = player2.aiAction(board_game, player2.symbol, board_game.moveCounter, board_game.addCounter, DEPTH, True)
             player1_turn = True
 
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
-    # help()
 
 def startingPlayer():
     starter = random.randint(1, 2)
