@@ -281,7 +281,11 @@ class Board(NodeMixin): #Add node feature
     def totalEvaluationStrongHeuristic(self):
         evalu = 0
         for xxx in self.used_tiles:
-            evalu = evalu + self.evaluateTile(xxx[0])
+            res = self.evaluateTile(xxx[0])
+            if ((res == math.inf) or (res == -math.inf)): 
+                return res
+            else:
+                evalu = evalu + res
 
         return evalu
 
@@ -338,6 +342,7 @@ class Board(NodeMixin): #Add node feature
             
         if(draw_progress == 5):
             drawn = True
+            return math.inf*multiplier
         if(not blocked):
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
@@ -351,8 +356,7 @@ class Board(NodeMixin): #Add node feature
             if(midright == other_symbol):
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
-        if(drawn):
-            evaluation = evaluation+(math.inf*multiplier) 
+         
         #if(evaluation!=0):
         #    print(str(evaluation))
         return evaluation   
