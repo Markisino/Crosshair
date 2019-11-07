@@ -9,7 +9,7 @@ RUN ON WINDOWS LAB COMPUTER
 1.  Open Anaconda Prompt.
 
 2.  Change the current location to the folder of the project.
-3.  type this command: `pip install anytree --user` since you do not have write on the computer.
+3.  type this command: `pip install anytree --user` since you do not have write permission on the lab computer.
 4.  Type `py main.py` to run the game
 
     a.  The `main.py` is the main file of the game, it contains the main menu allowing the player to choose the game mode.
@@ -39,19 +39,14 @@ RUN ON WINDOWS LAB COMPUTER
 6.  Hope you will enjoy the game!
 
 ## Deliverable 2 files
-The files used for D1 are:
+The files used for D2 are:
 - main.py (main game file)
 - pvp.py (The PvP game configuration)
 - pvc.py (the PvC game configuration)
+- cvc.py (The CvC game configuraiton)
 - config.py
 - board.py
 - player.py (The player file)
 - minimax.py (The Computer file)
 - README.md and README.pdf
 - Expectation of Originality
-
-Disregard the other files for the moment. These are for future Deliverable and iteration.
-- earl-teststuff
-- treeTests.py
-- tester.py
-- To-Do.md (to keep track team task)
