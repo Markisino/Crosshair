@@ -342,7 +342,7 @@ class Board(NodeMixin): #Add node feature
             
         if(draw_progress == 5):
             drawn = True
-            return math.inf*multiplier
+            
         if(not blocked):
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
@@ -357,8 +357,8 @@ class Board(NodeMixin): #Add node feature
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
          
-        #if(evaluation!=0):
-        #    print(str(evaluation))
+        if(drawn):
+            return math.inf*multiplier
         return evaluation   
     def totalEvaluationSimpleHeuristic(self):
 
