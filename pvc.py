@@ -1,6 +1,7 @@
 import board
 import player
 import minimax
+
 from config import CROSS, CIRCLE, DEPTH
 
 board_game = board.Board()
@@ -12,12 +13,12 @@ player2.symbol = CIRCLE
 
 
 # This is the game logic.
-def run(board_game, human_turn):
+def run(board_game, human_turn, strong_heuristic):
     help_enable = True
     # This is the game loop
-    message()
+    # message()
     while not board_game.winner_found:
-        print("\n===============================================================")
+        print("===============================================================")
         board_game.displayBoard()
         if help_enable is True:
             help()
@@ -28,7 +29,7 @@ def run(board_game, human_turn):
         #print(board_game.used_tiles)
         print(board_game.lastActionDescription)
        
-        print("\n===============================================================\n")
+        print("===============================================================")
 
         board_game.checkWinner()
         if board_game.winner_found:
@@ -38,7 +39,6 @@ def run(board_game, human_turn):
         # We enter in this phase if it is the human player turn.
         # ==========================================================
         if human_turn:
-            print("Current turn: {}".format(player1.type))
             user_input = input("Enter your choosen action: ").upper()
             actions = user_input.split()
 
@@ -61,7 +61,7 @@ def run(board_game, human_turn):
 
                 actions[1] = actions[1][:3]  # This will trim the actions to remove trailing characters.
                 if human_turn:
-                    if(player1.tokenleft<=0):
+                    if(player1.tokenleft <= 0):
                         continue
                     valid = board_game.setTile(player1.symbol, actions[1])
                     if valid:
@@ -72,7 +72,7 @@ def run(board_game, human_turn):
                         print("\nTile already occupied!")
 
                 else:
-                    if(player2.tokenleft<=0):
+                    if(player2.tokenleft <= 0):
                         continue
                     valid = board_game.setTile(player2.symbol, actions[1])
                     if valid:
@@ -99,13 +99,10 @@ def run(board_game, human_turn):
         # We enter in this phase if it is the comuter player turn.
         # ==========================================================        
         else:
-            print("Current turn: {}".format(player2.type))
-
-            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH)
+            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic)
             human_turn = True
 
 
-# function to prompt the welcome message
 def message():
     print("Welcome to X-Rudder game!")
     print("Here are the possible input:")
@@ -156,7 +153,5 @@ def neighbourChecker(dest, neighbourList):
 
     return False
 
-if __name__ == '__main__':
-    run(board_game, human_turn)
-
-
+def runPVC(strong_heuristic):
+    run(board_game, human_turn, strong_heuristic)

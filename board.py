@@ -4,9 +4,7 @@ import random
 from anytree import NodeMixin, RenderTree
 import copy
 import math
-import random
-# DELIVERABLE 2 STUFF
-
+#DELIVERABLE 2 STUFF
 
 class Board(NodeMixin):  # Add node feature
 
@@ -40,7 +38,6 @@ class Board(NodeMixin):  # Add node feature
             token = 'CROSS'
         elif token == 9:
             token = 'CIRCLE'
-        #token = str(token)
         if self.lastAction == "M":
             self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
         else:
@@ -80,7 +77,6 @@ class Board(NodeMixin):  # Add node feature
         row = self.LETTERS.index(position[0])
         column = config.BOARDHEIGHT - int(position[1:])
         self.board[column][row] = entry
-        # print(position)
         self.used_tiles.append((position, entry))  # to make checking easier
 
         valid_turn = True
@@ -117,8 +113,6 @@ class Board(NodeMixin):  # Add node feature
         else:
             print("Either entry is wrong or original position")
             return valid_move
-
-        # self.moveCounter -= 1
 
     # Will return a list of possible positions.
     # And show it visually too.
@@ -214,9 +208,9 @@ class Board(NodeMixin):  # Add node feature
     def printUsedTiles(self):
         for tile in self.used_tiles:
             if tile[1] == 6:
-                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
             elif tile[1] == 9:
-                print("({}, {})".format(tile[0], tile[1]), end=" ", file=open("output.txt", "a"))
+                print("({}, {})".format(tile[0], tile[1]), end=" ")
 
     def setBoardToState(self, tiles, movecount, addcount):
         print(tiles)
@@ -283,7 +277,18 @@ class Board(NodeMixin):  # Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
         return open_cell_list
 
-    def evaluateTile(self, position, alter=False):
+    def totalEvaluationStrongHeuristic(self):
+        evalu = 0
+        for xxx in self.used_tiles:
+            res = self.evaluateTile(xxx[0])
+            if ((res == math.inf) or (res == -math.inf)): 
+                return res
+            else:
+                evalu = evalu + res
+
+        return evalu
+
+    def evaluateTile(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         symbol = self.board[column][row]
@@ -298,131 +303,87 @@ class Board(NodeMixin):  # Add node feature
         elif symbol == 6:
             multiplier = -1.5
             other_symbol = 9
-
-        if not alter:
-             # OUT OF BOUNDS
-            if row + 2 >= config.BOARDWIDTH:
-                return 0
-            if column + 2 >= config.BOARDHEIGHT:
-                return 0
-            # EMPTY CELL
-            if symbol == 0:
-                return 0
-            drawn = False
-            # Check if X is drawn
-            first = self.board[column][row + 2]     # right
-            second = self.board[column + 2][row]    # bottom
-            third = self.board[column + 2][row + 2]  # bottom_right
-            middle = self.board[column + 1][row + 1]  # middle
-            blocked = False
-
-            # Check for strikethrough
-            blocker0 = self.board[column + 1][row]
-            blocker1 = self.board[column + 1][row + 2]
-        else:
-             # OUT OF BOUNDS
-            if row - 2 < 0:
-                return 0
-            if column - 2 < 0:
-                return 0
-            # EMPTY CELL
-            if symbol == 0:
-                return 0
-            drawn = False
-            # Check if X is drawn
-            first = self.board[column][row - 2]     # left
-            second = self.board[column - 2][row]    # above
-            third = self.board[column - 2][row - 2]  # above left
-            middle = self.board[column - 1][row - 1]  # middle
-            blocked = False
-
-            # Check for strikethrough
-            blocker0 = self.board[column - 1][row]
-            blocker1 = self.board[column - 1][row - 2]
-
-        if (first == symbol):  # first
+        # OUT OF BOUNDS
+        if row + 2 >= config.BOARDWIDTH:
+            return 0
+        if column + 2 >= config.BOARDHEIGHT:
+            return 0
+        # EMPTY CELL
+        if symbol == 0:
+            return 0
+        drawn = False
+        # Check if X is drawn
+        right = self.board[column][row + 2]
+        below = self.board[column + 2][row]
+        bottom_right = self.board[column + 2][row + 2]
+        middle = self.board[column + 1][row + 1]
+        blocked = False
+        if (right== symbol):# right
             draw_progress = draw_progress + 1
-        elif(first == other_symbol):
+        elif(right == other_symbol):
             blocked = True
 
-        if(second == symbol):
+        if(below == symbol):
             draw_progress = draw_progress + 1
-        elif(second == other_symbol):
+        elif(below == other_symbol):
             blocked = True
-
-        if(third == symbol):
-            draw_progress = draw_progress + 1
-        elif(third == other_symbol):
+        
+        if(bottom_right == symbol):
+            draw_progress = draw_progress + 1 
+        elif(bottom_right == other_symbol):
             blocked = True
-
-        if(middle == symbol):
+        
+        if( middle == symbol):
             draw_progress = draw_progress + 1
         elif(middle == other_symbol):
             blocked = True
 
+            
         if(draw_progress == 5):
             drawn = True
-            return 5000000 * multiplier
+            return math.inf*multiplier
         if(not blocked):
-            evaluation = evaluation + ((5**draw_progress) * multiplier)
+            evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
-            evaluation = evaluation + ((10**draw_progress) * -multiplier)
+            evaluation = evaluation + ((13**draw_progress )*-multiplier) 
+        # Check for strikethrough
+        midleft = self.board[column + 1][row]
+        midright = self.board[column + 1][row + 2]
 
-        if ((blocker0 == other_symbol) and draw_progress >= 3):
+        if ((midleft == other_symbol) and draw_progress >=3):
             evaluation = evaluation + (25 * -multiplier)
-            if(blocker1 == other_symbol):
+            if(midright == other_symbol):
                 evaluation = evaluation + (50 * -multiplier)
                 drawn = False
-
-        # if(evaluation!=0):
+         
+        #if(evaluation!=0):
         #    print(str(evaluation))
-        return evaluation
-
-    def totalEvaluation(self):
-        # TODO: calculate the total value returns that will be used for minimax.
-        # This should return a total value.
+        return evaluation   
+    def totalEvaluationSimpleHeuristic(self):
 
         cross = 0
         circle = 0
 
-        # print(board_game.used_tiles)
-        evalu = 0
-        #flip = (random.randint(0, 1) == 1)
         for xxx in self.used_tiles:
-            res = self.evaluateTile(xxx[0], alter = False)
-            evalu = evalu + self.evaluateTile(xxx[0], alter=True)
-            if((evalu >=5000000 ) or (evalu < -5000000)):
-                return evalu
-                evalu = evalu + self.evaluateTile(xxx[0], alter = False)
-                if((evalu >=5000000 ) or (evalu < -5000000)):
-                    return evalu
+           if xxx[1] == 6:
+               neighbours = self.getTakenNeighbours(xxx[0])
 
-      #      if xxx[1] == 6:
-      #          neighbours = self.getTakenNeighbours(xxx[0])
-      #          # print(neighbours)
-#
-      #          for yyy in neighbours:
-#
-      #              # print(str(yyy) + " " + str((yyy, 6) in self.used_tiles))
-#
-      #              # print(board_game.used_tiles)
-#
-      #              if (yyy, 6) in self.used_tiles:
-      #                  cross += 1
-#
-      #              elif (yyy, 9) in self.used_tiles:
-      #                  circle += 1
-#
-      #          cross -= 1
-#
-      #  if cross == circle:
-      #      self.score = 0
-#
-      #  elif circle > cross:
-      #      self.score = 10 ** cross - 10 ** circle - 1
-#
-      #  else:
-      #      self.score = 10 ** cross - 10 ** circle + 1
+               for yyy in neighbours:
+                   if (yyy, 6) in self.used_tiles:
+                       cross += 1
+                   elif (yyy, 9) in self.used_tiles:
+                       circle += 1
+               cross -= 1
 
-            #print("CROSS: " + str(cross) + " CIRCLE: " + str(circle) + " SCORE: " + str(self.score))
-        return evalu
+        if cross == circle:
+           self.score = 0
+
+        elif circle > cross:
+           self.score = 10 ** cross - 10 ** circle - 1
+
+        else:
+           self.score = 10 ** cross - 10 ** circle + 1
+
+        self.score *= -1
+
+        return self.score

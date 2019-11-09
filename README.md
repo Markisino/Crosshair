@@ -9,12 +9,13 @@ RUN ON WINDOWS LAB COMPUTER
 1.  Open Anaconda Prompt.
 
 2.  Change the current location to the folder of the project.
+3.  type this command: `pip install anytree --user` since you do not have write permission on the lab computer.
+4.  Type `py main.py` to run the game
 
-3.  Type `py x-rudder.py` to run the game
+    a.  The `main.py` is the main file of the game, it contains the main menu allowing the player to choose the game mode.
+5.  You have a choice between these three game mode, the first choice is the Player vs Player game, the second and third choice are both Player vs Computer mode but with two different algorithms. 
 
-    a.  The `x-rudder.py` is the main file of the game
-
-4.  The possible input are shown when you first start the game
+6.  The possible input are shown when you start the game
 
     a.  The list of all available input can be displayed again by
         typing:
@@ -35,17 +36,17 @@ RUN ON WINDOWS LAB COMPUTER
 
     d.  in all these case, the input are case-insensitive.
 
-5.  Hope you will enjoy the game!
+6.  Hope you will enjoy the game!
 
-## Deliverable 1 files
-The files used for D1 are:
-- x-rudder.py (main game file)
+## Deliverable 2 files
+The files used for D2 are:
+- main.py (main game file)
+- pvp.py (The PvP game configuration)
+- pvc.py (the PvC game configuration)
+- cvc.py (The CvC game configuraiton)
 - config.py
 - board.py
-- player.py
+- player.py (The player file)
+- minimax.py (The Computer file)
 - README.md and README.pdf
 - Expectation of Originality
-
-Disregard the other files for the moment. These are for future Deliverable and iteration.
-- earl-teststuff (contain testing for Deliverable 2)
-- To-Do.md (to keep track team task)

@@ -25,7 +25,7 @@ def run_test(b):
 
     b.displayBoard()
 
-    b = ai.aiAction(b, CIRCLE, b.moveCounter, b.addCounter, DEPTH)
+    b = ai.aiAction(b, CIRCLE, b.moveCounter, b.addCounter, DEPTH, True)
     for pre, fill, node in RenderTree(b):
         print("%s%s" % (pre, node.score), file=open("output.txt", "a"))
     b.displayBoard()
