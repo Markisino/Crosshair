@@ -286,10 +286,15 @@ class Board(NodeMixin):  # Add node feature
         self.score = 0
         for xxx in self.used_tiles:
             res = self.evaluateTile(xxx[0])
-            evalu = evalu + res
+            if ((res == math.inf) or (res == -math.inf)): 
+                self.score = res
+                return self.score
+            else:
+                self.score = self.score + res            
+        
 
-        self.score = evalu    
-        return evalu
+        return self.score
+
     def evaluateTile(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
@@ -347,11 +352,7 @@ class Board(NodeMixin):  # Add node feature
         if(draw_progress == 5):
             drawn = True
             
-<<<<<<< HEAD
-        if(not blocked):
-=======
         if(not blocked ):
->>>>>>> noax-minimax
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
             evaluation = evaluation + ((13**draw_progress )*other_multiplier) 
@@ -360,14 +361,6 @@ class Board(NodeMixin):  # Add node feature
         midright = self.board[column + 1][row + 2]
 
         if ((midleft == other_symbol) and draw_progress >=3):
-<<<<<<< HEAD
-            evaluation = evaluation + (250 * -multiplier)
-            if(midright == other_symbol):
-                evaluation = evaluation + (500 * -multiplier)
-         
-       
-            
-=======
             evaluation = evaluation + (25 * other_multiplier)
             if(midright == other_symbol):
                 evaluation = evaluation + (50 * other_multiplier)
@@ -376,7 +369,6 @@ class Board(NodeMixin):  # Add node feature
        
         if (drawn):
             return math.inf*multiplier    
->>>>>>> noax-minimax
         return evaluation   
     def totalEvaluationSimpleHeuristic(self):
 
