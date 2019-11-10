@@ -87,11 +87,11 @@ class Minimax:
             if(not self.printed):
                 self.printed = True
                 node.displayBoard()
-                print("This score: "+ str(node.score) + "Parent score: " + str(root_node.score))
+                print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
                 print(node.lastActionDescription + "\n\n\n")            
                 for n in node.children:
                     n.displayBoard()
-                    print("This score: "+ str(n.score) + "Parent score: " + str(root_node.score))
+                    print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
                     print("LEAF: " + n.lastActionDescription + "\n\n\n")
             if node.score == root_node.score:
                 return node.copyBoard()
