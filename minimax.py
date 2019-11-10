@@ -11,7 +11,6 @@ class Minimax:
         self.symbol = 0
         self.tokenleft = PLAYERTOKENS
         self.nodecount = 1
-        self.printed = False
     
     def symbolString(self):
         if self.symbol == CROSS:
@@ -31,17 +30,17 @@ class Minimax:
             else:
                 return starting_node.totalEvaluationSimpleHeuristic()
 
-        if token == CROSS and depth != 2:
+        if token == CROSS and depth :
                 next_token = CIRCLE
-        elif token == CIRCLE and depth != 2:
+        elif token == CIRCLE and depth :
             next_token = CROSS
         else:
             next_token = token
         
         if self.tokenleft > 0:
-            self.setPlaceNodes(starting_node, next_token)
+            self.setPlaceNodes(starting_node, token)
         if starting_node.moveCounter > 0:
-            self.setMoveNodes(starting_node, next_token)
+            self.setMoveNodes(starting_node, token)
 
         if starting_node.name == CIRCLE:
             best = MIN
@@ -74,11 +73,14 @@ class Minimax:
     
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
-        maxim = root_node.children[0]
+       
         for node in root_node.children:
-            if node.score >= maxim.score:
-                maxim = node
-        return maxim.copyBoard()
+
+            if node.score == root_node.score:
+                return node.copyBoard()
+
+
+        return root_node.children[0].copyBoard()
 
 
     def setMoveNodes(self, starting_node, token):
@@ -128,7 +130,6 @@ class Minimax:
         # print("\nUsed Tiles: {} \nNumber of token: {} \nLast Action is: {}. \nTime to decide: {}".format(root_node.used_tiles, len(root_node.used_tiles), root_node.lastActionDescription, self.symbolString()), end_time, file=open('data.txt', 'a'))
         root_node = self.decision(root_node)
         self.nodecount = 1
-        self.printed = False
         if(self.tokenleft > 0 and root_node.lastAction == "A"):
            self.tokenPlaced()
         return root_node
