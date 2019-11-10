@@ -32,7 +32,6 @@ class Minimax:
         # else:
         #     better = 2000
         better = 0
-        worst = 20000
         if depth == 0:
             if heuristic_two:
                 return starting_node.totalEvaluationStrongHeuristic()
@@ -49,7 +48,6 @@ class Minimax:
         self.setPlaceNodes(starting_node, next_token)
         self.setMoveNodes(starting_node, next_token)
         for node in starting_node.children:
-                # print('current token: {}'.format(node.name), file=open('score.txt', 'a'))
                 mode = node.lastAction
                 if (mode == "A" ):
                     if(next_token == CIRCLE and self.tokenleft <= 0):
@@ -62,8 +60,8 @@ class Minimax:
                             node.parent.score = score
                     else:
                         # print('{} Minimum: {}'.format(node.name, score), file=open('score.txt', 'a'))
-                        if score < worst:
-                            worst = score
+                        if score < better:
+                            better = score
                             node.parent.score = score
                 elif(mode == "M"):
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
@@ -74,8 +72,8 @@ class Minimax:
                             node.parent.score = score
                     else:
                         # print('{} Minimum: {}'.format(node.name, score), file=open('score.txt', 'a'))
-                        if score < worst:
-                            worst = score
+                        if score < better:
+                            better = score
                             node.parent.score = score
 
         return better
