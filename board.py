@@ -91,6 +91,8 @@ class Board(NodeMixin):  # Add node feature
 
     def moveTile(self, entry, previous_position, new_position, is_human):
         valid_move = False
+        if(moveCounter <=0):
+            return False
         if (previous_position, entry) in self.used_tiles:
             if is_human:
                 open_cells = self.showNeighbours(previous_position)
