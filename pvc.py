@@ -24,8 +24,8 @@ def run(board_game, human_turn, strong_heuristic):
             help()
             help_enable = False
         print("CROSS token left: {}\nCIRCLE token left: {}".format(player1.tokenleft, player2.tokenleft))
-        print("the current used tiles in the game")
-        board_game.printUsedTiles()
+        #print("the current used tiles in the game")
+        #board_game.printUsedTiles()
         #print(board_game.used_tiles)
         print(board_game.lastActionDescription)
        
