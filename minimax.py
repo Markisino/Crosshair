@@ -98,7 +98,6 @@ class Minimax:
 
         self.setMoveNodes(starting_node, next_token)
         for node in starting_node.children:
-                # print('current token: {}'.format(node.name), file=open('score.txt', 'a'))
                 mode = node.lastAction
                 if (mode == "A" ):
                     if(next_token == CIRCLE and self.tokenleft <= 0):
@@ -108,12 +107,10 @@ class Minimax:
                         if score > better:
                             better = score
                             node.parent.score = score
-                            #print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
                         if score < worst:
                             worst = score
                             node.parent.score = score
-                            #print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
                 elif(mode == "M"):
                     if(starting_node.moveCounter <= 0):
                         continue
@@ -122,12 +119,10 @@ class Minimax:
                         if score > better:
                             better = score
                             node.parent.score = score
-                            #print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
                         if score < worst:
                             worst = score
                             node.parent.score = score
-                            #print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
 
         return better
     
@@ -138,19 +133,7 @@ class Minimax:
             if node.score >= maxim.score:
                 maxim = node
         return maxim.copyBoard()
-            # if(not self.printed):
-            #     self.printed = True
-            #     node.displayBoard()
-            #     print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
-            #     print(node.lastActionDescription + "\n\n\n")      
-            #     print("TOKEN USED: ", node.name)
-            #     for n in node.children:
-            #         n.displayBoard()
-            #         print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
-            #         print("LEAF: " + n.lastActionDescription + "\n\n\n")
-            #         print("TOKEN USED: ", n.name)
-            #if node.score == root_node.score:
-            #    return node.copyBoard()
+
 
     def setMoveNodes(self, starting_node, token):
        
@@ -188,7 +171,6 @@ class Minimax:
     def aiAction(self, root_node, token, movecount, addcount, depth, heuristic_two):
         start_time = time.time()
         root_node.score = self.minimaxTest(depth, root_node, token, heuristic_two, MIN, MAX)
-        # root_node.score = self._minimax(root_node, token, movecount, addcount, depth, heuristic_two, alpha, beta)
         end_time = round(time.time() - start_time, 2)
         print("Total Nodes Created in Tree: ", self.nodecount)
         print("Token Left " + str(self.tokenleft))
