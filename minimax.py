@@ -47,7 +47,7 @@ class Minimax:
                 score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = max(best, score)
                 alpha = max(alpha, best)
-
+                node.parent.score = best
                 # alpha beta pruning
                 if beta <= alpha:
                     break
@@ -62,10 +62,10 @@ class Minimax:
                 score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = min(best, score)
                 beta = min(beta, best)
-
+                node.parent.score = best
                 if beta <= alpha:
                     break
-            print('the best score for MIN: {}'.format(best))            
+            print('the best score for MIN: {}'.format(best))     
             return best
 
     # This function use Minimax algorith starting with MAX at root and return a score.
@@ -184,8 +184,6 @@ class Minimax:
 
     def aiAction(self, root_node, token, movecount, addcount, depth, heuristic_two):
         start_time = time.time()
-        alpha = -1000
-        beta = 1000
         root_node.score = self.minimaxTest(depth, root_node, token, heuristic_two, MIN, MAX)
         # root_node.score = self._minimax(root_node, token, movecount, addcount, depth, heuristic_two, alpha, beta)
         end_time = round(time.time() - start_time, 2)
