@@ -99,7 +99,7 @@ def run(board_game, human_turn, strong_heuristic):
         # We enter in this phase if it is the comuter player turn.
         # ==========================================================        
         else:
-            board_game = player2.aiAction(board_game, player2.symbol , board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic)
+            board_game = player2.aiAction(board_game, player2.symbol, board_game.moveCounter, board_game.addCounter, DEPTH, strong_heuristic)
             human_turn = True
 
 

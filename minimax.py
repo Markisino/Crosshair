@@ -23,7 +23,7 @@ class Minimax:
         self.tokenleft -= 1
         
 
-    def minimaxTest(self, depth, starting_node, token, heuristic_two, alpha, beta):
+    def _minimax(self, depth, starting_node, token, heuristic_two, alpha, beta):
         starting_node.name = token
         if depth == 0:
             if heuristic_two:
@@ -48,7 +48,7 @@ class Minimax:
 
             # recur for each child
             for node in starting_node.children:
-                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
+                score = self._minimax(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = max(best, score)
                 alpha = max(alpha, best)
                 node.parent.score = best
@@ -62,7 +62,7 @@ class Minimax:
 
             # recur for each child
             for node in starting_node.children:
-                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
+                score = self._minimax(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = min(best, score)
                 beta = min(beta, best)
                 node.parent.score = best
@@ -70,61 +70,7 @@ class Minimax:
                     break
             return best
 
-    # This function use Minimax algorith starting with MAX at root and return a score.
-    def _minimax(self, starting_node, token, movecount, addcount, depth, heuristic_two, alpha, beta):
-        starting_node.name = token
-        # print('current token: {}'.format(token), file=open('score.txt', 'a'))
-        # if token == CIRCLE:
-        #     better = -2000
-        # else:
-        #     better = 2000
-        better = 0
-        worst = 20000
-        if depth == 0:
 
-            if heuristic_two:
-                return starting_node.totalEvaluationStrongHeuristic()
-            else:
-                return starting_node.totalEvaluationSimpleHeuristic()
-
-        #To achieve turn change on search space generation
-        if token == CROSS and depth != 2:
-            next_token = CIRCLE
-        elif token == CIRCLE and depth != 2:
-            next_token = CROSS
-        else:
-            next_token = token
-        self.setPlaceNodes(starting_node, next_token)
-
-        self.setMoveNodes(starting_node, next_token)
-        for node in starting_node.children:
-                mode = node.lastAction
-                if (mode == "A" ):
-                    if(next_token == CIRCLE and self.tokenleft <= 0):
-                        continue
-                    score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two, alpha, beta)
-                    if node.name == CIRCLE:
-                        if score > better:
-                            better = score
-                            node.parent.score = score
-                    else:
-                        if score < worst:
-                            worst = score
-                            node.parent.score = score
-                elif(mode == "M"):
-                    if(starting_node.moveCounter <= 0):
-                        continue
-                    score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two, alpha, beta)
-                    if node.name == CIRCLE:
-                        if score > better:
-                            better = score
-                            node.parent.score = score
-                    else:
-                        if score < worst:
-                            worst = score
-                            node.parent.score = score
-
-        return better
     
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
@@ -170,7 +116,7 @@ class Minimax:
 
     def aiAction(self, root_node, token, movecount, addcount, depth, heuristic_two):
         start_time = time.time()
-        root_node.score = self.minimaxTest(depth, root_node, token, heuristic_two, MIN, MAX)
+        root_node.score = self._minimax(depth, root_node, token, heuristic_two, MIN, MAX)
         end_time = round(time.time() - start_time, 2)
         print("Total Nodes Created in Tree: ", self.nodecount)
         print("Token Left " + str(self.tokenleft))
