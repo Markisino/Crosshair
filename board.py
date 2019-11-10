@@ -307,11 +307,11 @@ class Board(NodeMixin):  # Add node feature
         other_multiplier = 0
         if symbol == 9:
             other_symbol = 6
-            multiplier = 1.2
-            other_multiplier = -1
+            multiplier = 1
+            other_multiplier = -1.5
         elif symbol ==6:
-            multiplier = -1
-            other_multiplier = 1.2
+            multiplier = -1.5
+            other_multiplier = 1
             other_symbol = 9
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
