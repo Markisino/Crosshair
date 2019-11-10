@@ -25,3 +25,5 @@ PLAYERTOKENS = 15 # Starting amount of token for each player.
 HUMAN = 'human'
 COMPUTER = 'computer'
 DEPTH = 2
+MIN = -1000
+MAX = 1000

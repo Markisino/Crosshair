@@ -3,7 +3,7 @@
 import numpy as np
 import time
 import math
-from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER
+from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER, MIN, MAX
 
 class Minimax:
     def __init__(self):
@@ -23,8 +23,53 @@ class Minimax:
         self.tokenleft -= 1
         
 
+    def minimaxTest(self, depth, starting_node, token, heuristic_two, alpha, beta):
+        starting_node.name = token
+        if depth == 0:
+            if heuristic_two:
+                return starting_node.totalEvaluationStrongHeuristic()
+            else:
+                return starting_node.totalEvaluationSimpleHeuristic()
+
+        if token == CROSS and depth != 2:
+                next_token = CIRCLE
+        elif token == CIRCLE and depth != 2:
+            next_token = CROSS
+        else:
+            next_token = token
+        self.setPlaceNodes(starting_node, next_token)
+
+        if starting_node.name == CIRCLE:
+            best = MIN
+
+            # recur for each child
+            for node in starting_node.children:
+                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
+                best = max(best, score)
+                alpha = max(alpha, best)
+
+                # alpha beta pruning
+                if beta <= alpha:
+                    break
+            print('the best score for MAX: {}'.format(best))
+            return best
+    
+        else:
+            best = MAX
+
+            # recur for each child
+            for node in starting_node.children:
+                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
+                best = min(best, score)
+                beta = min(beta, best)
+
+                if beta <= alpha:
+                    break
+            print('the best score for MIN: {}'.format(best))            
+            return best
+
     # This function use Minimax algorith starting with MAX at root and return a score.
-    def _minimax(self, starting_node, token, movecount, addcount, depth, heuristic_two):
+    def _minimax(self, starting_node, token, movecount, addcount, depth, heuristic_two, alpha, beta):
         starting_node.name = token
         # print('current token: {}'.format(token), file=open('score.txt', 'a'))
         # if token == CIRCLE:
@@ -55,9 +100,8 @@ class Minimax:
                 if (mode == "A" ):
                     if(next_token == CIRCLE and self.tokenleft <= 0):
                         continue
-                    score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two)
+                    score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two, alpha, beta)
                     if node.name == CIRCLE:
-
                         if score > better:
                             better = score
                             node.parent.score = score
@@ -70,7 +114,7 @@ class Minimax:
                 elif(mode == "M"):
                     if(starting_node.moveCounter <= 0):
                         continue
-                    score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
+                    score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two, alpha, beta)
                     if node.name == CIRCLE:
                         if score > better:
                             better = score
@@ -140,7 +184,10 @@ class Minimax:
 
     def aiAction(self, root_node, token, movecount, addcount, depth, heuristic_two):
         start_time = time.time()
-        root_node.score = self._minimax(root_node, token, movecount, addcount, depth, heuristic_two)
+        alpha = -1000
+        beta = 1000
+        root_node.score = self.minimaxTest(depth, root_node, token, heuristic_two, MIN, MAX)
+        # root_node.score = self._minimax(root_node, token, movecount, addcount, depth, heuristic_two, alpha, beta)
         end_time = round(time.time() - start_time, 2)
         print("Total Nodes Created in Tree: ", self.nodecount)
         print("Token Left " + str(self.tokenleft))
