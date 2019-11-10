@@ -23,6 +23,8 @@ def setMoveNodes(starting_node, token, movecount,addcount, steps):
             #child_used = temp_board.used_tiles.copy()
            
             temp_board.lastAction = ("M")
+            temp_board.setLastActionDescription(token, used[0], neighbour)
+
             #child = temp_board.copyBoard()
             #child.parent = starting_node
             #print(child.used_tiles)
@@ -45,6 +47,7 @@ def setPlaceNodes(starting_node, token, movecount,addcount, steps):
             child = base_board.copyBoard(p=starting_node)
             child.name = token
             child.lastAction = "A"
+            child.setLastActionDescription(token, child.used_tiles[-1][0])
             base_board.aiRemoveTile(ix, iy)
             nodecount+=1
     		#print("Placing: " + str(token))
@@ -96,6 +99,8 @@ generateSearchSpace(b, 6, b.moveCounter,b.addCounter, 2)
 
 for pre, fill, node in RenderTree(b):
     print("%s%s" % (pre, node.name))
-
 b.displayBoard()
+
 print(nodecount)
+for child in b.children:
+    print(child.lastActionDescription, file=open('treeTestsoutput.txt', 'a'))

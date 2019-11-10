@@ -6,10 +6,10 @@ import copy
 import math
 #DELIVERABLE 2 STUFF
 
-class Board(NodeMixin): #Add node feature
+class Board(NodeMixin):  # Add node feature
 
-    #def __init__(self,name,length,width, parent=None, children=None):
-    def __init__(self ,name="", lad = "", parent=None, children=None, used_tiles = [], board = np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter = config.TURNCOUNTER):
+    # def __init__(self,name,length,width, parent=None, children=None):
+    def __init__(self, name="", lad="", parent=None, children=None, used_tiles=[], board=np.zeros(shape=(config.BOARDHEIGHT, config.BOARDWIDTH)), winner_found=False, addCounter=config.TURNCOUNTER, moveCounter=config.TURNCOUNTER):
 
         super(Board, self).__init__()
         self.name = name
@@ -32,7 +32,8 @@ class Board(NodeMixin): #Add node feature
         self.lastAction = ''
         self.lastActionDescription = lad
         self.score = 0
-    def setLastActionDescription(self, token, pos1, pos2 = ""):
+
+    def setLastActionDescription(self, token, pos1, pos2=""):
         if token == 6:
             token = 'CROSS'
         elif token == 9:
@@ -41,9 +42,12 @@ class Board(NodeMixin): #Add node feature
             self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
         else:
             self.lastActionDescription = token + " placed  piece at " + pos1
-    def copyBoard(self, p = None, c = None):
-        return Board(self.name, self.lastActionDescription, p,  c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
-    
+
+    def copyBoard(self, p=None, c=None):
+        copy = Board(self.name, self.lastActionDescription, p, c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        copy.lastAction = self.lastAction
+        return copy
+
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
             row = str(config.BOARDHEIGHT - y).ljust(2) + " |"
@@ -87,12 +91,14 @@ class Board(NodeMixin): #Add node feature
 
     def moveTile(self, entry, previous_position, new_position, is_human):
         valid_move = False
+        if(self.moveCounter <=0):
+            return False
         if (previous_position, entry) in self.used_tiles:
             if is_human:
                 open_cells = self.showNeighbours(previous_position)
             else:
                 open_cells = self.getNeighbours(previous_position)
-            valid_move, neigbour_text = ((new_position in open_cells[0]),(open_cells[1]))
+            valid_move, neigbour_text = ((new_position in open_cells[0]), (open_cells[1]))
 
             if valid_move:
                 self.setTile(entry, new_position, True)
@@ -117,11 +123,11 @@ class Board(NodeMixin): #Add node feature
     def showNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
-        
+
         final_text = ""
 
         open_cell_list = []
-        print('Available surrounding position of {} (?) are shown below:'.format(position))
+        print('Available surrounding position of {} (?) are shown second:'.format(position))
         for y in range(-1, 2):
             relative_column = column + y
             if (relative_column >= config.BOARDHEIGHT or
@@ -144,7 +150,6 @@ class Board(NodeMixin): #Add node feature
                     open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
                 row_text += cell
 
-            
             final_text += row_text + "\n"
         bottom_text = "   "
         for x in range(-1, 2):
@@ -169,19 +174,19 @@ class Board(NodeMixin): #Add node feature
             return False
 
         # Check if X is drawn
-        if (self.board[column][row + 2] == symbol  # right
-                and self.board[column + 2][row] == symbol  # below
-                and self.board[column + 2][row + 2] == symbol  # bottom right
+        if (self.board[column][row + 2] == symbol  # first
+                and self.board[column + 2][row] == symbol  # second
+                and self.board[column + 2][row + 2] == symbol  # bottom first
                 and self.board[column + 1][row + 1] == symbol):  # middle
 
             x_drawn = True
 
         # Check for strikethrough
-        midleft = self.board[column + 1][row]
-        midright = self.board[column + 1][row + 2]
+        blocker0 = self.board[column + 1][row]
+        blocker1 = self.board[column + 1][row + 2]
 
-        if ((midleft != 0 and midleft != symbol)
-                and (midright != 0 and midright != symbol)):
+        if ((blocker0 != 0 and blocker0 != symbol)
+                and (blocker1 != 0 and blocker1 != symbol)):
             crossed = True
 
         self.winner_found = (x_drawn and not crossed)
@@ -191,7 +196,8 @@ class Board(NodeMixin): #Add node feature
 
         if self.addCounter == 0 and self.moveCounter == 0:
             print("Draw")
-            return
+            self.winner_found = True #draw
+            return "DRAW"
 
         for tile in self.used_tiles:
             result = self.checkTile(tile[0])
@@ -211,36 +217,35 @@ class Board(NodeMixin): #Add node feature
             elif tile[1] == 9:
                 print("({}, {})".format(tile[0], tile[1]), end=" ")
 
-    def setBoardToState(self, tiles, movecount,addcount):
+    def setBoardToState(self, tiles, movecount, addcount):
         print(tiles)
         rows = config.BOARDHEIGHT
         columns = config.BOARDWIDTH
         self.board = np.zeros(shape=(rows, columns))
         self.board = self.board.astype(int)
         for tile in tiles:
-            self.setTile(tile[1],tile[0])
+            self.setTile(tile[1], tile[0])
         self.moveCounter = movecount
         self.addCounter = addcount
 
-    def aiSetTile(self,entry,x,y):
+    def aiSetTile(self, entry, x, y):
         letter = self.LETTERS[y]
-        num = str(config.BOARDHEIGHT -x)
-        pos = letter+num
+        num = str(config.BOARDHEIGHT - x)
+        pos = letter + num
         if(self.board[x][y] != 0):
             return False
         self.board[x][y] = entry
-        self.used_tiles.append((pos,entry))
+        self.used_tiles.append((pos, entry))
         self.addCounter -= 1
-        return True #to remove
+        return True  # to remove
 
-    
-    def aiRemoveTile(self,x,y):
+    def aiRemoveTile(self, x, y):
         self.board[x][y] = 0
-        self.used_tiles.pop() 
+        self.used_tiles.pop()
 
-        self.addCounter += 1 
+        self.addCounter += 1
 
-    def getNeighbours(self,position):
+    def getNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
         open_cell_list = []
@@ -255,10 +260,9 @@ class Board(NodeMixin): #Add node feature
                         relative_row < 0):
                     continue
                 if self.board[relative_column][relative_row] == 0:
-            
-                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
-        return (open_cell_list,"")
 
+                    open_cell_list.append(self.LETTERS[relative_row] + str(config.BOARDHEIGHT - relative_column))
+        return (open_cell_list, "")
 
     def getTakenNeighbours(self, position):
         row = self.LETTERS.index(position[0].upper())
@@ -279,14 +283,25 @@ class Board(NodeMixin): #Add node feature
         return open_cell_list
 
     def totalEvaluationStrongHeuristic(self):
-        evalu = 0
+        self.score = 0
         for xxx in self.used_tiles:
             res = self.evaluateTile(xxx[0])
+<<<<<<< HEAD
             
             evalu = evalu + res
 
         self.score = evalu    
         return evalu
+=======
+            if ((res == math.inf) or (res == -math.inf)): 
+                self.score = res
+                return self.score
+            else:
+                self.score = self.score + res            
+        
+
+        return self.score
+>>>>>>> noax-minimax
 
     def evaluateTile(self, position):
         row = self.LETTERS.index(position[0].upper())
@@ -297,11 +312,14 @@ class Board(NodeMixin): #Add node feature
         evaluation = 0
         other_symbol = 0
         draw_progress = 1
+        other_multiplier = 0
         if symbol == 9:
             other_symbol = 6
             multiplier = 1
+            other_multiplier = -1.5
         elif symbol ==6:
             multiplier = -1.5
+            other_multiplier = 1
             other_symbol = 9
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
@@ -342,21 +360,36 @@ class Board(NodeMixin): #Add node feature
         if(draw_progress == 5):
             drawn = True
             
+<<<<<<< HEAD
         if(not blocked):
+=======
+        if(not blocked ):
+>>>>>>> noax-minimax
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
-            evaluation = evaluation + ((13**draw_progress )*-multiplier) 
+            evaluation = evaluation + ((13**draw_progress )*other_multiplier) 
         # Check for strikethrough
         midleft = self.board[column + 1][row]
         midright = self.board[column + 1][row + 2]
 
         if ((midleft == other_symbol) and draw_progress >=3):
+<<<<<<< HEAD
             evaluation = evaluation + (250 * -multiplier)
             if(midright == other_symbol):
                 evaluation = evaluation + (500 * -multiplier)
          
        
             
+=======
+            evaluation = evaluation + (25 * other_multiplier)
+            if(midright == other_symbol):
+                evaluation = evaluation + (50 * other_multiplier)
+                drawn = False
+         
+       
+        if (drawn):
+            return math.inf*multiplier    
+>>>>>>> noax-minimax
         return evaluation   
     def totalEvaluationSimpleHeuristic(self):
 
