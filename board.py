@@ -196,7 +196,8 @@ class Board(NodeMixin):  # Add node feature
 
         if self.addCounter == 0 and self.moveCounter == 0:
             print("Draw")
-            return
+            self.winner_found = True #draw
+            return "DRAW"
 
         for tile in self.used_tiles:
             result = self.checkTile(tile[0])
