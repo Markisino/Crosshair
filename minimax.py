@@ -10,6 +10,7 @@ class Minimax:
         self.symbol = 0
         self.tokenleft = PLAYERTOKENS
         self.nodecount = 1
+        self.printed = False
     
     def symbolString(self):
         if self.symbol == CROSS:
@@ -78,10 +79,20 @@ class Minimax:
                             better = score
                             node.parent.score = score
         return better
-        
+    
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
+        
         for node in root_node.children:
+            if(not self.printed):
+                self.printed = True
+                node.displayBoard()
+                print("This score: "+ str(node.score) + "Parent score: " + str(root_node.score))
+                print(node.lastActionDescription + "\n\n\n")            
+                for n in node.children:
+                    n.displayBoard()
+                    print("This score: "+ str(n.score) + "Parent score: " + str(root_node.score))
+                    print("LEAF: " + n.lastActionDescription + "\n\n\n")
             if node.score == root_node.score:
                 return node.copyBoard()
 
@@ -130,6 +141,7 @@ class Minimax:
         # print("\nUsed Tiles: {} \nNumber of token: {} \nLast Action is: {}. \nTime to decide: {}".format(root_node.used_tiles, len(root_node.used_tiles), root_node.lastActionDescription, self.symbolString()), end_time, file=open('data.txt', 'a'))
         root_node = self.decision(root_node)
         self.nodecount = 1
+        self.printed = False
         if(self.tokenleft > 0):
             self.tokenPlaced()
         return root_node
