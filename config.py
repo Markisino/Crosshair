@@ -4,7 +4,7 @@ every variable that must stay constants should
 go there for the sake of simplicity and clarity.
 
 """
-
+import math
 # ==================================================
 # BELOW ARE CONFIG FOR OUR GAME SCREEN
 # ==================================================
@@ -25,5 +25,5 @@ PLAYERTOKENS = 15 # Starting amount of token for each player.
 HUMAN = 'human'
 COMPUTER = 'computer'
 DEPTH = 2
-MIN = -1000
-MAX = 1000
+MIN = -math.inf
+MAX = math.inf

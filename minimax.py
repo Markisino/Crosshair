@@ -37,7 +37,11 @@ class Minimax:
             next_token = CROSS
         else:
             next_token = token
-        self.setPlaceNodes(starting_node, next_token)
+        
+        if self.tokenleft > 0:
+            self.setPlaceNodes(starting_node, next_token)
+        if starting_node.moveCounter > 0:
+            self.setMoveNodes(starting_node, next_token)
 
         if starting_node.name == CIRCLE:
             best = MIN
@@ -51,7 +55,6 @@ class Minimax:
                 # alpha beta pruning
                 if beta <= alpha:
                     break
-            print('the best score for MAX: {}'.format(best))
             return best
     
         else:
@@ -65,7 +68,6 @@ class Minimax:
                 node.parent.score = best
                 if beta <= alpha:
                     break
-            print('the best score for MIN: {}'.format(best))     
             return best
 
     # This function use Minimax algorith starting with MAX at root and return a score.
