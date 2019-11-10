@@ -285,6 +285,7 @@ class Board(NodeMixin): #Add node feature
             
             evalu = evalu + res
 
+        self.score = evalu    
         return evalu
 
     def evaluateTile(self, position):
