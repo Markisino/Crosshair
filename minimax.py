@@ -47,8 +47,8 @@ class Minimax:
         else:
             next_token = token
         self.setPlaceNodes(starting_node, next_token)
-        if(starting_node.moveCounter >= 0):
-            self.setMoveNodes(starting_node, next_token)
+
+        self.setMoveNodes(starting_node, next_token)
         for node in starting_node.children:
                 # print('current token: {}'.format(node.name), file=open('score.txt', 'a'))
                 mode = node.lastAction
