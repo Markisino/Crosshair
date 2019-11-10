@@ -67,6 +67,8 @@ class Minimax:
                             node.parent.score = score
                             #print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
                 elif(mode == "M"):
+                    if(starting_node.moveCounter <= 0):
+                        continue
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
                     if node.name == CIRCLE:
                         if score > better:
