@@ -8,7 +8,6 @@ def message():
     print("1 - Player vs Player")
     print("2 - Player vs Computer (Easy)")
     print("3 - Player vs Computer (Hard)")
-    print("4 - Computer vs Computer")
     print("Q - to quit")
     
 def mainmenu():
@@ -22,8 +21,6 @@ def mainmenu():
     elif user_input == '3':
         heuristic_two = True
         pvc.runPVC(heuristic_two)
-    elif user_input == '4':
-        cvc.runCVC()
     elif user_input != 'q':
         mainmenu()
 

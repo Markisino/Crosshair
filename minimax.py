@@ -23,7 +23,7 @@ class Minimax:
         self.tokenleft -= 1
         
 
-    def minimaxTest(self, depth, starting_node, is_maximizing_player, token, heuristic_two, alpha, beta):
+    def minimaxTest(self, depth, starting_node, token, heuristic_two, alpha, beta):
         starting_node.name = token
         if depth == 0:
             if heuristic_two:
@@ -40,15 +40,15 @@ class Minimax:
         
         if self.tokenleft > 0:
             self.setPlaceNodes(starting_node, next_token)
-        
         if starting_node.moveCounter > 0:
             self.setMoveNodes(starting_node, next_token)
 
-        if is_maximizing_player:
+        if starting_node.name == CIRCLE:
             best = MIN
+
             # recur for each child
             for node in starting_node.children:
-                score = self.minimaxTest(depth - 1, node, False, next_token, heuristic_two, alpha, beta)
+                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = max(best, score)
                 alpha = max(alpha, best)
                 node.parent.score = best
@@ -62,7 +62,7 @@ class Minimax:
 
             # recur for each child
             for node in starting_node.children:
-                score = self.minimaxTest(depth - 1, node, True, next_token, heuristic_two, alpha, beta)
+                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = min(best, score)
                 beta = min(beta, best)
                 node.parent.score = best
@@ -186,7 +186,7 @@ class Minimax:
 
     def aiAction(self, root_node, token, movecount, addcount, depth, heuristic_two):
         start_time = time.time()
-        root_node.score = self.minimaxTest(depth, root_node, True, token, heuristic_two, MIN, MAX)
+        root_node.score = self.minimaxTest(depth, root_node, token, heuristic_two, MIN, MAX)
         # root_node.score = self._minimax(root_node, token, movecount, addcount, depth, heuristic_two, alpha, beta)
         end_time = round(time.time() - start_time, 2)
         print("Total Nodes Created in Tree: ", self.nodecount)
