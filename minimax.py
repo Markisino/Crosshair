@@ -56,20 +56,6 @@ class Minimax:
                 if beta <= alpha:
                     break
             return best
-    
-        else:
-            best = MAX
-
-            # recur for each child
-            for node in starting_node.children:
-                score = self._minimax(depth - 1, node, next_token, heuristic_two, alpha, beta)
-                best = min(best, score)
-                beta = min(beta, best)
-                node.parent.score = best
-                if beta <= alpha:
-                    break
-            return best
-
 
     
         else:
