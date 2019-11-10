@@ -2,6 +2,7 @@
 
 import numpy as np
 import time
+import math
 from config import CIRCLE, CROSS, PLAYERTOKENS, COMPUTER
 
 class Minimax:
@@ -52,47 +53,54 @@ class Minimax:
                     if(next_token == CIRCLE and self.tokenleft <= 0):
                         continue
                     score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two)
-                    if token == CIRCLE:
+                    if next_token == CIRCLE:
                         if score is None:
-                            score = 'CIRCLE'
+                            score = -math.inf
                         elif score > better:
                             better = score
                             node.parent.score = score
+                            print('Maximum score: ', score, file=open('score.txt', 'a'))
                     else:
                         if score is None:
-                            score = 'CROSS'
+                            score = math.inf
                         elif score < better:
                             better = score
                             node.parent.score = score
+                            print('Minimum score: ', score, file=open('score.txt', 'a'))
                 elif(mode == "M"):
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
                     if token == CIRCLE:
                         if score is None:
-                            score = 'CIRCLE'
+                            score = -math.inf
                         elif score > better:
                             better = score
                             node.parent.score = score
+                            print('Maximum score: ', score, file=open('score.txt', 'a'))
                     else:
                         if score is None:
-                            score = 'CROSS'
+                            score = math.inf
                         elif score < better:
                             better = score
                             node.parent.score = score
+                            print('Minimum score: ', score, file=open('score.txt', 'a'))
+
         return better
     
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
         
         for node in root_node.children:
-            if(not self.printed):
-                self.printed = True
-                node.displayBoard()
-                print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
-                print(node.lastActionDescription + "\n\n\n")            
-                for n in node.children:
-                    n.displayBoard()
-                    print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
-                    print("LEAF: " + n.lastActionDescription + "\n\n\n")
+            # if(not self.printed):
+            #     self.printed = True
+            #     node.displayBoard()
+            #     print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
+            #     print(node.lastActionDescription + "\n\n\n")      
+            #     print("TOKEN USED: ", node.name)
+            #     for n in node.children:
+            #         n.displayBoard()
+            #         print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
+            #         print("LEAF: " + n.lastActionDescription + "\n\n\n")
+            #         print("TOKEN USED: ", n.name)
             if node.score == root_node.score:
                 return node.copyBoard()
 
