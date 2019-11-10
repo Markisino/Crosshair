@@ -88,20 +88,21 @@ class Minimax:
     def decision(self, root_node):
         maxim = root_node.children[0]
         for node in root_node.children:
+            if(not self.printed):
+                self.printed = True
+                node.displayBoard()
+                print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
+                print(node.lastActionDescription + "\n\n\n")      
+                print("TOKEN USED: ", node.name)
+                for n in node.children:
+                    n.displayBoard()
+                    print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
+                    print("LEAF: " + n.lastActionDescription + "\n\n\n")
+                    print("TOKEN USED: ", n.name)
             if node.score >= maxim.score:
                 maxim = node
         return maxim.copyBoard()
-            # if(not self.printed):
-            #     self.printed = True
-            #     node.displayBoard()
-            #     print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
-            #     print(node.lastActionDescription + "\n\n\n")      
-            #     print("TOKEN USED: ", node.name)
-            #     for n in node.children:
-            #         n.displayBoard()
-            #         print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
-            #         print("LEAF: " + n.lastActionDescription + "\n\n\n")
-            #         print("TOKEN USED: ", n.name)
+
             #if node.score == root_node.score:
             #    return node.copyBoard()
 

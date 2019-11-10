@@ -355,7 +355,7 @@ class Board(NodeMixin):  # Add node feature
         if(not blocked ):
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
-            evaluation = evaluation + ((13**draw_progress )*other_multiplier) 
+            evaluation = evaluation + ((5**draw_progress )*other_multiplier) 
         # Check for strikethrough
         midleft = self.board[column + 1][row]
         midright = self.board[column + 1][row + 2]
