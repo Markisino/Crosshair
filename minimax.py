@@ -56,37 +56,26 @@ class Minimax:
                 if beta <= alpha:
                     break
             return best
-
     
         else:
             best = MAX
 
             # recur for each child
             for node in starting_node.children:
-                mode = node.lastAction
-                score = self.minimaxTest(depth - 1, node, next_token, heuristic_two, alpha, beta)
+                score = self._minimax(depth - 1, node, next_token, heuristic_two, alpha, beta)
                 best = min(best, score)
                 beta = min(beta, best)
-
+                node.parent.score = best
                 if beta <= alpha:
                     break
-            
-            return best    
+            return best
+
+
+    
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
         maxim = root_node.children[0]
         for node in root_node.children:
-            if(not self.printed):
-                self.printed = True
-                node.displayBoard()
-                print("This score: "+ str(node.score) + "\tRoot score: " + str(root_node.score))
-                print(node.lastActionDescription + "\n\n\n")      
-                print("TOKEN USED: ", node.name)
-                for n in node.children:
-                    n.displayBoard()
-                    print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
-                    print("LEAF: " + n.lastActionDescription + "\n\n\n")
-                    print("TOKEN USED: ", n.name)
             if node.score >= maxim.score:
                 maxim = node
         return maxim.copyBoard()
