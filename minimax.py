@@ -56,35 +56,38 @@ class Minimax:
                         continue
                     score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two)
                     if node.name == CIRCLE:
-
+                        # print('{} Maximum: {}'.format(node.name, score), file=open('score.txt', 'a'))
                         if score > better:
                             better = score
                             node.parent.score = score
-                            print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
+                        # print('{} Minimum: {}'.format(node.name, score), file=open('score.txt', 'a'))
                         if score < worst:
                             worst = score
                             node.parent.score = score
-                            print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
                 elif(mode == "M"):
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
                     if node.name == CIRCLE:
+                        # print('{} Maximum: {}'.format(node.name, score), file=open('score.txt', 'a'))
                         if score > better:
                             better = score
                             node.parent.score = score
-                            print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
+                        # print('{} Minimum: {}'.format(node.name, score), file=open('score.txt', 'a'))
                         if score < worst:
                             worst = score
                             node.parent.score = score
-                            print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
 
         return better
     
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
-        
+        maxim = root_node.children[0] 
         for node in root_node.children:
+            if node.score >= maxim.score:
+                maxim = node
+        return maxim.copyBoard()
+        # for node in root_node.children:
             # if(not self.printed):
             #     self.printed = True
             #     node.displayBoard()
@@ -96,8 +99,8 @@ class Minimax:
             #         print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
             #         print("LEAF: " + n.lastActionDescription + "\n\n\n")
             #         print("TOKEN USED: ", n.name)
-            if node.score == root_node.score:
-                return node.copyBoard()
+            # if node.score == root_node.score:
+                # return node.copyBoard()
 
     def setMoveNodes(self, starting_node, token):
        
