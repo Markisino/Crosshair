@@ -286,23 +286,10 @@ class Board(NodeMixin):  # Add node feature
         self.score = 0
         for xxx in self.used_tiles:
             res = self.evaluateTile(xxx[0])
-<<<<<<< HEAD
-            
             evalu = evalu + res
 
         self.score = evalu    
         return evalu
-=======
-            if ((res == math.inf) or (res == -math.inf)): 
-                self.score = res
-                return self.score
-            else:
-                self.score = self.score + res            
-        
-
-        return self.score
->>>>>>> noax-minimax
-
     def evaluateTile(self, position):
         row = self.LETTERS.index(position[0].upper())
         column = config.BOARDHEIGHT - int(position[1:])
