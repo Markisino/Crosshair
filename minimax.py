@@ -26,12 +26,13 @@ class Minimax:
     # This function use Minimax algorith starting with MAX at root and return a score.
     def _minimax(self, starting_node, token, movecount, addcount, depth, heuristic_two):
         starting_node.name = token
+        # print('current token: {}'.format(token), file=open('score.txt', 'a'))
         # if token == CIRCLE:
         #     better = -2000
         # else:
         #     better = 2000
         better = 0
-
+        worst = 20000
         if depth == 0:
             if heuristic_two:
                 return starting_node.totalEvaluationStrongHeuristic()
@@ -48,41 +49,35 @@ class Minimax:
         self.setPlaceNodes(starting_node, next_token)
         self.setMoveNodes(starting_node, next_token)
         for node in starting_node.children:
+                # print('current token: {}'.format(node.name), file=open('score.txt', 'a'))
                 mode = node.lastAction
                 if (mode == "A" ):
                     if(next_token == CIRCLE and self.tokenleft <= 0):
                         continue
                     score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two)
-                    if next_token == CIRCLE:
-                        if score is None:
-                            score = -math.inf
-                        elif score > better:
+                    if node.name == CIRCLE:
+
+                        if score > better:
                             better = score
                             node.parent.score = score
-                            print('Maximum score: ', score, file=open('score.txt', 'a'))
+                            print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
-                        if score is None:
-                            score = math.inf
-                        elif score < better:
-                            better = score
+                        if score < worst:
+                            worst = score
                             node.parent.score = score
-                            print('Minimum score: ', score, file=open('score.txt', 'a'))
+                            print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
                 elif(mode == "M"):
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
-                    if token == CIRCLE:
-                        if score is None:
-                            score = -math.inf
-                        elif score > better:
+                    if node.name == CIRCLE:
+                        if score > better:
                             better = score
                             node.parent.score = score
-                            print('Maximum score: ', score, file=open('score.txt', 'a'))
+                            print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
-                        if score is None:
-                            score = math.inf
-                        elif score < better:
-                            better = score
+                        if score < worst:
+                            worst = score
                             node.parent.score = score
-                            print('Minimum score: ', score, file=open('score.txt', 'a'))
+                            print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
 
         return better
     
@@ -114,7 +109,7 @@ class Minimax:
             for neighbour in starting_node.getNeighbours(used[0])[0]:
 
                 temp_board = starting_node.copyBoard(p = starting_node)
-                temp_board.name = (temp_board.used_tiles)
+                temp_board.name = token
                 
                 temp_board.moveTile(token, used[0], neighbour, False)
             
@@ -131,6 +126,7 @@ class Minimax:
 
                 child = base_board.copyBoard(p=starting_node)
                 child.lastAction = "A"
+                child.name = token
                 child.setLastActionDescription(token, child.used_tiles[-1][0])
                 base_board.aiRemoveTile(ix, iy)
                 self.nodecount += 1
