@@ -44,7 +44,9 @@ class Board(NodeMixin):  # Add node feature
             self.lastActionDescription = token + " placed  piece at " + pos1
 
     def copyBoard(self, p=None, c=None):
-        return Board(self.name, self.lastActionDescription, p, c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        copy = Board(self.name, self.lastActionDescription, p, c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)
+        copy.lastAction = self.lastAction
+        return copy
 
     def displayBoard(self):
         for y in range(config.BOARDHEIGHT):
@@ -299,11 +301,14 @@ class Board(NodeMixin):  # Add node feature
         evaluation = 0
         other_symbol = 0
         draw_progress = 1
+        other_multiplier = 0
         if symbol == 9:
             other_symbol = 6
-            multiplier = 1
+            multiplier = 1.2
+            other_multiplier = -1
         elif symbol ==6:
             multiplier = -1
+            other_multiplier = 1.2
             other_symbol = 9
         # OUT OF BOUNDS
         if row + 2 >= config.BOARDWIDTH:
@@ -347,15 +352,15 @@ class Board(NodeMixin):  # Add node feature
         if(not blocked ):
             evaluation = evaluation + ((5**draw_progress)*multiplier)              
         else:
-            evaluation = evaluation + ((13**draw_progress )*-multiplier) 
+            evaluation = evaluation + ((13**draw_progress )*other_multiplier) 
         # Check for strikethrough
         midleft = self.board[column + 1][row]
         midright = self.board[column + 1][row + 2]
 
         if ((midleft == other_symbol) and draw_progress >=3):
-            evaluation = evaluation + (25 * -multiplier)
+            evaluation = evaluation + (25 * other_multiplier)
             if(midright == other_symbol):
-                evaluation = evaluation + (50 * -multiplier)
+                evaluation = evaluation + (50 * other_multiplier)
                 drawn = False
          
        

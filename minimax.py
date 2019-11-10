@@ -32,6 +32,7 @@ class Minimax:
         # else:
         #     better = 2000
         better = 0
+        worst = 20000
         if depth == 0:
             if heuristic_two:
                 return starting_node.totalEvaluationStrongHeuristic()
@@ -48,44 +49,45 @@ class Minimax:
         self.setPlaceNodes(starting_node, next_token)
         self.setMoveNodes(starting_node, next_token)
         for node in starting_node.children:
+                # print('current token: {}'.format(node.name), file=open('score.txt', 'a'))
                 mode = node.lastAction
                 if (mode == "A" ):
                     if(next_token == CIRCLE and self.tokenleft <= 0):
                         continue
                     score = self._minimax(node, next_token, movecount, addcount -1, depth - 1, heuristic_two)
                     if node.name == CIRCLE:
-                        # print('{} Maximum: {}'.format(node.name, score), file=open('score.txt', 'a'))
+
                         if score > better:
                             better = score
                             node.parent.score = score
+                            print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
-                        # print('{} Minimum: {}'.format(node.name, score), file=open('score.txt', 'a'))
-                        if score < better:
-                            better = score
+                        if score < worst:
+                            worst = score
                             node.parent.score = score
+                            print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
                 elif(mode == "M"):
                     score = self._minimax(node, next_token, movecount -1, addcount, depth - 1, heuristic_two)
                     if node.name == CIRCLE:
-                        # print('{} Maximum: {}'.format(node.name, score), file=open('score.txt', 'a'))
                         if score > better:
                             better = score
                             node.parent.score = score
+                            print('{} Maximum: {}'.format(token, score), file=open('score.txt', 'a'))
                     else:
-                        # print('{} Minimum: {}'.format(node.name, score), file=open('score.txt', 'a'))
-                        if score < better:
-                            better = score
+                        if score < worst:
+                            worst = score
                             node.parent.score = score
+                            print('{} Minimum: {}'.format(token, score), file=open('score.txt', 'a'))
 
         return better
     
     # This function MUST be called after Minimax algorithm, used to make a decision for our AI.
     def decision(self, root_node):
-        maxim = root_node.children[0] 
+        maxim = root_node.children[0]
         for node in root_node.children:
             if node.score >= maxim.score:
                 maxim = node
         return maxim.copyBoard()
-        # for node in root_node.children:
             # if(not self.printed):
             #     self.printed = True
             #     node.displayBoard()
@@ -97,8 +99,8 @@ class Minimax:
             #         print("This score: "+ str(n.score) + "\tParent score: " + str(node.score))
             #         print("LEAF: " + n.lastActionDescription + "\n\n\n")
             #         print("TOKEN USED: ", n.name)
-            # if node.score == root_node.score:
-                # return node.copyBoard()
+            #if node.score == root_node.score:
+            #    return node.copyBoard()
 
     def setMoveNodes(self, starting_node, token):
        
@@ -147,6 +149,6 @@ class Minimax:
         root_node = self.decision(root_node)
         self.nodecount = 1
         self.printed = False
-        if(self.tokenleft > 0):
-            self.tokenPlaced()
+        if(self.tokenleft > 0 and root_node.lastAction == "A"):
+           self.tokenPlaced()
         return root_node
