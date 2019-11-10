@@ -107,7 +107,8 @@ class Minimax:
 
     def setMoveNodes(self, starting_node, token):
        
-
+        if starting_node.moveCounter >= 0:
+            return
         for used in starting_node.used_tiles:
             if used[1] != token:
                 
