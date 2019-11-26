@@ -39,9 +39,9 @@ class Board(NodeMixin):  # Add node feature
         elif token == 9:
             token = 'CIRCLE'
         if self.lastAction == "M":
-            self.lastActionDescription = token + " moved a tile from " + str(pos1) + " to " + str(pos2)
+            self.lastActionDescription = str(pos1) + " " + str(pos2)
         else:
-            self.lastActionDescription = token + " placed  piece at " + pos1
+            self.lastActionDescription = pos1
 
     def copyBoard(self, p=None, c=None):
         copy = Board(self.name, self.lastActionDescription, p, c, self.used_tiles, self.board, self.winner_found, self.addCounter, self.moveCounter)

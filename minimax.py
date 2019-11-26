@@ -120,14 +120,14 @@ class Minimax:
         start_time = time.time()
         root_node.score = self._minimax(depth, root_node, token, heuristic_two, MIN, MAX)
         end_time = round(time.time() - start_time, 2)
-        print("Total Nodes Created in Tree: ", self.nodecount)
-        print("Token Left " + str(self.tokenleft))
-        print("Score : " + str(root_node.score))
-        print("Last Action is: {}. Time to decide {}: ".format(root_node.lastActionDescription, self.symbolString()), end_time)
+        # print("Total Nodes Created in Tree: ", self.nodecount)
+        # print("Token Left " + str(self.tokenleft))
+        # print("Score : " + str(root_node.score))
+        print("{}. Time to decide {}: ".format(root_node.lastActionDescription, self.symbolString()), end_time)
         # ============================================================================================================
         # This line below is commented by default. It is just used for data gathering and analysis of tournament
         # ============================================================================================================        
-        # print("\nUsed Tiles: {} \nNumber of token: {} \nLast Action is: {}. \nTime to decide: {}".format(root_node.used_tiles, len(root_node.used_tiles), root_node.lastActionDescription, self.symbolString()), end_time, file=open('data.txt', 'a'))
+        # print("Used Tiles: {} \nNumber of token: {} \nLast Action is: {}. \nTime to decide: {}".format(root_node.used_tiles, len(root_node.used_tiles), root_node.lastActionDescription, self.symbolString()), end_time, file=open('data.txt', 'a'))
         root_node = self.decision(root_node)
         self.nodecount = 1
         if(self.tokenleft > 0 and root_node.lastAction == "A"):

@@ -1,0 +1,8 @@
+Used Tiles: [('G5', 6)] 
+Number of token: 1 
+Last Action is: . 
+Time to decide: CIRCLE  0.61
+Used Tiles: [('I5', 9), ('F4', 6)] 
+Number of token: 2 
+Last Action is: CIRCLE placed  piece at I5. 
+Time to decide: CIRCLE  0.7

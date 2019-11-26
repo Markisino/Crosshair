@@ -1,4 +1,4 @@
-import pvc, pvp
+import pvc, pvp, tournament
 
 # function to prompt the welcome message
 def message():
@@ -8,6 +8,7 @@ def message():
     print("1 - Player vs Player")
     print("2 - Player vs Computer (Easy)")
     print("3 - Player vs Computer (Hard)")
+    print("4 - Tournament Mode (edited input)")
     print("Q - to quit")
     
 def mainmenu():
@@ -21,6 +22,9 @@ def mainmenu():
     elif user_input == '3':
         heuristic_two = True
         pvc.runPVC(heuristic_two)
+    elif user_input == '4':
+        heuristic_two = True
+        tournament.runPVC(heuristic_two)
     elif user_input != 'q':
         mainmenu()
 
